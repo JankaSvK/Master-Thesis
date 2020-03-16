@@ -1,7 +1,97 @@
-\chapter{Related Work}
+\chapter{Introduction}
+As technology advanced, the price of recording a video significantly dropped. As the result, we can capture a big part of lives in videos. These hours of videos, combined with multiple people created a new type of need -- a need to quickly search in those sources.
 
-An~example citation: \cite{Andel07}
+To provide a scale, about 500 hours of videos are uploaded every minute to YouTube (TODO: source).
 
-\section{Title of the first subchapter of the first chapter}
+\section{Motivation}
+\todo[inline]{real world scenario with memories}
 
-\section{Title of the second subchapter of the first chapter}
+\subsection{Competitions}
+\todo[inline]{Videobrowsershowdown, trecvid, lifelog challenge}
+\todo[inline]{spomenut konkretne tasky, Known-item search}
+
+To immitate this environment and to state the tasks every year teams from the whole world gather in TreckVid competition (TODO: link). This competition focuses on three tasks:
+1. Known item search
+2. 
+3. ad hoc searhc
+
+In this thesis, we use common notation of TreckVid competition and we focus on solving second task -- Known search item. 
+
+
+\section{Goals}
+The goal of this thesis is to develop a search engine for video shots. We focus on two main tasks: search with spatial information and face search. 
+
+We review several approaches in to main categories: using spatial information and faces. We evaluate the results on example videos of TrecVid competition.
+
+
+\todo[inline]{two approaches presented}
+\todo[inline]{evaluation}
+
+\chapter{Preliminaries}
+
+\section{Deep Learning}
+\todo[inline]{Resnet, ResNext}
+
+\section{Distance metrics}
+\subsection{Cosine}
+\subsection{Euclidian}
+
+\section{Self organizing maps}
+
+\section{?Clustering}
+
+\section{Dataset}
+
+\chapter{Related work}
+
+\todo[inline]{zhrnutie aktualneho pristupu na riesenia vyhladavani (najstroje z MFF)}
+\todo[inline]{prehladavanie obrazkov na guli}
+
+\chapter{Search based on position of the objects}
+
+First approach we explore is based on knowing the position of the objects in the image. This corresponds to a visual memory. People with a good visual memory are usually able to describe the position of the objects regarding to each other or in absolute way in the whole image. An example to this shows the image \todo[]{}.
+
+
+
+\todo[inline]{Obrazok s hladanou scenou dvoch ludi a k tomu vsetkymi obrazkami kde su dvaja ludia}
+\todo[inline]{Obrazok s hladanou scenou dvoch ludi a k tomu kolaz ktora zobrazuje ewquest}
+
+\todo[inline]{Motivation --  spomienka toho, ako vyzerala scena}
+\todo[inline]{Now we present following two approaches...}
+In the TrackVid competition, many presented solutions are limited and do not scale well. For example is keyword search, which is limited to the size of the vocabulary. In this chapter we overcome this limitation. We develop search based on images instead of words to avoid the vocabulary limit. We use state-of-art knowledge to acquire deep representation of the objects.
+
+The second limitation we tackle is multi-query. It is difficult to find a source video if many scenes with the same type of the objects occur in the dataset (see Image ....). We solve this problem by placing multiple single queries and then using fusion to merge rankings from each query (more in ...).
+\section{Fixed cutting to regions}
+
+In our first apporach we split images to fixed number of regions. We compute a deep representation using neural network for each region and the whole image. 
+\section{ Using Deep Representation}
+   - Using Deep Representation
+      = Using antepenultimate layer of classification networks
+
+\section{Multi-query search}
+- Multi query search
+  - Fusion methods
+  - Comparison of both approaches with multimodal performance over different fusion techniques
+
+\section{Evaluation}
+In this chapter we evaluate all previously mentioned approached. Firstly, we describe our methodology behind the experiments and then we proceed through all approaches. 
+
+\chapter{Search based on similarity of the faces}
+\todo[inline]{ motivation - otestovat hypotezu ci je to mozne a nejaky nahlad ako ot moze vyzerat}
+\section{Preliminaries}
+\todo[inline]{face features - popisat zdroj siete}
+\section{Creating SOM Representation of the face space}
+\section{Evaluation}
+
+Appendix
+\chapter{User Guide (how to use the app to search)}
+\chapter{ Running the app on the new set of images}
+\todo[inline]{kde zmenit data a co znova natrenovat}
+\chapter{Experiments evaluation (ako ziskat vysledky znova)}
+\chapter{Code Structure (programmer's guide)}
+
+
+% Searching Image Collections Using Deep Representations of Local Regions
+
+% The thesis will investigate two particular approaches for searching large video datasets. The first approach will try to retrieve a searched scene based on a query collage consisting of example images organized on a canvas. The author will investigate various fusion methods, taking into account also the canvas positioning of the query images.  The second approach will be designed to search for a scene based on faces available in the dataset. The method will be based on visual exploration of the faces based on their similarities. In exploration approaches, the user can choose a similar face to the searched one, and continuously browse towards the searched face. The author will provide an interactive search environment for querying as a part of the solution and evaluate the recall on sets of experiments to estimate, how successfully users can retrieve particular scenes.
+
