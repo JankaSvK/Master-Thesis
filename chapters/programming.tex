@@ -1,12 +1,40 @@
-\chapter{User Guide (how to use the app to search)}
-\chapter{ Running the app on the new set of images}
-\todo[inline]{kde zmenit data a co znova natrenovat}
-\chapter{Experiments evaluation (ako ziskat vysledky znova)}
+\chapter{User Guide}
+
+In the previous chapter we developed and evaluated several methods for a known-item-search task. In this chapter we provide a user guide for our implemnetation of aforementioned solutions. This chapter covers only user interaction and does not cover creating new datasets nor starting the server. For later check the Programmer's Guide chapter \ref{ch:TODO}
+
+The user can access the application via web-bade interface. Once the webpage is opened we can see by default a module for spatial similarity search (refer to \ref{ch:TODO}). The second module includes face similarity search (chapter \ref{ch:TODO}). We describe both modules in the same order.
+
+\section{Spatial Similarity}
+
+On the screen we can see a canvas for creating the queries and some control elements. On the first load, a query image (the searched scene) is displayed for several seconds over the canvas. During the creating the collage we can always access the query image by clicking on the image button. The number of hints, i.e., how many times was query shown, is logged. 
+
+\subsection*{Creating a query}
+
+We can create custom queries in the canvas. In order to add image to the canvas, we can either paste it, or add it based on the url of the image. To paste an image, it needs to be available in the clipboard. The easiest way to do that for most images is to right click on the image and select "Copy image". We can also recommend a selective screenshot features, which can fasten the copying the images and also adds possibility for selecting only a part of the image. For Windows 10 it is possible via key combination Shift + Win Key + S. There is no limitation on the number of images in the collage, altough the increased number may reduce the performance (as they may be misleading hints) in recall and also it prolongnates the computation time needed for the query to process.
+
+Once is the image placed in the canvas, we can resize it by grabbing bottom right corner, or move it by dragging. To remove the image click on the X button in the top right corner. To query the model click button "Query". By default, automatic querying is turned of, i.e., after each movement or resizing is system automaticaly querying for new results. This can be turned of, especially in case of more computaly heavy models.
+
+The user interface also provides easy switch between the approach used (as described in the chapters \ref{ch:TODO} and \ref{ch:TODO}). This can be accessed by clicking on the dost, right to the "Query" button. 
+
+\subsection*{Results}
+
+By default, the application displays only the best 100 matched results. The images are reloaded after each successful query. At the top of the Results section is displayed also the rank of the search item. This helps for the user to learn how to use the tool more effectively. For the regions search also the winning regions are highlighted.
+
+
+\section{Face Search}
+
+On the load is a grid with faces and also query image displayed. Same as in spatial similarity module, tha query image can be accessed at any moment by clicking on the icon of the image. The face search consists of several layers, where the bottom are the largest and the top the smallest. The user starsts on the top layer. Than it can click to step down for next layer. In the layer it can move within the layer using navigation buttons at the top. TODO button steps up a layer.
+
+Each of the face also provides a separate way for a search. In the top right corner of each face are available two buttons: video images and face button. Video images button displays all the frames from the same video as the face was retrieved from. The face button returns frames from whole datasets, which contain faces most similar to the one clicked at.
+
+\chapter{Developer's guide}
+
+\section{Running the server}
+
+\section{Creating new datasets}
+
+
+
 \chapter{Code Structure (programmer's guide)}
-
-
-% Searching Image Collections Using Deep Representations of Local Regions
-
-% The thesis will investigate two particular approaches for searching large video datasets. The first approach will try to retrieve a searched scene based on a query collage consisting of example images organized on a canvas. The author will investigate various fusion methods, taking into account also the canvas positioning of the query images.  The second approach will be designed to search for a scene based on faces available in the dataset. The method will be based on visual exploration of the faces based on their similarities. In exploration approaches, the user can choose a similar face to the searched one, and continuously browse towards the searched face. The author will provide an interactive search environment for querying as a part of the solution and evaluate the recall on sets of experiments to estimate, how successfully users can retrieve particular scenes.
 
 

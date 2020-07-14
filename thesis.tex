@@ -53,7 +53,7 @@
 
 \usepackage{todonotes}
 \usepackage{subcaption}
-
+\usepackage{moreverb}
 %%% Basic information on the thesis
 
 % Thesis title in English (exactly as in the formal assignment)
@@ -86,17 +86,17 @@
 % An optional dedication: you can thank whomever you wish (your supervisor,
 % consultant, a person who lent the software, etc.)
 \def\Dedication{%
-Dedication.
+I would like firstly to thank my supervisor RNDr. Jakub Lokoč, Ph.D. for ideas and spot-on help. My thanks also belong to the SIRET Research group members for sharing their experience and knowledge in the research topic with me. Last but not least, I thank all faculty members and especially fellow students. They created an amazing growth environment where I could learn. Personal thanks belong to my close friends and family, which helped me to persist in my work.
 }
 
 % Abstract (recommended length around 80-200 words; this is not a copy of your thesis assignment!)
 \def\Abstract{%
-Abstract.
+In a known-item-search task, the goal is to find a previously seen scene/data in a bigger collection of the data. We aim to present solutions to a specific alternation of this task -- searching for a visual scene, which was previously seen. We test two different approaches in this thesis. The first one incorporates visual descriptions of the objects (for example, using sample images from common image search engines) together with their spatial information (wherein the image is the object located). The second approach tackles this known-item-search task by extracting only faces of the people of the dataset, and we propose a navigational system among the faces. This thesis includes evaluations of both approaches and also a working software to test all presented solutions.
 }
 
 % 3 to 5 keywords (recommended), each enclosed in curly braces
 \def\Keywords{%
-{key} {words}
+{Known-Item-Search} {Convolutional Neural Network} {Content-based image retrieval}
 }
 
 %% The hyperref package for clickable links in PDF and also for storing
@@ -119,7 +119,9 @@ Abstract.
 %%% Each chapter is kept in a separate file
 \include{chapters/introduction}
 \include{chapters/related_work}
-\include{chapters/c01_related_work}
+\include{chapters/preliminaries}
+\include{chapters/content-based_image_retrieval}
+\include{chapters/object_location_search}
 \include{chapters/face_search}
 \include{chapters/programming}
 % \include{chap02}
@@ -134,11 +136,16 @@ Abstract.
 
 %%% Tables used in the thesis (consider if this is needed)
 %%% In mathematical theses, it could be better to move the list of tables to the beginning of the thesis.
-\listoftables
+% \listoftables
 
 %%% Abbreviations used in the thesis, if any, including their explanation
 %%% In mathematical theses, it could be better to move the list of abbreviations to the beginning of the thesis.
-\chapwithtoc{List of Abbreviations}
+% \chapwithtoc{List of Abbreviations}
+% SOM Self-organizing Map
+% KIS Known-item-search
+% CNN Convolutional Neural Network
+% IoU Intersection Over Union
+
 
 %%% Attachments to the master thesis, if any. Each attachment must be
 %%% referred to at least once from the text of the thesis. Attachments

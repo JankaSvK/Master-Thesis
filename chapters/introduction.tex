@@ -1,26 +1,38 @@
 \chapter*{Introduction}
 \addcontentsline{toc}{chapter}{Introduction}
 
-In the last decades, we witnessed a massive jump in the amount of digital information that every person keeps. Looking back 20-30 years ago, people used to record only several hours of their lives to capture the most valuable moments. Now, according to available estimates it is more than 500 hours of multimedia data uploaded every minute only to YouTube \footnote{\href{https://www.statista.com/statistics/259477/hours-of-video-uploaded-to-youtube-every-minute/}{https://www.statista.com/statistics/259477/hours-of-video-uploaded-to-youtube-every-minute/}}. Decreasing prices and wide availability of the recording electronics (especially cell phones) are causing an increase in the amount of multimedia data taken every day. Also, it became more common to share a videos from day-to-day lives.
+In the last decades, we witnessed a massive jump in the amount of digital information that every person owns. Looking back 20-30 years ago, people used to record only several hours of their lives, capturing only the most valuable moments of life. Now, according to available estimates, more than 500 hours of multimedia data is uploaded every minute only to YouTube\footnote{\url{https://www.statista.com/statistics/259477/hours-of-video-uploaded-to-youtube-every-minute/}}. Decreasing prices and wide availability of the recording electronics (especially cell phones) are causing an increase in the amount of multimedia data taken every day. It also became a trend to share a videos from day-to-day lives.
 
-This significant increase in the volume of multimedia data places several new challenges, i.e. the need for effective search. This problem try to tackle not only the researches, but the initiative comes also from companies. Companies try to help their customers to organize a vast amount of multimedia data (e.g., Google Photos, YouTube). These in-company solutions help the companies to organise the data, but the options to filter the data may be limited when offered to a user.
+This significant increase in the volume of multimedia data places several new challenges. One of them is the need for effective search. This problem is not only interesting to the researchers, but the initiatives come also from industry. Companies try to help their customers to organize a vast amount of multimedia data (Google Photos, Facebook, OneDrive, MEGA, etc.). The companies often have a wide spectrum of solutions how to internally store and organise the data. But sadly, most of the time, users are provided only with the simplest technique to filter in the data.
 
-Multimedia search may include several barriers, for example an exessive computability requirements. Even though we do not tackle this problem in this thesis, we investigate a solutions which could create a promising way to create an easy to use programs to search in videos.
+Multimedia search as a task poses several barriers. With the increasing size of the stored data come in hand also high computability requirements. Even though we do not tackle this problem in this thesis, we investigate for new dataset exploration techniques.
 
-We focus on the search scenario where a user searches for an exact known scene in a database. For example, the user recalls a memory, which corresponds to the searched scene. This task of searching for a previously seen scene is often reffered as a known-item search (KIS). We can further divide this scenario by different prior knowledge about the scene. For this thesis, we work only with visual KIS tasks, i.e., the image of the scene was previously seen.
+We focus on the search scenario where a user searches for an exact known scene in a database. For example, the user recalls a memory, which corresponds to the searched scene. This task of searching for a previously seen scene is often reffered as a known-item search (KIS). Even though we search based on the previously seen scene/image, there are different methods how to describe the original image. Therefore, we can further divide the task by different descriptions of the query. For this thesis, we work only with visual known-item search task, i.e., our queries are images.
 
-For the past several years, researchers organize annual competitions in order to increase the interest in user-centered multimedia search. One, for example, is TRECVID \todo[inline]{(TODO: reference) {\color{blue} ten je zrovna spis na automatic search}}. The organisation of competitions enhanced the research in this area.
+The known-item search task is a well-known field of research. It differs from automatic searhc engines on the fact, that it focus on the user input. The descriptions for the system to search by are created by a user for the specific search. To order to elevate the level of the systems researched for this task, researchers organize annual competitions. These help to increase the interest in user-centered multimedia search. One, for example, is Video Browser Showdown\footnote{\url{https://videobrowsershowdown.org/}}. This specific competition focuses mainly on user-computer interaction during the search. For a comparison, TrecVid \todo{ref} is also an annual competition with the focus on retrieving relevant scenes based on their textual or other descriptions.
 
-In this thesis, we tackle the KIS task with two different approaches: 
+In this thesis we build our solutions to solve a known-item search task. We aim to experiment with two following approaches to the KIS task:
+
 \begin{enumerate}
-  \item Visual Search with a known position of the key objects in the scene.
-  \item Traversing faces in the dataset.
+  \item Search by creating a collage of images.
+  \item Search through the faces in the dataset.
 \end{enumerate}
 
 In the first approach, we focus on searching the scenes via only visual models together with the approximate position of key objects in the scene. Users can create a collage of images, which reminds them the searched scene and then browse through the ranked scenes looking for the match.
 
-The second approach is an experimental test of possibility for visual traversing through a large dataset of faces. To present a user with a feasible amount of faces in one display, we tackle this challenge by organizing the faces into multilevel views.
+The second approach is an experimental test of possibility for visual traversing through a  dataset of faces. To present a user with a feasible amount of faces in one display, we tackle this challenge by organizing the faces into multilevel views supporting navigational queries.
 
-Our goal is to examine those two approaches and provide user-friendly interfaces for the user to search through the dataset. During the evaluation, we focus on We evaluate the success rate of each the mentioned approach. We provide evaluations on hand created search queries and their success rates -- i.e., how many times was the searched scene in the top ranked results.
+The goal of this thesis is to create a framework to test both aforementioned approaches. We aim to create a novice-friendly interface for easy user-system interaction.
 
-The following chapters start with the overview of Related Work on solving KIS task. Then we continue with the summarization of some key concepts used in the Preliminaries \todo[inline]{\color{blue} jako ze RW?}. Afterward, the key part of the thesis is presented in two chapters. The first one focuses on solving the KIS task based on the visual similarity together with spatial information. The second chapter focuses on traversing a hierarchical structure that organizes images of faces with respect to their similarity. Both chapters include evaluation sections. As the appendix, we include both Programmers and User documentation.
+We also provide evaluations of the dataset and the solutions presented in this thesis. In the evaluations, we focus on the success rate -- i.e. if the search scene was found. We manually annotate set of queries to test a different set of hyperparameters for the system.
+
+\subsubsection*{Thesis structure}
+
+The thesis is divided into four main blocks. After this chapter we continue by reviewing Related Work\todo{ref} and Preliminaries\todo{ref}. Related Work focuses on existing implementation of the systems solving the KIS task in the same settings as we are. Preliminaries contain a summary of the theoretical background needed for later chapter.
+
+The second block are chapters with the task definition and presented solutions. These chapters include the description of the solutions as well as the evaluations.
+
+The third part of the thesis is dedicated to the demo we created to incorporate both our solutions. This includes User's guide -- how to interact with the system, and Developer's guide -- how to change the dataset or other parameters of the system.
+
+\bigskip
+As a teaser, we successfully developed a promising solution for the spatial requests. We improved the success rate by splitting the image into multiple parts. For more, we invite you to continue reading. 
