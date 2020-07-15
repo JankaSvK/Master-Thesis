@@ -18,7 +18,14 @@ We aim to minimise the rank of the query in the system. In the following chapter
 
 In the next chapter we also provide a numerical comparison of the performance of different setups. To provide a comparison we a \emph{Rank of searched item}. The graphs contain the amount of requests solved in a given rank. In all graphs we refer to a rank as a percentage of the dataset. The amount of requests solved is also expressed as the percentage.
 
-In the figure \ref{fig}\todo[]{add} we can see, that system ranked the 80\% of the requests with a rank in the first 10\% of the dataset.
+We use a figure \ref{fig:mobilenet_whole_image_example} as an example to explain the graphs we will use for evaluation of the performance of the system. In this specific case 90\% of annotated collages are ranked below 50\% of the database. This can be also said in other words, that in 90\% of cases by stating a query we were able to eliminate half of the dataset as unrelated. We can also notice a steep curve in the beginning. It shows 70\% of the collages were ranked in the first 10\% of the database. We can see that this particular system worked well for 70\% of the collages well, but struggled with the rest of the dataset.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\linewidth]{img/mobilenet_whole_image.png}
+    \caption{Performance of MobileNetV2 on annotated collages}
+    \label{fig:mobilenet_whole_image_example}
+\end{figure}
 
 For these evaluations we use annotated queries, as described in section \ref{}\todo{add}.
 
