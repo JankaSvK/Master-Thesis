@@ -1,13 +1,11 @@
-
-
 \chapter{Search by Object Location}
 \label{ch:object_location}
 
-\emph{You see a picture in your head. Your friend was standing on the beach, and there was a little sandcastle on the left. The sea behind beautifully reflected the sun, which was setting...}
+\emph{You see a picture in your head. Your friend was standing on the beach, and there was a little sandcastle on the left. The sea behind beautifully reflected the sun, which was setting.}
 
-We can image, that in that particular moment we were shooting a video of the scenery. But years later, with a huge set of videos in our personal collections it may be impossible to re-watch every one of them again, to find that particular memory. Not all of us are able to visualize the memory, but those who can, we say they have a good visual memory \todo{ref}. We present a solution which can be used for searching in dataset based on such recalls of the memory.
+We can imagine that at that particular moment we were shooting a video of the scenery. However, years later, with a vast set of videos in our collections, it may be impossible to re-watch every one of them to find that particular memory. Not all of us can visualize the memory, but those who can say they have an excellent visual memory \footnote{\url{https://en.wikipedia.org/wiki/Visual_memory}}. We present a solution that can be used to search in a dataset based on such recalls of the memory.
 
-In this chapter we elaborate solutions for known-item search task based on the visual description of the scene. The characteristics of the input are that we can recall how the objects looked (i.e. they were wearing red hoodie) and their relative location in the shot (i.e. top left corner). With those information we look the match in the database for a described scene. We encapsulate the information in input and refer to it as a \emph{collage}. It means cutting images and placing them onto empty canvas, where their placing carries also an information. We show an example of such query in the figure \ref{fig:query_collage_comparison}. On the left we can see a cat centered in the image behind the window. On the right we can see a possible visualization of such memory. The canvas is grey on which we places a window which reminded us the original one. On the center we place similarly colored cat.
+In this chapter, we elaborate solutions for known-item search tasks based on the visual description of the scene. The input characteristics are that we can recall how the objects looked (i.e., they were wearing a red hoodie) and their relative location in the shot (i.e., top left corner). With that information, we look at the match in the database for a described scene. We encapsulate the information in input and refer to it as a \emph{collage}. It means cutting images and placing them onto an empty canvas, where their placing also carries a piece of information. We show an example of such a query in figure \ref{fig:query_collage_comparison}. On the left, we can see a cat centered in the image behind the window. On the right, we can see a possible visualization of such memory. The canvas is grey on which we place a window, which reminded us of the original one. On the center, we place a similarly colored cat.
 
 \begin{figure}
 \centering
@@ -27,31 +25,31 @@ In this chapter we elaborate solutions for known-item search task based on the v
 \label{fig:query_collage_comparison}
 \end{figure}
 
-While we were describing the scene, we used words for it. But this chapter with presented solutions do not focus on the search based on the verbal description of the objects. Although, it is one of the possible alternatives to handling problem. Supporting verbal descriptions often require extensively annotated data to use to train neural networks and even though the advancements in the research area it still has a limited ability for extensively described characteristings. Our approach aims to avoid this limitations of vocabulary size semanticization fo the text.. We believe that visually we can capture more diversity. Words often either omit more specific information about the look or are hard to obtain by annotation systems, since the annotation tool may have never seen such combination before. For example, a single word for a human may represent a visually wide range of possibilities, based on clothes, age, and other attributes. We aim to avoid this bottleneck, and we proceed with the search based visual similarities.
+While we were describing the scene, we used words for it. However, this chapter with presented solutions does not focus on the search based on the verbal description of the objects. However, it is one of the possible alternatives to handling the problem. Supporting verbal descriptions often require extensively annotated data to use to train neural networks, and even though the advancements in the research area, it still has a limited ability for extensively described characteristics. Our approach aims to avoid these limitations of vocabulary size. We believe that visually we can capture more diversity. Words often omit more specific information about the look or are hard to obtain by annotation systems, since the annotation tool may have never seen such combination before. For example, a single word for a human may represent a visually wide range of possibilities, based on clothes, age, and other attributes. We aim to avoid this bottleneck, and we proceed with the search based visual similarities.
 
 
 In this chapter we utilise approaches for solving known-item search task based on \emph{collage}. Collage $C$ is a (unordered) set of $k$ pictures $C = \{\text{collage\_image}_i\} \text{for}\, i \in \{1, 2, \dots, k\} $.  Each $collage\_image_i$ contains two characteristics: image (i.e., visual description) and spatial information (location). To avoid any scaling and resolution issues, we represent location by a relative offset from the left, top, bottom and right. Therefore, all attributes of spatial information are in range $[0,1]$
 
-This chapter will present three solutions encorporating the pretrained neural networks. To learn more about the networks head back to the chapter \todo{ref}. We start of by a short description of user-program interaction, to more understand the origin of the queries we evaluate on. The chapter invenes the ideas with their evaluation. We test different set of hyperpatameters and investigating their effect on the performance of the system. To check the dataset we work with read chapter \todo{ref}. To know more about the user interface check the documentation in the chapter \todo{ref}. 
+This chapter will present three solutions incorporating pre-trained neural networks. To learn more about the networks, head back to chapter \ref{ss:pretrained_models}. We start by a short description of user-program interaction to understand the origin of the queries we evaluate. The chapter invites the ideas with their evaluation. We test a different set of hyperparameters and investigating their effect on the performance of the system. More information about the dataset is provided in section \ref{s:dataset}. To learn more about the user-interface, check the documentation in chapter \ref{ch:user_guide}. 
 
 
 \section{User-program interaction}
 
 The query is a \emph{collage} of one or multiple images. Each image also includes its relative position in the canvas.
 
-We provide a user with a canvas where she can place, move and resize the images in the \emph{collage}. Interactively, the set of results is showed (the most similar results). The user can then alternate the query for a new search, or to investigate the displayed results. The figure \ref{fig:query_collage_comparison} shows an example of the query -- the collage of two images (window and cat). 
+We provide a user with a canvas where she can place, move, and resize the images in the \emph{collage}. Interactively, the set of results is showed (the most similar results). The user can then alternate the query for a new search, or to investigate the displayed results. Figure \ref{fig:query_collage_comparison} shows an example of the query -- the collage of two images (window and cat). 
 
 \section{Solutions overview}
 
-In the rest of the chapter we present different approaches to this task and we test different settings to obtain the best set of hyperparameters. In the figure \ref{fig:processing_pipeline} we can se an overview of the system. The top path is path of the database. The features are precomputed (offline) for all images in the database. We call a \emph{record} an image with it precomputed features. Each of the features may be linked also with additional information. There is one record per input image, but each record may contain multiple feature vectors describing it.
+In the rest of the chapter, we present different approaches to this task, and we test different settings to obtain the best set of hyperparameters. In figure \ref{fig:processing_pipeline}, we can see an overview of the system. The top path is a processing path for the items in the database. The features are precomputed (offline) for all images in the database. We call a \emph{record} an image with its features. Each of the features may also be linked with additional information. There is one record per input image, but each record may contain multiple feature vectors describing it.
 
-Similarly, for a given collage we extract features by using the same model as for the database extraction. We do that for each of the images in the collage. Since we only need to annotate a couple of images, this can be done online on CPU for most of the networks. In this phase, we have annotated dataset and extracted features from query images. Next, if the records contains multiple feature vectors, we may filter those to decrease the number of vectors we will compare to. We call this process \emph{Relevant Features Extraction}. As a next step, based on the features from the database and the features from the collage compute their distances, i.e., for each query image we compute the distance to each record in the database. The last step, is to merge the rankings, since each of the input images provide us with distances to records in the database. We call this step \emph{Ranking}. In the example image we can see ranking as an average of the rankings for a given record.
+Similarly, for a given collage, we extract features by using the same model as for the database extraction. We do that for each of the images in the collage. Since we only need to annotate a couple of images, this can be done online on CPU for most neural networks. In this phase, we have an annotated dataset and extracted features from query images. Next, if the records contain multiple feature vectors, we may filter them to decrease the number of vectors we will compare. We call this process \emph{Relevant Features Extraction}. Next, based on the features from the database and the features from the collage, we compute their distances. For each query image, we compute the distance to each record in the database. This step creates a ranking of the database records for each input image in the collage. The last step is to merge these rankings. In the example image, a final merged ranking is computed based on the average distance for all query images.
 
-We tune several factors in described pipeline. Therefore, we split each step separately and we evaluate it individually. For the next sections we progressively build the pipeline, while describing the particular solutions we used. We start with feature extraction strategies and then we continue with the next steps, which are independent from features extraction.
+We tune several factors in the described pipeline. In the following text, each step is described individually. Although, since they create a system as a whole, we evaluate them in the full environment, but always focusing on the particular part we test. For the next sections, we progressively build the pipeline while describing the particular solutions we used. We start with feature extraction strategies, and then we continue with the next steps, which are independent of feature extraction.
 
 \section{Features extraction strategies}
 
-In the following section we present three feature extraction techniques. The feature extraction technique defines how we extract features for our dataset as well as for our queries. These obtained features will be later compared agains each other in ranking mechanism. We kick off with the baseline, where we do not use the location of the objects in the collage, only their visual representation. Then we move on onto a solution, which splits the image into regions and compare only to the regions, which relate to the object query. Our last method is experimental and it involves storing a higherdimensional feature vector. This approach aims to test a possibility for no strict cutting, rather computing based on the object location itself.
+In the following section, we present three feature extraction techniques. The feature extraction technique defines how we extract features for our dataset as well as for our queries. These obtained features will be later compared against each other in a ranking mechanism. We kick off with the baseline, where we do not use the location of the objects in the collage. Then we move on to a solution, which splits the image into regions and compares only to the regions related to the object query. Our last method is experimental, and it involves storing a higher-dimensional feature vector. This approach performs no strict pre-cutting. Instead, it works with the last convolutional block from the neural network.
 
 \begin{figure}[p!]
     \centering
@@ -63,9 +61,9 @@ In the following section we present three feature extraction techniques. The fea
 
 \subsection{Baseline -- Image representation}
 
-Firstly, we developed a simple approach, which ignores the information about the position of the images in the collage. We set this approach as our baseline, to see how much we improved a simple solution like this by adding more complexity. For each image in the dataset we compute one feature vector by feeding it to the pretrained convolutional neural network. The images in the dataset are rescaled (without preserving ratio) to fit the input dimensions of the network (224x224).
+Firstly, we developed a simple approach, which ignores the information about the position of the images in the collage. We set this approach as our baseline to see how much we improved a simple solution like this by adding more complexity. For each image in the dataset, we compute one feature vector by feeding it to the pre-trained convolutional neural network. The images in the dataset are rescaled (without preserving ratio) to fit the network's input dimensions (224x224).
 
-In the figure \ref{fig:mobilenet_whole_image} we display the performance of such approach on the annotated set of collages. We present the results on the MobileNetV2. We use MobileNetV2 due to its low computability needs and therefore offering quick annotations. It is widely used in the task, where online or near online request time is expected. We included a short description of the network in the Related Works (section \ref{}\todo{ref}).
+In figure \ref{fig:mobilenet_whole_image}, we display the performance of such an approach on the annotated set of collages. We present the results on the MobileNetV2. We use MobileNetV2 due to its low computability needs and therefore offering quick annotations. It is widely used in the task, where we expect online or near online evaluation. We included a short description of the network in the Related Work (section \ref{ss:pretrained_models}).
 \todo[inline]{Would be nice to add Resnet50}
 
 \begin{figure}
@@ -89,9 +87,9 @@ Query:
 
 \subsection{Splitting an Image into Regions}
 
-Our goal in the next presented solutions is to use also the information about objects' location. Our dataset contain many different images, with objects in different positions. Although, as we have seen in the previous section, comparison to the whole image worked well. Here we propose to include higher granularity and to split the image into multiple regions. That way we can compare the query images only to the region which is interesting (for example, if the tree is placed in bottom right corner, we would compare only to the region from bottom right corner). If we cut each image to the same regions, we will be also able to speed up the processing.
+Our goal in the next presented solutions is to use also the information about the objects' location. Our dataset contains many different images, with objects in different positions. Although, as we have seen in the previous section, comparison to the whole image worked well. Here we propose to include higher granularity and to split the image into multiple regions. That way, we can compare the query images only to the region, which is related (for example, if the tree is placed in the bottom right corner, we would compare only to the region from the bottom right corner). If we cut each image to the same regions, we will also be able to speed up the processing.
 
-We define a cutting into a regions. Each record contain one image, which is visually divided into  $N \times M$ regions. Then for each region we compute a feature vector via pretrained model. When the query comes, we will compare the query feature vector only to the regions from the record, which overlap.
+We define cutting into regions. Each record contains one image, which is visually divided into  $N \times M$ regions. Then for each region, we compute a feature vector via a pre-trained model. When the query comes, we will compare the query only to the regions from the record, which overlap.
 
 \begin{figure}
 \centering
@@ -110,47 +108,50 @@ Query:
 \caption{Overview of the Regions' approach}
 \end{figure}
 
-
-
 \subsubsection{Regions Shape}
 
-In order to use transfer learning for common CNN and to avoid additional skewing in resizing, we limit to the regions only to the shape of squares. Since this input size of the square is one of the parameters, we aim to use the size of the squares the same as the size of the input of the network. This helps us to avoid unnecessary scaling which may be introduced when the length of the side of the square does not match with the input for the network.
+To use transfer learning for conventional CNN and avoid additional skewing in resizing, we limit the regions to the shape of squares. Since this input size of the square is one of the parameters, we aim to use the squares size the same as the size of the input of the network. Keeping square regions helps us avoid unnecessary scaling, which may be introduced when the length of the square's side does not match with the input for the network.
 
-A second limitation we create is for the regions to fully cover the record image. Since we now know we need square regions which cover a full image, there might be no way to cut image into the regions without any overlapping. Therefore, we create enough regions to fully cover the image and we split the excess between the regions. This excess is evenly distributed over the regions, creating equal overlaps. We split based on the predefined number of regions, since the number of regions results in the multiplicative coefficient for the complexity.
+A second limitation we create is for the regions to cover the record image fully. Since we now know we need square regions that cover a full image, there might be no way to cut an image into the regions without overlapping. Therefore, we create enough regions to cover the image entirely and split the excess between the regions. This excess is evenly distributed over the regions, creating equal overlaps. We split based on the predefined number of regions since the number of regions results in the complexity's multiplicative coefficient.
 
-Allowing overlaps plays another role in this solution. With the rigid frame without overlapping, it could happen, that they would split an object into two parts. With overlaps, we know that some part is shared between both regions.
+Allowing overlaps plays another role in this solution. With the rigid frame without overlapping, it could happen that they would split an object into two parts. With overlaps, we know that some part is shared between both regions.
 
-Our fixed parameters are input shape width $s$ and the number of regions we want to use $N \times M$ and image size $h, w$. We solve the task of choosing regions splits for one axis, the second is done equivalently. We know, that the last region has to end with the edge of the image. Therefore the starting coordinate of the last region is $h - s$. We then split the remaining "space" over axis over $N-1$ regions equally. We call this distance $step$, since it says the distance between the regions. The starting coordinate $r_i$ of the $i$-th region in a given axis is:
+Our fixed parameters are input shape width $s$ and the number of regions we want to use $N \times M$ and image size $h, w$. We solve the task of choosing regions splits for one axis; the second is done equivalently. We know that the last region has to end with the edge of the image. Therefore the starting coordinate of the last region is $h - s$. We then split the remaining "space" over axis over $N-1$ regions equally. We call this distance $step$ since it says the distance between the regions. The starting coordinate $r_i$ of the $i$-th region in a given axis is:
 
 \begin{align*}
 step = (h - s) / (n - 1) \\
-r_i = {i \, step\,\text{for}\,i \in \{1, 2, \dots, N\}}
+r_i = {i \, step\,\text{for}\,i \in \{0, 1, 2, \dots, N - 1T\}}
 \end{align*}
 
-With the condition on full coverage of the image (i.e. \(s N >= \text{h}\), and for $M$ respectively) we obtain full coverage of the image by the regions. Overlaps are evenly distributed over both axis. Although, with a bigger sized regions overlaps may occur between more than 2 regions. For example, if we split an image with width 180 into three regions with width 96 pixels, some areas of the image will be included in all three regions. This happens, when the $step <= 2 s$.
+With the condition on full coverage of the image (i.e., \(s N >= \text{h}\), and for $M$ respectively), we obtain full coverage of the image by the regions. Overlaps are evenly distributed over both axes. Although, with bigger sized regions, overlaps may occur between more than two regions. For example, if we split an image with width 180 into three regions with a width of 96 pixels, some areas of the image will be included in all three regions. This happens, when the $step <= 2 s$.
 
-We evaluate the performance of the same network using a different number of regions. This experiment is shown in the figure \ref{fig:different_number_regions}. In the same figure we also show the effect of increasing the region width.
+We evaluate the performance of the same network using a different number of regions. This experiment is shown in the figure \ref{fig:different_number_regions}. Even though the number of regions was almost doubled (from 8 to 15), we only saw a slight improvement in performance. In the figure \ref{fig:different_region_size} we show the effect of the regions size. We see that the best performing model worked with $2\times4$ regions with the input size of $128\times128$. For this particular setup, it was able to rank 90\% of the collages in the 8\% of the database.
 
-\todo[inline]{missing based on different size, since it was not preprocessed}
 \begin{figure}
 \centering
-\includegraphics[width=\textwidth]{graphs/78f2a977489ac08dddac6f53446b388292306ec95f9dcbc7ca8359fbedfed9b0}
-\caption{An experiment comparing the offect of the regions size and the number of regions.}
+\includegraphics[width=\textwidth]{graphs/0c36458e4a7754f349e4dd02e823acc5f192f0aaa42647313045530525f3db19.pdf}
+\caption{An experiment comparing the effect of the changing number of regions.}
 \label{fig:different_number_regions}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{graphs/901175c0015f71987720d10953133afa566d88a09a6d7182a074859ff4e8409e.pdf}
+\caption{An experiment comparing the effect of the changing regions size.}
+\label{fig:different_region_size}
 \end{figure}
 
 
 \subsubsection{Choice of regions}
 
-Given one incoming query image with its position and shape we propose several methods for choice of the “targeted” regions. For each one of the fixed regions we compute %\[\text{IoU_{i,j,k}} = \text{IoU}(Ri,j; Qk) for all i, j. \]
+Previously, we defined a cutting into the regions for each item in the database. When the query comes, it is compared to the features for the given record. We ask a question if we should compare to all regions that overlap with the location of the query image. The reason is that we assume we have a query image that covers two-thirds of the canvas. In such a case, it probably overlapped almost or even all regions. Comparing the features with all of them is less effective than choosing only a subset of one of them.
 
-First of the options, is to only compare the region with highest Intersection over Union, limiting to the argmax IoUijk. I.e. for each i belongs I only one region would taken into account.
+Given one incoming query image with its position and shape, we propose several methods for choosing the "selected" regions. We visualize the problem in the figure \ref{fig:fish_with_grid}. The query would be an image of the fish placed within the red boundary. A green line displays all intercepted regions. The region with the highest "coverage" is the blue one.
 
-Second approach is to collect all intercepted regions for the similarity. This is an exhaustive process. This may result in increased computation time, i.e. usually from 2 to 9 times slower. In case of a huge set of data without any indexing, it may increase time of a request from 1 sec up to several seconds.
+One solution is to choose the region overlapping with the query the most (in the example, the blue one). To do that, we compute Intersection over Union (\ref{fig:intersection_over_union}) for each of the regions. This metric tells us which of the regions are more covered by the query and less.
 
-Third choice is to limit the number of targeted regions to a certain number. This offers us an advantage of fuller coverage and possibility for better match in neighbouring region, on the other hand provides an upper bound for the computational time required per request. 
 
-Visualisation of chosing different number of crops can be seen in figure \ref{fig:fish_with_grid}. A comparison of the performance dependend on different number of chosen crops is shown in figure \ref{fig:crop_limitation}.
+We present an experiment, where we took all intercepted regions (green regions in the example), only the region with the highest IoU (blue region in the example), or equivalently first 2 with the highest IoU or first three regions. The results of the experiment are shown in figure \ref{fig:crop_limitation}. In the results, we see no significant improvement in any of the provided choices. Although, the selection of only the region with the highest overlap gives us the least computable heavy solution.
 
 \begin{figure}
 \centering
@@ -162,13 +163,15 @@ Visualisation of chosing different number of crops can be seen in figure \ref{fi
 
 \begin{figure}
 \centering
-\includegraphics[width=\textwidth]{graphs/c2cf4e147040018e6cfc46043bb59de4f5f3e83441c1e1024af0b7bab644a994}
+\includegraphics[width=\textwidth]{graphs/5c4a781f8e6f3eac93db2083bde3963c06582a92a8141411bf29e41251a98e75.pdf}
 \caption{Performance of the system based on different number of chosen crops}
 \label{fig:crop_limitation}
 \end{figure}
 
 
 \subsection{Using more information from antepenultimate layers from CNN}
+
+\todo[color=yellow, inline]{DO NOT READ FURTHER}
 
 The previously mentioned approach has a shortcoming. It is not able to grasp the arbitrary position of the object, rather it has limitations to previously fixed regions. This may lead to decreased performance for the objects, which cover a bigger part of the scene, i.e. in the previous case, it may overlap over multiple regions. This brings not only computational disadvantages but also reduces the amount of information which are used when compared to the query.
 

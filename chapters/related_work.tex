@@ -69,21 +69,21 @@ In recent years we witnessed many records-breaking new machine learning models. 
 
 Deep Neural Network is a machine learning model, whose goal is to approximate a given function \(f\). The set of parameters is often referred to as \(\theta\). One of the everyday tasks performed by these networks is classification, where the goal of the network is to predict which category sample \(X\) belongs. Even though we will not perform a classification task in this thesis, we will use some of the available classification networks.
 
-When we talk about neural networks, we usually refer to feedforward network. These networks consist of set of the layers, where information during the evaluation is passed only in one direction. This can be imagined as an applying a function on the results from the previous layer. In example, let's create a small neural network. Denote first layer as \(f_1\) and second layer as \(f_2\). The output of the network will be \(f_2\left(f_1\left(\right)\right)\).
+When we talk about neural networks, we usually refer to a feedforward network. These networks consist of layers where information during the evaluation is passed only in one direction. We can imagine it as applying a function to the results from the previous layer. For example, let us create a small neural network. Denote first layer as \(f_1\) and second layer as \(f_2\). The output of the network will be \(f_2\left(f_1\left(\right)\right)\).
 
-Stacking more and more layers on top of each other lead us to a notation \emph{deep} neural networks. This notation has no fixed threshold on which networks "deserve" to be called deep, therefore we do not recognise any importance to the naming "deep". 
+Stacking more and more layers on top of each other leads us to notation \emph{deep} neural networks. This notation has no fixed threshold on which networks "deserve" to be called deep. Therefore we do not recognize any importance to the naming "deep." 
 
-The first and last layer are commonly refferences as \emph{input} and \emph{output} layer. Layers between input and output layer are usually denoted as \emph{hidden} layers. Deep neural networks can have four or hundreds layers and each layer of the layer can have even unique structure. \emph{Network Architecture} captures the "build order" of the network. It is important to note, that there exist many networks with different architectures solving the same task.
+The first and last layer are commonly referenced as \emph{input} and \emph{output} layer. Layers between the input and output layers are usually denoted as \emph{hidden} layers. Deep neural networks can have four or hundreds of layers, and each layer of the layer can have even a unique structure. \emph{Network Architecture} captures the "build order" of the network. It is important to note that there exist many networks with different architectures solving the same task.
 
-There are many reasons for advancement of neural networks in the past years. One of the crucial stones were not only theoretical innovations used for the networks but increasing computablity limits. Deep Neural Networks \emph{learn} to approaximate function by \emph{training}. This training is usually the heaviest part of the computation. Even though, it is enough to usually train once and use forever, it still lay some limitations on the size of the networks or the functions used.
+There are many reasons for the advancement of neural networks in the past years. One of the crucial stones was not only theoretical innovations used for the networks but increasing computability limits. Deep Neural Networks \emph{learn} to approximate function by \emph{training}. This training is usually the heaviest part of the computation. Even though it is enough to train once and use forever, it usually lays some limitations on the size of the networks or the functions used.
 
-Since this topic is wide, we recommend more thorough reading for example in Neural Networks and deep learning online book\footnote{http://neuralnetworksanddeeplearning.com/}.
+Since this topic is broad, we recommend more thorough reading, such as Neural Networks and Deep learning online book\footnote{http://neuralnetworksanddeeplearning.com/}.
 
 \subsection{Convolution Neural Networks}
 
-Convolution Neural Networks (CNN) are class of Deep Neural Networks. Even though the primes of convolutional neural netwroks date back to late 1980s (\cite{lecun1989backpropagation}), it took another 20 years for further advancements in the research area. Convolution Neural Networks are mainly used in image-related tasks, such as image classification ("What is on the image?"), object detection ("Where are the objects in the image and what are they?") or even content generation ("Create a new image"). Their abilities were also tested in many not image related tasks, i.e. music genre recognition.
+Convolution Neural Networks (CNN) are a class of Deep Neural Networks. Even though they emerged in the late 1980s (\cite{lecun1989backpropagation}), it took another 20 years for further advancements in the research area. Convolution Neural Networks are mainly used in image-related tasks, such as image classification ("What is on the image?"), object detection ("Where are the objects in the image and what are they?") or even content generation ("Create a new image"). Their abilities were also tested in many, not image-related tasks, e.g., music genre recognition.
 
-Convolution Neural Networks are specialized kind of networks which work with grid-like topology. For 1D can be example as time-series, or for 2D most typically image pixels represent a grid. The name \emph{convolution} refers to using a mathematical linear function \emph{convolution} in at least of the layers. Simplificated overview of the structure is displayed in figure \ref{fig:convolution_neural_network}. We refer to \cite{Goodfellow-et-al-2016} for more understanding of \emph{convolutional layers}.
+Convolution Neural Networks are specialized kind of networks which work with grid-like topology. For 1D can be an example as time-series, or for 2D, most typically image pixels represent a grid. The name \emph{convolution} refers to using a mathematical linear function \emph{convolution} in at least the layers. A simplified overview of the structure is displayed in figure \ref{fig:convolution_neural_network}. We refer to \cite{Goodfellow-et-al-2016} for more understanding of \emph{convolutional layers}.
 
 \begin{figure}
     \centering
@@ -94,9 +94,9 @@ Convolution Neural Networks are specialized kind of networks which work with gri
 
 \subsection{Transfer Learning}
 
-Transfer Learning is a research problem in machine learning that focuses on storing knowledge gained while solving one problem and applying it to different problem. We have seen many successful transfers not only of the netwroks architecture but also parameters learned to a new task. This helps us to reduce the cost of the training and often also to overcome unsufficient set of training examples for the new task.
+Transfer Learning is a research problem in machine learning that focuses on storing knowledge gained while solving one problem and applying it to a different problem. We have seen many successful transfers of the network architecture and parameters learned to a new task. Transfer learning helps to reduce the cost of the training and often also to overcome an insufficient set of training examples for the new task.
 
-We utilise some of the pretrained Convolution Neural Networks. The ability of convolutional neural network to transfer to a new task by elevating previously gained information on other dataset was investigated by \cite{donahuedeep} and many others were able to use this information to gain better models.  Networks we use are mostly pretrained on \emph{ImageNet}\footnote{http://www.image-net.org/}. ImageNet served as a benchmark for comparing the performance of the different networks. Since the ImageNet is a mainly classification task, we utilize the transfer learning in a way to obtain deep features. This can be done by working with layers close to the end of the networks. These layers already contain encoded information about the image in high dimensional vectors. Our task is to use these deep features obtained for solving our known-search item task.
+We utilize some of the pre-trained Convolution Neural Networks. The ability of a convolutional neural network to transfer to a new task by elevating gained information from other datasets was explored as early as by \cite{donahuedeep}, and many others were able to use this information to gain better models.  Networks we use are mostly pre-trained on \emph{ImageNet}\footnote{http://www.image-net.org/}. ImageNet served as a benchmark for comparing the performance of the different networks. Since the ImageNet is the main classification task, we utilize the transfer learning in a way to obtain deep features. Layers to the end of the networks accumulate more information, i.e., they contain high-level features. Therefore, we work with the layers close to the end of the networks. These layers represent encoded information about the image in high dimensional vectors. Our task is to use these deep features obtained for solving our known-search item task.
 
 
 \begin{figure}
@@ -107,10 +107,11 @@ We utilise some of the pretrained Convolution Neural Networks. The ability of co
 \end{figure}
 
 \subsection{Pretrained models}
+\label{ss:pretrained_models}
 
 \subsubsection{Keras}
 
-Keras (\cite{chollet2015keras}) is a deep learning API written in Python, running on top of the machine learning platform TensorFlow\cite{tensorflow2015-whitepaper}. It was developed with the focus on experimentation in deep learning. We use it and its pretrained models in this thesis. The models available in Keras Applications, which we use, were trained on ImageNet. Keras API allows us to separate the model from last fully connected layer used for classification (since default ImageNet is a classification task). 
+Keras (\cite{chollet2015keras}) is a deep learning API written in Python, running on top of the machine learning platform TensorFlow\cite{tensorflow2015-whitepaper}. It was developed with a focus on experimentation in deep learning. We use it and its pre-trained models in this thesis. The models available in Keras Applications, which we use, were trained on ImageNet. Keras API allows us to separate the model from the last fully connected layer used for classification (since default ImageNet is a classification task). 
 
 \subsection{Models Used}
 
@@ -121,7 +122,7 @@ Keras (\cite{chollet2015keras}) is a deep learning API written in Python, runnin
 \cite{mobilenet} \cite{mobilenetv2}
 
 \subsubsection{Dlib}
-Dlib (\cite{king2009dlib}) is a modern C++ toolkit containing machine learning algorithms and tools for creating complex software in C++ to solve real world problems. Some of the modules are provided with Python API. We use Dlib library for a face detection and also face features extraction. For both we use face\_recognition API (\cite{geitgey2016machine}). \cite{king2017high} \todo{fix ref}
+Dlib (\cite{king2009dlib}) is a modern C++ toolkit containing machine learning algorithms and tools for creating complex software in C++ to solve real-world problems. Some of the modules are provided with Python API. We use the Dlib library for face detection and also face feature extraction. For both we use face\_recognition API (\cite{geitgey2016machine}). \cite{king2017high} \todo{fix ref}
 
 
 

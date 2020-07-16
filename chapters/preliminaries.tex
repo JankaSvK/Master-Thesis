@@ -3,7 +3,7 @@
 \chapter{Preliminaries}
 \label{ch:preliminaries}
 
-In this chapter, we intend to provide the technical and theoretical background for the terms we use in the thesis. We describe datasets used for evaluations, explain some technical terms later used, and provide a quick overview of Deep Neural Networks.
+In this chapter, we intend to provide a background for the terms and the dataset we use in the thesis. We will refer back to this chapter when needed in the text. 
 
 \section{Distance Metrics}
 
@@ -27,6 +27,7 @@ d(p, q) = \sqrt{\sum_{i=1}^n (p_i - q_i)^2}
 \end{equation}
 
 \section{Dataset}
+\label{s:dataset}
 
 We use Vimeo Creative Commons Collections (V3C1)\footnote{\href{https://www-nlpir.nist.gov/projects/tv2019/data.html}{TRECVID 2019 Video Data}} dataset for experimenting and evaluations. The dataset is composed of 7475 Vimeo videos. We selected only the first 750 videos for proving concepts of our work. From these 750 videos, we used an extraction tool from VIRET \cite{lokovc2019framework}. After extraction, we obtained 111\ 764 images from 750 videos with resolution 320x180.
 
