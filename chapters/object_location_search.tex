@@ -169,15 +169,17 @@ We present an experiment, where we took all intercepted regions (green regions i
 \end{figure}
 
 
-\subsection{Using more information from antepenultimate layers from CNN}
+\subsection{Using last convolution block}
 
 \todo[color=yellow, inline]{DO NOT READ FURTHER}
 
-The previously mentioned approach has a shortcoming. It is not able to grasp the arbitrary position of the object, rather it has limitations to previously fixed regions. This may lead to decreased performance for the objects, which cover a bigger part of the scene, i.e. in the previous case, it may overlap over multiple regions. This brings not only computational disadvantages but also reduces the amount of information which are used when compared to the query.
+In the previous section we worked with a cutting into fixed regions. Although, we reached a good performing model, we can see it has a shortcoming. The cutting into regions does not adapt to the size of the input query. Let us take a look again at the fish in the figure \ref{fig:fish_with_grid}. We can see that fish covers circa two thirds of the image, but the regions are smaller. The regions do not offer any adaptation to the size of the query. It means that big query images are processed in the same way as small.
 
-We propose an approach, where an antepenultimate layer of common CNN's may be used. Common CNNs are built out of several building blocks, i.e. convolution layers intervened by pooling (TODO image). This approach proved its ability for image recognition and many other related tasks (TODO add source). Many of the current state-of-the-art models use the pooling layer before fully connected layer for categorization.
+We investigated the structure of the CNNs and we propose a solution. We use the last convolutional block as our feature vector. Since the CNNs cosist of several convolution blocks before pooling, we extract the information from the last one. Before, we stripped the fully connected layer  to obtain the feature vector after pooling. Now, we strip global pooling to retrieve only the convolutional block. This blocks usually ends with a ReLu activation function.
 
-We aim to leverage this antepenultimate layer, which contains not only visual features but also spatial information.
+Why is it important? The Global Pooling reduces 3 Dimensional space from convolution block into only one dimensional space (as we have seen in regions for feature extraction). Due to principle of convolutional neural network, we assume we could retrieve more information by working with the layer before pooling. This layer does not only contain the final feature vector, but contains additional spatial information.
+
+We refer to the last layer we are interested -- convolutional block with ReLu as \emph{antepenultimate} (i.e., last but two). 
 
 \begin{figure}
 \centering
@@ -185,63 +187,85 @@ We aim to leverage this antepenultimate layer, which contains not only visual fe
 Database:
     - image:
         - feature vector (3 Dimensional):
-    - model M
 Query:
-    - query_images: features vectors from M, then average pool)
-    - compared to: average pool over selected region for item 
+    - query_images: features vectors from M (performing global pooling)
+    - compared to: pooling over selected region for item 
                    in the database
 \end{boxedverbatim}
 \caption{Overview of the Spatial approach}
 \end{figure}
 
 
-\subsubsection{Choosing region of interest in the layer}
+\subsubsection{Choosing a region of interest in the layer}
 
-Layers before pooling on which we focus are 3 dimensional. First two dimensions contain spatial information, which is propagated from the previous layers. The third dimension contains visual information.
+Layer before pooling on which we focus (antepenultimate) is a last convolution block. Therefore, it produces a three dimensional output. First two dimensions contain spatial information, which is propagated from the previous layers. The third dimension encodes the features.
 
-In order to obtain only a part of this layer we are interested in (i.e. our query was placed in that specific region) we need to take only a subset over first two dimensions. For a query defined by Qi = (y, x, h, w) and layer Li with first two dimensions H, W we consider a Li[y * H, x*W, (y+h) * H, (x + w) * W]. 
+In order to obtain only a part of this layer we are interested in (i.e. our query was placed in that specific region) we need to take only a subset over first two dimensions. For a query defined by region $R_i = (y, x, h, w)$ and a hidden layer $L_i$ with dimensions $(H, W, C)$ we consider select following subset of the layer: $L_i[y * H: (y+h) * H][x*W, (x + w) * W][:]$. We use a notation, that for a given dimension $:$ represents a half-open interval. If there are no limits, then it represents taking the vector fully in given dimension.
 
-It is important to notice, that these layers use to have significantly lower height and width, compared to the input of the network. For example, before-last-pooling layer of Resnet50V2 has dimensions (7,7,2048). Therefore, we round our subset to nearest whole number and in case of no intersection we maintain at least intersection of size 1x1.
+Both MobileNetV2 and Resnet50V2 end with a convolution block with dimensions $(7,7,C)$, where $C = 1280$ for MobileNetV2 and $C = 2048$ for Resnet50V2. Previously mentioned selection of interesting region may result in empty selection. For example, when the query image covers only one tenth of the image in both dimensions. The rounding may result in empty interval. We solve by adding one to the dimension, whenever it would be empty.
 
-After this choice of the region of interest, we continue with the pooling layer in order to obtain one feature vector.
+Now, we selected a subset of the last convolutional block. Original network follows with \verb+GlobalAveragePooling2D+. We perform the same operation, on the selected subset. This way we again obtain 1 dimensional feature vector for each record.
 
-In comparison with the previous Splitting in regions approach, we see an enhanced ability to grasp more variability in object position. Especially, in queries which overlap most of the regions. On the contrary, this approach may require more memory, as for comparison for Resnet50V2 with 12 regions we needed to work only with 12 feature vectors. With the before-last-pooling layer we need for Resnet50V2 to work with 49 feature vectors. This may not be limitation with smaller feature vectors, but may come as a practical limitation based on the size of the dataset and computability power available.
+Compared to the previous approaches, we aim to avoid strict cutting and provide more flexibity to the solution. This approach on the other hand requires more memory, since we store 49 feature vector per vector ($7\times7$). We present the results in the figure \ref{fig:antepenultimate}. Due to its memory limitation, we downsized the dataset to one tenth. We ranodmly sampled the images from the dataset. We provide a baseline on this smaller dataset. We can see an improvement in over the baseline, therefore we were able to successfully implement spatial information of the query. However, the performance is worse, compared to one of our regions solutions. We assume, that this is cause by the fact, that running a network 15 times has higher feature extraction ability, then running it only once.
+
+\begin{figure}
+    \centering
+    \includegraphics{graphs/adaf8d435bb40406f9ce40654ec396e04453ab76cf0776d2a87d385055d5424f.pdf}
+    \caption{Comparison of baseline, regions and solution on Antepenultimate layer.}
+    \label{fig:antepenultimate}
+\end{figure}
 
 
 \section{Ranking}
+
+Let us remind an overview from figure \ref{fig:processing_pipeline}. In the previous sections we have seen two solutions presented for feature extraction. The first one was based on the regions, the second one based on the antepenultimate layer from CNN. Now we will continue in the second part of the pipeline, extracting distances and ranking the records in the database. We continue to work with our so far best performing model -- MobileNetV2 spitted nito 2x4 regions with the input size 128x128.
+
 In the previous sections, we talked about the obtaining feature vector for the items in the database of the regions we are interested in. In this section, we take a closer look on further processing these obtained feature vectors.
 
 Assuming we have an image for the query, we use the same model to compute the feature vector as was used to precompute the features for the database. Based on that we define a distance D, as the distance between the feature vector of the query and feature vector of the item in the database. This comparison to each database item gives us the distance between each item in the database and our query image.
 
 Based on these distances we order the results, starting from the lowest to the highest distance. This distance acts as an inverse for the similarity. Similar to the results are, lower is the distance.
 
-We use 3 main distance metrics:
-Cosine Distance
-Euclidean L2 distance
-Euclidean L1 distance
+
+In figure \ref{fig:regions_distances} we show a comparison between three different distance measures. We see a superior performance results of the cosine distance (\ref{}\todo{}) over euclidean and mannhatan distance. These results were already observed in the similar tasks, as for example Word2Vec and also .. \todo{ref ref}. Since we work with a high dimensionality space (in the figure 1280 dimensions), the euclidean distance losses its meaning. The euclidean distance between the elemnts losses information, as most of the objects are circa same dostance from each other. For more information we refer to the Wikipedia\foontnote{\url{https://en.wikipedia.org/wiki/Curse_of_dimensionality#Distance_functions}}. 
+
+\todo{mozno sa da pridat do PCA s nizkymi dimenziami ci to pomoze}
+
+\begin{figure}
+    \centering
+    \includegraphics{graphs/3aab502ea602a9f49afaa0a0d998cf226a0a67b9efcaa655d2ddf5063eeabe47.pdf}
+    \caption{Comparison of the performance based on the chosen distance function.}
+    \label{fig:regions_distances}
+\end{figure}
 
 \section{Multiple objects in the scene}
 
-So far we talked only about handling queries consisting of one searched object. This limitation is very strict and therefore we experiment with multiple approaches to index the database based on multiple objects in the scene.
+We have discussed the solution to the feature extraction and also to the measuring the distance between the features of a query image and the record image. We produced the ranking for each individual query image. In this section we solve a question how to merge these rankings from multiple query images to obtain one final ranking, which is presented to the user.
 
-Firstly we make an assumption, that all query images have the same importance and are expected to be with the same level of relevance. Therefore we approach this problem as a set of query images, rather than as an ordered list.
+For our task, we do not assign any weightening to the input query images. We neither work with the order of their placement, as we mentioned, it is unordered set of images with their location. In this section we assume we already have ranking of the records in the database in relation to the one query image. Our goal is to produce one ranking.
 
-We work further only with already precomputed rankings with corresponding distances for each image/part of the image. We propose several ways to merge the rankings.
+We define ranking $R$ as a set of distances between the query image $q$ and database item $i$. We look for a function $r: R^n \rightarrow R$, which merges multiple rankings into one final ranking.
 
-We define ranking $R$ as a set of distances between the query image $q$ and database item $i$. We look for a function $r: R^n \rightarrow R$, which merges multiple rankings into one final ranking. Our goal is to minimize rank for each of the queries in the test items.
+We test three such functions, $min(\cdot)$, $mean(\cdot)$ and $max(\cdot)$. 
 
-We tested several functions for this role and to compare a function that does not take into account the distances with different functions over the distances. A comparison for MobileNetV2 can be seen in figure \ref{fig:ranking_funcs}.
+We tested several functions for this role and to compare a function that does not take into account the distances with different functions over the distances. A comparison for MobileNetV2 can be seen in figure \ref{fig:ranking_funcs}. The $min(\cdot)$ has advantage of "forgiving" if one of the images provided in the collage is not effective. The $max(\cdot)$ on the other hand ranks the images based on the worst match. As our results show, best performs $mean(\cdot)$, as it assigns the importance to each of the image from the collage equally.
 
 \begin{figure}
 \centering
-\includegraphics[width=\textwidth]{graphs/362cb9a687ce05c7732f973defca88fb8c5c393f5992066521343314698c9de7}
-\caption{Performance of the system based on different fusion method}
+\includegraphics[width=\textwidth]{graphs/70c56dc52be92e048f57b9bdfb35ddce2be41fd2454ae360588da2e387b09de5.pdf}
+\caption{Performance of the system based on different ranking function}
 \label{fig:ranking_funcs}
 \end{figure}
 
 \section{Padding}
 
-Our input images provided by a user do not have to be a square images. Although, we need to prepropress these to obey the input shape of the feature extraction model we use. These models use usually square shaped input. In our case, we compare the performance of the solution based on three different approaches on input reshaping. We compare padding the input with black or white and our third option is rescaling the images. Rescaling is done in the manner, where distortion occurs for non square images, i.e, a tree becomes shorter and wider, and the car becomes narrower and taller. The results are available in the figure \ref{fig:TODO}
+We talked about the importance of the square input in the Regions' section. During the development we explored also ways to preprocess the images for the best results.
+
+Our input to the network is square. For the user we support also non-square images. This comes handy, when the user wants to include a picture of a person standing, or kayak. A question arises, what is the best way to edit the image to fulfill the square requirement. We test three techniques: rescale, padding with black and padding with white. Rescale is a popular option. The disadvantage is, that it distorts the proportions. Simply said, if person included is in tall and narrow box, it will become wider and shorter. The distortion becomes stronger with increasing imbalance between the box dimensions. 
+
+Our question is, if it is better to distort the image, or to provide the image with padding to fill the square shape. Again, for almost square images, the padding are smaller. For images with strong imbalance in the dimensions it includes a lot of empty space with no useful information for the network. A second question we ask, is if the color of the padding results in different performance.
+
+The results are shown in the figure \ref{}\todo{}.
 
 \section{Dimensionality reduction}
 

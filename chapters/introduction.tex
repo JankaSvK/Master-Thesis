@@ -1,38 +1,39 @@
 \chapter*{Introduction}
 \addcontentsline{toc}{chapter}{Introduction}
 
-In the last decades, we witnessed a massive jump in the amount of digital information that every person owns. Looking back 20-30 years ago, people used to record only several hours of their lives, capturing only the most valuable moments of life. Now, according to available estimates, more than 500 hours of multimedia data is uploaded every minute only to YouTube\footnote{\url{https://www.statista.com/statistics/259477/hours-of-video-uploaded-to-youtube-every-minute/}}. Decreasing prices and wide availability of the recording electronics (especially cell phones) are causing an increase in the amount of multimedia data taken every day. It also became a trend to share a videos from day-to-day lives.
+In the last decades, we witnessed a massive jump in the amount of digital information that every person owns. Looking back 20-30 years ago, people used to record only several hours of their lives, capturing only the most valuable moments of life. Now, according to available estimates, more than 500 hours of multimedia data is uploaded every minute only to YouTube\footnote{\url{https://www.statista.com/statistics/259477/hours-of-video-uploaded-to-youtube-every-minute/}}. Furthermore, decreasing prices and availability of the recording electronics (especially cell phones) are contributing to the amount of multimedia data taken every day. It also became a trend to share videos from day-to-day lives.
 
-This significant increase in the volume of multimedia data places several new challenges. One of them is the need for effective search. This problem is not only interesting to the researchers, but the initiatives come also from industry. Companies try to help their customers to organize a vast amount of multimedia data (Google Photos, Facebook, OneDrive, MEGA, etc.). The companies often have a wide spectrum of solutions how to internally store and organise the data. But sadly, most of the time, users are provided only with the simplest technique to filter in the data.
+This significant increase in the volume of multimedia data places several new challenges. One of them is the need for effective search. This problem is not only attractive to the researchers, but the initiatives also come from industry. Companies try to help their customers organize a vast amount of multimedia data (Google Photos, Facebook, OneDrive, MEGA, and others). The companies often have a broad spectrum of solutions on how to store and organize the data internally. Sadly, users are usually provided only with the most straightforward technique to filter the data.
 
-Multimedia search as a task poses several barriers. With the increasing size of the stored data come in hand also high computability requirements. Even though we do not tackle this problem in this thesis, we investigate for new dataset exploration techniques.
+With the increasing size of the stored data it becomes more difficult to find searched items with a query or filter.
+ Furthermore, we are interested in a specific challenging scenario where a user searches for one known image in a database. For example, the user recalls a memory, which corresponds to the searched image. This task of searching for a previously seen multimedia object is often referred to as visual known-item search (KIS). In this thesis, we investigate several known-item search techniques where users provide a few example images as a collage query or browse images of faces organized in a grid with respect to their similarity.
 
-We focus on the search scenario where a user searches for an exact known scene in a database. For example, the user recalls a memory, which corresponds to the searched scene. This task of searching for a previously seen scene is often reffered as a known-item search (KIS). Even though we search based on the previously seen scene/image, there are different methods how to describe the original image. Therefore, we can further divide the task by different descriptions of the query. For this thesis, we work only with visual known-item search task, i.e., our queries are images.
+Known-item search has become a well-known research area \cite{8352047}. 
+According to recent findings \cite{9037125}, known-item search engines have to support both querying and interactive search functionality.
+In order to elevate the level of developed KIS systems, researchers organize and participate in annual competitions. These efforts help to increase the interest in user-centered multimedia search. One, for example, is Video Browser Showdown\footnote{\url{https://videobrowsershowdown.org/}}, or shortly VBS. For a comparison, TRECVid (\cite{2019trecvidawad}) is also an annual competition with the main focus on ranking of scenes based on a textual description.
 
-The known-item search task is a well-known field of research. It differs from automatic searhc engines on the fact, that it focus on the user input. The descriptions for the system to search by are created by a user for the specific search. To order to elevate the level of the systems researched for this task, researchers organize annual competitions. These help to increase the interest in user-centered multimedia search. One, for example, is Video Browser Showdown\footnote{\url{https://videobrowsershowdown.org/}}. This specific competition focuses mainly on user-computer interaction during the search. For a comparison, TrecVid (\cite{2019trecvidawad}) is also an annual competition with the focus on retrieving relevant scenes based on their textual or other descriptions.
-
-In this thesis we build our solutions to solve a known-item search task. We aim to experiment with two following approaches to the KIS task:
+In this thesis, we test several approaches to solve a known-item search task:
 
 \begin{enumerate}
-  \item Search by creating a collage of images.
-  \item Search through the faces in the dataset.
+  \item Searching by an image collage query.
+  \item Searching by browsing in a set of faces from the dataset.
 \end{enumerate}
 
-In the first approach, we focus on searching the scenes via only visual models together with the approximate position of key objects in the scene. Users can create a collage of images, which reminds them the searched scene and then browse through the ranked scenes looking for the match.
+In the first approach, we focus on searching known images via only example images and their approximate position in the searched image. User can create a collage of images that reminds them of the searched scene and then browse through the ranked result list looking for the match.
 
-The second approach is an experimental test of possibility for visual traversing through a  dataset of faces. To present a user with a feasible amount of faces in one display, we tackle this challenge by organizing the faces into multilevel views supporting navigational queries.
+The second approach is an experimental test of the possibility of visual traversing through a dataset of faces. To present a user with a feasible amount of faces in one display, we tackle this challenge by organizing the faces into multilevel views supporting navigational queries.
 
-The goal of this thesis is to create a framework to test both aforementioned approaches. We aim to create a novice-friendly interface for easy user-system interaction.
+The goal of this thesis is to create a framework to test both approaches, as mentioned earlier. We aim to create a novice-friendly interface for smooth user-system interaction.
 
-We also provide evaluations of the dataset and the solutions presented in this thesis. In the evaluations, we focus on the success rate -- i.e. if the search scene was found. We manually annotate set of queries to test a different set of hyperparameters for the system.
+We also provide evaluations for a larger dataset and the approaches tested in this thesis. In the evaluations, we measure a rank in result list of the searched image. Lower the rank of the searched item is, the better the technique worked. For the evaluations, we manually constructed a set of collage queries for randomly selected database images. With these queries, we  tested different hyperparameters of the proposed system.
 
 \subsubsection*{Thesis structure}
 
-The thesis is divided into four main blocks. After this chapter we continue by reviewing Related Work (\autoref{ch:related_work}) and Preliminaries (\autoref{ch:preliminaries}). Related Work focuses on existing implementation of the systems solving the KIS task in the same settings as we are. Preliminaries contain a summary of the theoretical background needed for later chapter.
+The thesis is divided into four main blocks. After this chapter, we continue by reviewing Related Work (\autoref{ch:related_work}) and Preliminaries (\autoref{ch:preliminaries}). Related Work focuses on several existing  KIS systems. Preliminaries contain a summary of the theoretical background needed for later chapters.
 
-The second block are chapters with the task definition and presented solutions. These chapters include the description of the solutions as well as the evaluations.
+The second block contain chapters with the task definition, presented approaches, and evaluations.
 
-The third part of the thesis is dedicated to the demo we created to incorporate both our solutions. This includes User's guide -- how to interact with the system, and Developer's guide -- how to change the dataset or other parameters of the system.
+The third part of the thesis is dedicated to the demo we created to incorporate both our solutions. This includes the user's guide -- how to interact with the system, and Developer's guide -- how to change the dataset or how to encorporate a new approaches.
 
 \bigskip
-To conclude the introduction, our results showed that we successfully developed a promising solution for spatial requests. We were able to improve the success rate by splitting the image into multiple parts. For more, we invite you to continue reading.
+To sum up our key contribution, we designed and successfully tested a promising approach based on collage queries. The most promising approach divide images in the database into multiple parts. For more info, we invite you to continue reading.

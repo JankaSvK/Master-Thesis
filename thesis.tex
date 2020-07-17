@@ -25,6 +25,8 @@
 % \setlength\headheight{0mm}
 % \let\openright=\cleardoublepage
 
+\usepackage{ulem}
+
 %% Generate PDF/A-2u
 \usepackage[a-2u]{pdfx}
 
@@ -74,7 +76,7 @@
 \def\DeptType{Department}
 
 % Thesis supervisor: name, surname and titles
-\def\Supervisor{RNDr. Jakub Lokoč, Ph.D.}
+\def\Supervisor{doc. RNDr. Jakub Lokoč, Ph.D.}
 
 % Supervisor's department (again according to Organizational structure of MFF)
 \def\SupervisorsDepartment{Department of Software Engineering}
@@ -86,12 +88,12 @@
 % An optional dedication: you can thank whomever you wish (your supervisor,
 % consultant, a person who lent the software, etc.)
 \def\Dedication{%
-I would like firstly to thank my supervisor RNDr. Jakub Lokoč, Ph.D. for ideas and spot-on help. My thanks also belong to the SIRET Research group members for sharing their experience and knowledge in the research topic with me. Last but not least, I thank all faculty members and especially fellow students. They created an amazing growth environment where I could learn. Personal thanks belong to my close friends and family, which helped me to persist in my work.
+I would like firstly to thank my supervisor doc. RNDr. Jakub Lokoč, Ph.D. for ideas, numerous corrections, and spot-on help. My thanks also belong to the SIRET Research group members for sharing their experience and knowledge in the research topic with me. Last but not least, I thank all faculty members and especially fellow students. They created an amazing growth environment where I could learn. Personal thanks belong to my close friends and family, which helped me to persist in my work.
 }
 
 % Abstract (recommended length around 80-200 words; this is not a copy of your thesis assignment!)
 \def\Abstract{%
-In a known-item-search task, the goal is to find a previously seen scene/data in a bigger collection of the data. We aim to present solutions to a specific alternation of this task -- searching for a visual scene, which was previously seen. We test two different approaches in this thesis. The first one incorporates visual descriptions of the objects (for example, using sample images from common image search engines) together with their spatial information (wherein the image is the object located). The second approach tackles this known-item-search task by extracting only faces of the people of the dataset, and we propose a navigational system among the faces. This thesis includes evaluations of both approaches and also a working software to test all presented solutions.
+In a known-item-search task, the goal is to find a previously seen scene/image in a bigger multimedia collection. We aim to present solutions to a specific alternation of this task -- searching for a memorized image, which was previously seen. We test two different approaches in this thesis. The first one incorporates visual descriptions of the objects in the searched image (for example, using example images from common image search engines) together with their spatial information (wherein the image is the object located). The second approach tackles this known-item-search task by extracting only faces of the people in the dataset, and we investigate a browsing system for the faces. This thesis includes evaluations of both approaches and also a working software to test all presented solutions.
 }
 
 % 3 to 5 keywords (recommended), each enclosed in curly braces
