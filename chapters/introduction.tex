@@ -1,18 +1,16 @@
 \chapter*{Introduction}
 \addcontentsline{toc}{chapter}{Introduction}
 
-In the last decades, we witnessed a massive jump in the amount of digital information that every person owns. Looking back 20-30 years ago, people used to record only several hours of their lives, capturing only the most valuable moments of life. Now, according to available estimates, more than 500 hours of multimedia data is uploaded every minute only to YouTube\footnote{\url{https://www.statista.com/statistics/259477/hours-of-video-uploaded-to-youtube-every-minute/}}. Furthermore, decreasing prices and availability of the recording electronics (especially cell phones) are contributing to the amount of multimedia data taken every day. It also became a trend to share videos from day-to-day lives.
+In the last decades, we have witnessed a massive jump in the amount of digital information owned by individuals. Looking back 20-30 years, people used to record only a few hours of their lives, capturing the most valuable \todo{taketo veci su "precious"} moments. Now, according to available estimates, more than 500 hours of multimedia data is uploaded every minute  to YouTube\footnote{\href{https://www.statista.com/statistics/259477/hours-of-video-uploaded-to-youtube-every-minute/}{Statista -- Hours of video uploaded to YouTube every minute}} only. Furthermore, decreasing prices and increasing availability of the recording electronics (especially smartphones) contribute to the amount of multimedia \todo{duplicita s predoslou vetou} data created every day. It has also become a trend to share videos from day-to-day lives.
 
-This significant increase in the volume of multimedia data places several new challenges. One of them is the need for effective search. This problem is not only attractive to the researchers, but the initiatives also come from industry. Companies try to help their customers organize a vast amount of multimedia data (Google Photos, Facebook, OneDrive, MEGA, and others). The companies often have a broad spectrum of solutions on how to store and organize the data internally. Sadly, users are usually provided only with the most straightforward technique to filter the data.
+The significant increase in the volume of multimedia data opens several new challenges. One of them\todo{one of the most urgent alebo alternativy, aby sme oponentovi dali do ksichtu ze neriesime len nejaky, ale dost podstatny problem} is the need for effective search and retrieval. This problem is not only attractive to researchers, but the initiative also comes from the industry. Companies try to help their customers to organize a vast amount \todo {vast amounts? nie som si isty s pocitatelnostou tychto veci, ale tych zakaznikov je asi viac} of multimedia data (Google Photos, Facebook, OneDrive, MEGA, and others). Those companies often rely on a broad spectrum of techniques used to store and organize the data internally. Unfortunately, users are usually provided with only the most straightforward technique to filter the data.
 
-With the increasing size of the stored data it becomes more difficult to find searched items with a query or filter.
- Furthermore, we are interested in a specific challenging scenario where a user searches for one known image in a database. For example, the user recalls a memory, which corresponds to the searched image. This task of searching for a previously seen multimedia object is often referred to as visual known-item search (KIS). In this thesis, we investigate several known-item search techniques where users provide a few example images as a collage query or browse images of faces organized in a grid with respect to their similarity.
+\todo{!len navrh! Besides attempting to overcome the challenges of querying large volumes of stored data, we will focus on ...} With the increasing size of the stored data it becomes more difficult to find items with a query or filter.
+ Furthermore, we are interested in a specific challenging scenario in which a user searches for one given image in a dataset. This task of searching for a previously seen multimedia object is often referred to as visual known-item search (KIS). In this thesis, we investigate several known-item search techniques where users provide a few example images as a collage query or browse through images of faces organized in a grid with respect to their similarity.
 
-Known-item search has become a well-known research area \cite{8352047}. 
-According to recent findings \cite{9037125}, known-item search engines have to support both querying and interactive search functionality.
-In order to elevate the level of developed KIS systems, researchers organize and participate in annual competitions. These efforts help to increase the interest in user-centered multimedia search. One, for example, is Video Browser Showdown\footnote{\url{https://videobrowsershowdown.org/}}, or shortly VBS. For a comparison, TRECVid (\cite{2019trecvidawad}) is also an annual competition with the main focus on ranking of scenes based on a textual description.
+Known-item search has become a well-known research area \cite{8352047}. According to recent findings \cite{9037125} , most of the known-item search engines incorporate both querying and interactive search functionality. In order to elevate the level of developed KIS systems, researchers organize and participate in annual competitions. These efforts help to increase the interest in user-centered multimedia search. One, for example, is Video Browser Showdown\footnote{\url{https://videobrowsershowdown.org/}}, or shortly VBS. For a comparison, TRECVid (\cite{2019trecvidawad}) is also an annual competition with the main focus on ranking of scenes based on a textual description.
 
-In this thesis, we test several approaches to solve a known-item search task:
+In this thesis, we investigate a couple of approaches to solve a \todo {the mozno?} known-item search task:
 
 \begin{enumerate}
   \item Searching by an image collage query.
@@ -28,12 +26,16 @@ The goal of this thesis is to create a framework to test both approaches, as men
 We also provide evaluations for a larger dataset and the approaches tested in this thesis. In the evaluations, we measure a rank in result list of the searched image. Lower the rank of the searched item is, the better the technique worked. For the evaluations, we manually constructed a set of collage queries for randomly selected database images. With these queries, we  tested different hyperparameters of the proposed system.
 
 \subsubsection*{Thesis structure}
+The thesis is divided into four main chapter. After the Introduction, we continue by reviewing Related Work (\autoref{ch:related_work}) and Content-based image retrieval (\autoref{ch:preliminaries}). Related Work previews several existing frameworks for solving the KIS task. Content-based image retrieval chapter contain a the theoretical background about CBIR task and also evaluation settings.
 
-The thesis is divided into four main blocks. After this chapter, we continue by reviewing Related Work (\autoref{ch:related_work}) and Preliminaries (\autoref{ch:preliminaries}). Related Work focuses on several existing  KIS systems. Preliminaries contain a summary of the theoretical background needed for later chapters.
+After these introductory chapters, we present our solutions in the chapter \ref{} and \ref{}.
 
-The second block contain chapters with the task definition, presented approaches, and evaluations.
-
-The third part of the thesis is dedicated to the demo we created to incorporate both our solutions. This includes the user's guide -- how to interact with the system, and Developer's guide -- how to change the dataset or how to encorporate a new approaches.
+The end of the thesis is dedicated to the implementation of the aforementioned approaches. This includes the user's guide -- how to interact with the system, and Developer's guide -- how to modify the dataset or how to incorporate a new approaches.
 
 \bigskip
-To sum up our key contribution, we designed and successfully tested a promising approach based on collage queries. The most promising approach divide images in the database into multiple parts. For more info, we invite you to continue reading.
+In summary, we designed and successfully tested a promising approach based on collage queries. The most promising approach splits images into multiple parts. We tested this approach in several hyperparameter settings, and we conclude with the best performing set of hyperparameters. \todo{neviem ci je dobry napad davat summary do intra... cele intro ma byt svojim sposobom summary toho co sa ide robit, a ked tato summary musi mat summary je to mozno trochu divne}
+
+\todo[inline]{TOMUTO NEROZUMIEM, ako sa riesi to ze citatel nepozna pojmy? este trocha viac o vysledkoch co si testovala a co fungovalo a co nie, intro ti ma povedat vsetko bez toho aby si citala pracu}
+
+
+

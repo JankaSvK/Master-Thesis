@@ -1,33 +1,40 @@
 
 \chapter{Search by Face Similarity}
 
-% Research in past several decades proved that human have extreme capability of recognizing the faces. Faces are so special to us as a species, that we are able to ..... We are able to recall that we met specific person dating the meeting years back. Therefore we state a question, if the search based only on faces can be done.
+In this chapter we propose an unusual approach to CBIR task. Suppose we see a person in the target image, would it be possible to find the target image using only the face of the person?
 
-% This approach organizes the space of seen faces to help the user to orientate and find the search face. Though, in order to describe the face space we use deep encodings trained by a network used for face recognition.
+Once we investigated the V3C1 dataset, we realized that many of the videos display people. This part of the dataset becomes also difficult to retrieve. Even though, keyword search can include an event description, it is still sometimes to describe the scene more than saying "3 people". Now, at least, we can create a collage with people and therefore query by the location of the people.
 
-% In the previous chapter we elaborated an approach to search in dataset using objects and their spatial information. In this chapter we investigate a different option -- traversion using faces. The question we ask is if it is possible to find a specific scene by showing user faces. Since there is a limitation of how many faces we can display at once to the user, we will investigate if we can lead user to the specific scene with specific face via traversion through multiple similar faces.
+In this chapter we aim to investigate an alternative approach. We extract all faces from the dataset and we build a search engine over these faces. We extract features for each face, which we later use for creating an grid, which support a navigation.
 
-% Since the similarity of faces is a strongly abstract perception we rely on feature representation of the faces. This helps us to create an interactive environment to traverse via huge aount of faces and test our hypothesis, if this approach can be used for scene searching. 
+We also investigate the human perception on this task. We provide a case study on the samples from the dataset to obtain infromation about human behaviour. This will provide us with a better insight, if people perceive similarity between the faces similartly or not.
 
-% This chapter firstly introduces different approaches to obtaining face representations. Then we proceed by presenting different approaches for traversion over dataset of faces. At the end of the chapter we present the results in our specific task -- scene search .
+Even though, our experiments show, the feature space we use for the faces lacks from ability to order people based on their similarity, we still propose a system for a navigational queries. This can be used for any new representation of the faces.
 
-% \todo[inline]{ motivation - otestovat hypotezu ci je to mozne a nejaky nahlad ako ot moze vyzerat}
-% \section{Preliminaries}
-% \todo[inline]{face features - popisat zdroj siete}
-% \section{Creating SOM Representation of the face space}
-% \section{Evaluation}
+\section{Extraction of the faces}
 
-Content-based image retrieval approaches the problem of finding images relevant from an image database based on visual features. These visual features are nowadays extracted through a wide range of automatic extraction methods. As the research of deep neural networks advanced, an ability of the networks to cover not only low-level visual features but also high-level semantic concepts unveiled. Despite these uncoverings, the high-level features may not correspond to the common features viewed by a human. This gap is also often enhanced by the high dimensionality of the features and because of that a hidden structure in these features. Since these features often lack one to one correspondence with humanly perceived features, it leads to difficulties in the task of exploration.
+Face Detection is a widely studied problem. One of the key advancements in the past in this are was an article by \ref{} the authors speed up the human detection using Histogram of oriented gradients descriptor methods. Their method uses HOG description in combination with cascading classifiers. The method is quick and can perform even online. The disadvantage of the approach its lower performance on non-frontal views of the faces. Even today it is sometimes preferred due to its speed.
 
-In this chapter, we aim to research an approach of using visual features obtained by a neural network for a human face. Due to the fact, that these features often do not have one to one correspondence with human perception (i.e. human may notice the color of the eyes, the network may not have a specific feature for it, rather a combination of multiple features, or not at all), we shift from single-round query to navigational queries, where a single retrieval instance consists of multiple rounds of user-system interaction.
+We followed more recent studies and decided to use a 
 
-Our task is to verify the option, to search the dataset of the images based only on the people in the images using deep features for their faces. To provide an ability to search through a high-dimensional space of faces we incorporate navigational ability through the dataset.
+We followed the studies to come up to an CNN based approach for feature detection. The approach is described in the \cite{}. This was also implemented in Dlib library as an alternative to the GOD
 
-The goal is to yet again to find a particular scene, displaying people. This will be done by traversion a dataset of faces. In the following section we first investigate features obtained and then we propose a multilayer navigational structure above those features.
 
-\section{Finding the faces}
+
+If we take a look at the dataset, we notice that only a small portion of the people present look directly into the camera. This comes from the fact, that these images are sampled from the videos, therefore, people are capture while doing some activity.
+
+ algorithm to significantly speed up human detection using HOG descriptor methods. Their method uses HOG descriptors in combination with the cascading classifiers algorithm normally applied with great success to face detection
+
+
+To extract the position of the faces from the dataset we used 
+
+We used a smaller dataset for testing our hypothesis in this chapter. We work with only first 316 videos out of V3C1 dataset. We use the same extracted imgeas as in the previous chapter.
+
 
 \todo[inline]{Dlib ako sme extrahovali}
+
+\todo[inline]{dopisat slovy ze co vidime v datasete}
+\todo[inline]{osekat zenu o aspon jednu riadok. napisat od 0.6 nevidime ziadnu podobnost}
 
 We focused on the first 316 videos from V3C1 dataset to retrieve the faces available. The reason behind choosing 316 videos is purely to limit our experiments on the reasonably sized dataset, where the solution we will see later can be better tested. From these 316 videos, we were able to capture more than seventeen thousands faces. The distribution of the are covered by the faces is available in the figure \ref{}\todo{add figure}. Since most of the faces cover less than a 5\% of the screen, we decided to further clean the dataset.  To clean the dataset, we decided to go only with the faces, which covered at least ten percent of the picture. This resulted in obtaining 2047 faces. A random selection of faces is shown in the figure \ref{fig:random_selection_faces}. The This significantly reduces the size of the faces available
 In the further sections we therefore work with 2047 faces from different people, in different angles. As in the example shown, we can also see one false positive. These were not manually checked, therefore we expect some.
@@ -48,25 +55,18 @@ We investigated the results based on the euclidean distance and we show a result
 
 \begin{figure}
     \centering
-      \begin{subfigure}[b]{\textwidth}
-        \centering
-        \includegraphics[width=\linewidth]{img/closest_faces_to_woman.png}
-        \caption{}
-        \label{fig:my_label}
-    \end{subfigure}
-    
-    \hfill
-
-      \begin{subfigure}[b]{\textwidth}
-        \centering
-        \includegraphics[width=\linewidth]{img/kid_closest_faces.png}
-        \caption{}
-        \label{fig:my_label}
-    \end{subfigure}
-    
+    \includegraphics[width=\linewidth]{img/closest_faces_to_woman.png}
     \caption{Examples of the retrieved closest faces to the query face (top left) based on euclidean distance. Above images is the distance from the query.}
     \label{fig:closest_faces}
 \end{figure}
+
+\section{Case study}
+
+The feature space we obtained in the previous steps was trained to identification task. Therefore, we wanted to find out, if the space over the face features contains also information about the similarity between the faces other than identification of the images of the same person.
+
+We conducted a study with 25 participants. We presented them a grid $10\times10$ of randomly selected faces from the dataset. We then asked them, to select exactly three faces, which are the most similar to the provided target face. Our test contained 10 randomly pre-selected faces as the target. Two of the target faces were presented in the grid. This helped us to check, how likely is the user to see a face in a display with 100 faces.
+
+Twenty-four out of 25 users selected the face corresponding to the same target person in the first case. In the second case, two face views of the target person were available in the grid. 9 respondents selected both correctly and 11 respondents selected only one of them. We conclude, that only in 70.7\% of the cases users noticed and correctly selected the target person in the grid.
 
 
 

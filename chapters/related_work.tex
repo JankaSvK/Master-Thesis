@@ -2,73 +2,75 @@
 \label{ch:related_work}
 
 
-In this chapter, we review approaches made towards handling the Known-item Search (KIS) task and the recent approaches for user-friendly traverse through the immersive amount of the visual data.
+In this chapter, we review approaches made towards handling the Known-item Search (KIS) task and the recent approaches for user-friendly traverse through the immense amount of the visual data.
 
-In recent years, we witnessed a significant advancement in the solution for the KIS task. The scale of the solution's complexity for user interaction ranges from simple ones (e.g., sketching color blocks) with only a few descriptors to the ones which use recent advance in deep learning, as for concept labeling (e.g., naming objects).
+In recent years, we have witnessed a significant advancement in frameworks focusing on the KIS task. The scale of the frameworks' complexity for user interaction ranges from simple ones (e.g., sketching color blocks) with only a few descriptors to the ones which use recent advances in deep learning, for example, for concept labeling.
 
-Our goal is to perform known-item-search task on a set of videos. We perform a common simplification, replacing videos with the set of selected representative images. More information about representative selection is available in section \ref{}\todo{fix}, where more details about the dataset are available. This simplification, working with images, allows us to use common neural networks and other techniques presented for 2D data.
+Our goal is to perform a known-item-search task on a set of videos. We perform a common simplification, replacing videos with the set of selected representative images. More information about representatives extraction is available in section \ref{s:dataset}. This simplification, working with images, allows us to use common neural networks and other techniques presented for 2D data.
 
-\section*{Known-item-search Task}
+\section{Known-item-search Task}
 
-The known-item-search task is present in any multimedia format. We may look for a particular article in the database of the newspaper or for an image or any other media. Our thesis focuses on visual KIS task; specifically, we retrieve images. Here We review a few of the presented systems for the visual KIS task presented at the last VBS2019. We mainly follow the summarization from the \cite{rossetto2020interactive}.
+The known-item-search task is present in any multimedia format. We may look for a particular article in the database of the newspaper or for an image or any other media. Our thesis focuses on visual KIS task; specifically, we retrieve images. In this chapter we review a few of the systems for the visual KIS task presented at the last VBS2019. We mainly follow the summarization from \cite{rossetto2020interactive}.
 
-As study presents, the most popular approach at the VBS2019 was "Query by an Image" and "Concept Labeling." Query by an image, in this case, mostly refers to finding the most similar results from a database to a given image. The downside of this approach is mainly the difficulty of obtaining an image, which would be sufficiently similar to the searched one.
+As the study presents, the most popular approach at the VBS2019 was "Query by an Image" and "Concept Labeling." Query by an image, in this case, mostly refers to finding the most similar results from a database to a given image. The downside of this approach is the difficulty of obtaining an image, sufficiently similar to the searched one.
 
-Another widely used approach at VBS2019 was Concept Labelling. In this case, user describe the image by words. For the items in the database, teams used variety of automatic annotation tools. For the incoming query, the system checks the database for the presence of the searched image. This approach has a limitation not only on the vocabulary size, but also it is limited by the power of used annotation system. Recent advancement in the textual annotation neural networks is nowadays able to classify thousands of different entities, however, this still presents a limitation for rarely used objects or hard-to-describe objects.
+Another widely used approach at VBS2019 was Concept Labelling. In this case, user describes the image by words. In order to annotate the items in the database, teams used a variety of automatic tools. For the incoming query, the system checks the database for the presence of the searched image. Concept labbeling often faces a a limitation on the vocabulary size. Recent advancements in the textual annotation by neural networks helped to tackle this problem. Nowadays, automatic annotation systems are able to classify thousands of different entities. However, even in so many classes we may not find a word to describe rarely used objects or hard-to-describe objects.
 
-One of the approaches presented and used is by creating a color sketch. The user colors the canvas to imitate the searched scene. The database is then traversed on the correspondence of the colors to the particular part of the image. We see a significant advantage of this approach to distinguish between the color regions incorporating the spatial information.
+One of the approaches presented and used is creating a color sketch. The user draws on the canvas to imitate the searched scene. The database is then traversed on the correspondence of the colors to the particular part of the image. We see a significant advantage of this approach to distinguish between the color regions incorporating the spatial information.
  
 Solving the KIS task in the VBS setting offers the option of using full video information and not only images. This approach enhances the possibilities spectrum to Temporal Queries or Multimodal queries. Also, some of the frameworks presented included Optical Character Recognition (OCR).
 
-We present our solution as a possible enhancement for a complex system in order to create multiple search strategies based on a user-preference. At the same time, it can work as a standalone application.
+We present our technique as a possible enhancement for a complex system in order to create multiple search strategies based on a user-preference. At the same time, it we present a standalone application to preview the described techniques.
 
-\section*{Traversion Approaches}
+\section{Traversal Approaches}
 
-KIS task is the task of two sides -- the algorithm and the user. It is essential not to forget about the user experience. A smooth user experience with quick navigation over a dataset provide an advantage to less effective approach. As the  (Evaluation of VBS ref)\todo{fix} shows, the most common approach is to show a 2D grid of images to the user. Several approaches also provide an easy way to play the original video. One of the most immersive ways we have encountered to traverse a grid of images is placing these images on the globe with the possibility of multiway traversing (\todo{ref}). We aim to achieve a similar level of smooth traversion.
+KIS task is the task of two sides -- the algorithm and the user. It is essential not to forget about the user experience. Smooth user experience with quick navigation over a dataset provides an advantage to a less efficient approach. As the review of the VBS by \cite{rossetto2020interactive} shows, the most common approach is to show a 2D grid of images to the user. Several approaches also provide an easy way to play the original video. One of the most immersive ways we have encountered to traverse a grid of images is placing these images on the sphere with the possibility of multilevel navigation presented by \cite{quadrianto2010beyond}.
 
-The traversing systems rely on effective visualization techniques on high-dimensional feature spaces. The frameworks seen at VBS create mostly a 2D grid of the images based on the distance between the image features in a high dimensional space. This high dimensional space, is often produced by neural networks. 
-In out presented solution for face search we also encorporate dimensionality reduction to create a visualization of the high-dimensional space for the user. 
+The traversal systems often rely on effective visualization techniques for high-dimensional data. Many of the frameworks presented at VBS create a 2D grid of images. The is usually organized based on the high-dimensional features, often produced by neural networks. 
 
 \subsection*{Self-organizing maps}
 
-Self-organizing maps have an important place when it comes to visualization of the dataset into a 2D grid. Self-organizing map, shortly SOM, was introduced in 1980s (\cite{kohonen1982self}, \cite{kohonen2007kohonen}). SOM is a type of neural network, which is used in unsupervised learning. The structure of the network and the learning itself allows network to produce a low-dimensional (two-dimensional for a grid results) representation of the input space of the training samples. This representation is reffered as a \emph{map}.
+Self-organizing maps have an important place where it comes to visualization of the dataset into a 2D grid. Self-organizing map, shortly SOM, was introduced in 1980s (\cite{kohonen1982self}, \cite{kohonen2007kohonen}). SOM is a type of neural network, which is used in unsupervised learning. The structure of the network and the learning itself allows network to produce a low-dimensional (two-dimensional for a grid results) representation of the input space of the training samples. This representation is referred as a \emph{map}.
 
-In the next section we review a SOM Hunter framework, which uses SOM and interactively train a new version after use interaction. An extended research on the topic of image retrieval using SOM was presented also by \cite{koskela2003interactive}.
+In the next section we preview a SOM Hunter framework, which uses SOM and interactively train a new version after use interaction. An extended research on the topic of image retrieval using SOM was presented also by \cite{koskela2003interactive}.
 
-\section{Existing systems}
+\section{Overview of the existing frameworks}
 
 In the next section, we shortly investigate existing frameworks, which competed in the Video Browser Showdown.
 
 \subsection{VIRET}
 
-A framework named VIRET (\cite{lokovc2019framework, lokovc2019viret}) is successfully participating in the competitions for several years now. The framework evolved in the years, and now it offers a wide variety of strategies for solving the KIS task. VIRET also implements its own strategy for a frame selection, which we also used for obtaining our images. As one of the most significant strategical advantages of the VIRET, we consider multimodal queries with relevance scores {\color{red} with scores?} and updates of the queries based on the results. We take VIRET as our inspiration, and we do not implement the same approaches as are already present in the VIRET. We focus on testing new alternatives. {\color{red} to jsem se o VIRETu teda moc nedocetl...}
+A framework named VIRET (\cite{lokovc2019framework, lokovc2019viret}) has beenis successfully participating in the competitions for several years now. The framework has evolved throughout the years, and now it offers a wide variety of strategies for solving the KIS task. VIRET also implements its own strategy for a frame selection, which we also used for obtaining our images. As one of the most significant strategical advantages of the VIRET, we consider the option for multimodal queries. Some of the other features included in the tool are: search by color regions, video playback, key-word search, search by an example image. For the purposes of the Lifelog Search Challenge (\cite{LSC20}) the videos can be also extracted by the meta-attributes (e.g., day of the week, time of the day). We take an inspiration from VIRET, although we do not implement the same approaches as are already present in the VIRET. We focus on testing new alternatives.
+
+We highly recommend more thorough description of the VIRET tool presented in the \cite{kovalvcik2020viret}.
 
 \begin{figure}
     \centering
-    \includegraphics{img/viret_small.png}
-    \caption{A sample search in VIRET framework. Source: https://videobrowsershowdown.org/hall-of-fame/}
+    \includegraphics[width=\linewidth]{img/viret_overview.pdf}
+    \caption{A sample search in VIRET framework. Source: \cite{kovalvcik2020viret}}
     \label{fig:viret}
 \end{figure}
 
 \subsection{SOM Hunter}
 
-A SOM Hunter (\cite{kratochvil2020som}) was for the first time introduced at the VBS2020. This tool is related to us since it successfully used Self-organizing Maps for use in a Known-item-search task. The authors train a small self-organizing map on the fly over a sampled dataset. This allows them to recreate the SOM based on user interaction and retrain it accordingly. In our work, we use the idea of training SOM, but compared to the SOM Hunter, we will test creating a SOM only on the people's faces. {\color{red} a co keyword search?}
+A SOM Hunter was for the first time introduced at the VBS2020. This tool is related to us because it successfully used Self-organizing Maps in order to solve a Known-item-search task. The typical workflow (as described in the \cite{kratochvil2020som}) is optionally initialized with keyword search. This reduces the dataset only to relevant images. During the whole browsing session, they preserve relevance score for each image. To display the results, they use Self-organizing Map weighted by the relevance scores. The user can continue to explore the dataset further, it is possible to restate the query. For more exploitation it is possible to browse over provided results. Since the showed displays are relatively small (i.e. $12\times12$ images), the corresponding SOM can be computed quickly. User can also explore the temporal context of any of the images.
+
 
 \begin{figure}
     \centering
     \includegraphics[width=0.99\linewidth]{img/som_hunter_small.png}
-    \caption{A sample search in SOM Hunter. Source: https://videobrowsershowdown.org/hall-of-fame/}
+    \caption{A sample search in SOM Hunter. Source: \href{https://videobrowsershowdown.org/hall-of-fame/}{Video Broser Showdown, Hall of Fame}}
     \label{fig:som_hunter}
 \end{figure}
 
 \subsection{Vitrivr}
 
-Vitrivr (\cite{rossetto2016vitrivr}) is a sophisticated framework for retrieving a video in the collection. Vitrivr is separated into three modules, Vitrivt-ng, Cineast and Cottontail-DB.  Vitrivr-ng is the module responsible for creating queries which are then processed by the Cineast. Cottontail-DB support fast retrieving methods of the features required by Cineast. The overview of the system is displayed in figure \ref{fig:vitrivr}. The Vitrivr supports different query types, as query by a sketch, example image, semantic concept, keywords, audio, or motion. The feature extraction and the system behind retrieving the most similar results are part of the second module -- Cineast (\cite{rossetto2016searching}). Cineast uses multiple approaches incorporating deep features, e.g., scene text recognition and speech-to-text recognition. The Vitrivr (the part responsible for creating the queries) is a web-browser solution. The modules structure provides a clean separation between the query formulation and feature extractions.
+Vitrivr (\cite{rossetto2016vitrivr}) is a sophisticated framework for retrieving a video in the collection. Vitrivr is separated into three modules, Vitrivt-ng, Cineast, and Cottontail-DB.  Vitrivr-ng is the module responsible for creating queries that are later processed by the Cineast. Cottontail-DB supports fast retrieving methods of the features required by Cineast. The overview of the system is displayed in figure \ref{fig:vitrivr}. The Vitrivr supports different query types, as query by a sketch, example image, semantic concept, keywords, audio, or motion. The feature extraction and the system behind retrieving the most similar results are part of the second module -- Cineast (\cite{rossetto2016searching}). Cineast uses multiple approaches incorporating deep features, e.g., scene text recognition and speech-to-text recognition. The Vitrivr-ng (the part responsible for creating the queries) is a web-based software. The modules structure provides a clean separation between the query formulation and feature extractions.
 
 \begin{figure}
     \centering
     \includegraphics[width=\linewidth]{img/vitrivr.png}
-    \caption{Overview of the separation in the Vitrivr solution. Source: \url{https://vitrivr.org/vitrivr.html}}
+    \caption{Overview of the separation in the Vitrivr framework. Source: \url{https://vitrivr.org/vitrivr.html}}
     \label{fig:vitrivr}
 \end{figure}
 
@@ -80,9 +82,9 @@ Deep Neural Network is a machine learning model, whose goal is to approximate a 
 
 When we talk about neural networks, we usually refer to a feedforward network. These networks consist of layers where information during the evaluation is passed only in one direction. We can imagine it as applying a function to the results from the previous layer. For example, let us create a small neural network. Denote first layer as \(f_1\) and second layer as \(f_2\). The output of the network will be \(f_2\left(f_1\left(\right)\right)\).
 
-Stacking more and more layers on top of each other leads us to notation \emph{deep} neural networks. This notation has no fixed threshold on which networks "deserve" to be called deep. The word "deep" separates the eras between the neural networks from few layers from neural networks consisting of tens, or more layers.  
+Stacking more and more layers on top of each other leads us to notation \emph{deep} neural networks. This notation has no fixed threshold on which networks "deserve" to be called deep. The word "deep" separates the eras between the neural networks from a few layers from neural networks consisting of tens, or more layers.  
 
-The first and last layer are commonly referenced as \emph{input} and \emph{output} layer. Layers between the input and output layers are usually denoted as \emph{hidden} layers. Deep neural networks can have four or hundreds of layers, and there multiple types of the operations, that layer can perform. \emph{Network Architecture} captures the "build order" of the network. It is important to note that there exist many networks with different architectures solving the same task.
+The first and last layer are commonly referenced as \emph{input} and \emph{output} layer. Layers between the input and output layers are usually denoted as \emph{hidden} layers. Deep neural networks can have four or hundreds of layers, and there multiple types of the operations that layer can perform. \emph{Network Architecture} captures the "build order" of the network. It is important to note that there exist many networks with different architectures solving the same task.
 
 There are many reasons for the advancement of neural networks in the past years. One of the crucial stones was not only theoretical innovations used for the networks but increasing computability limits. Deep Neural Networks \emph{learn} to approximate function by \emph{training}. This training is usually the heaviest part of the computation. Even though it is enough to train once and use forever, it usually lays some limitations on the size of the networks or the functions used.
 
@@ -97,18 +99,18 @@ Convolutional Neural Networks are specialized kind of networks which work with g
 \begin{figure}
     \centering
     \includegraphics[width=0.98\textwidth]{img/convolution_neural_network.jpg}
-    \caption{Schematic diagram of a basic convolutional neural network. Source: Phung, V.H.; Rhee, E.J. A High-Accuracy Model Average Ensemble of Convolutional Neural Networks for Classification of Cloud Image Patches on Small Datasets. Appl. Sci. 2019, 9, 4500.}
+    \caption{Schematic diagram of a convolutional neural network. Source: Phung, V.H.; Rhee, E.J. A High-Accuracy Model Average Ensemble of Convolutional Neural Networks for Classification of Cloud Image Patches on Small Datasets. Appl. Sci. 2019, 9, 4500.}
     \label{fig:convolution_neural_network}
 \end{figure}
 
-\todo[inline]{pooling}
-\todo[inline]{convolution block}
+% \todo[inline]{pooling}
+% \todo[inline]{convolution block}
 
 \subsection{Transfer Learning}
 
 Transfer Learning is a research problem in machine learning that focuses on storing knowledge gained while solving one problem and applying it to a different problem. We have seen many successful transfers of the network architecture and parameters learned to a new task. Transfer learning helps to reduce the cost of the training and often also to overcome an insufficient set of training examples for the new task.
 
-We utilize some of the pre-trained Convolution Neural Networks. The ability of a convolutional neural network to transfer to a new task by elevating gained information from other datasets was explored as early as by \cite{donahuedeep}, and many others were able to use this information to gain better models.  Networks we use are mostly pre-trained on \emph{ImageNet}\footnote{http://www.image-net.org/}. ImageNet served as a benchmark for comparing the performance of the different networks. Since the ImageNet is the main classification task, we utilize the transfer learning in a way to obtain deep features. Layers to the end of the networks accumulate more semantic information, i.e., they contain high-level features. Therefore, we work with the layers close to the end of the networks. These layers represent encoded information about the image in high dimensional vectors. Our task is to use these deep features obtained for solving our known-item search task.
+We utilize some of the pre-trained Convolution Neural Networks. The ability of a convolutional neural network to transfer to a new task by elevating gained information from other datasets was explored as early as by \cite{donahuedeep}, and many others were able to use this information to gain better models.  Networks we use are mostly pre-trained on \emph{ImageNet}\footnote{http://www.image-net.org/}. ImageNet served as a benchmark for comparing the performance of the different networks. Since the ImageNet is the main classification task, we utilize the transfer learning in a way to obtain deep features. Layers to the end of the networks accumulate semantic information, i.e., they contain high-level features. Therefore, we work with the layers close to the end of the networks. These layers represent encoded information about the image in high dimensional vectors. Our task is to use these deep features obtained for solving our known-item search task.
 
 
 
@@ -126,22 +128,24 @@ We utilize some of the pre-trained Convolution Neural Networks. The ability of a
 
 Keras (\cite{chollet2015keras}) is a deep learning API written in Python, running on top of the machine learning platform TensorFlow\cite{tensorflow2015-whitepaper}. It was developed with a focus on experimentation in deep learning. We use it and its pre-trained models in this thesis. The models available in Keras Applications, which we use, were trained on ImageNet. Keras API allows us to separate the model from the last fully connected layer used for classification (since default ImageNet is a classification task). 
 
-In this thesis we use pre-trained models to implement new approaches. We do not aim to train new or further train existing models. We try to elevate the information from available models to solve the known-item search task. Here we describe two models, which we experimented most with. Firstly, ResNet was a state of the art model of 2015. Since then it gained popularity in many tasks. Second network we focus on is MobileNet. MobileNet has a great performance to complexity ratio. Therefore, it is an ideal network for our purpose -- where the predictions need to be computed online and displayed to the user.
+In this thesis, we use pre-trained models to implement new approaches. We do not aim to train new or further train existing models. We try to elevate the information from available models to solve the known-item search task. Here we describe two models, which we experimented most with. Firstly, ResNet was a state of the art model of 2015. Since then, it gained popularity in many tasks. The second network we focus on is MobileNet. MobileNet has an excellent performance to complexity ratio. Therefore, it is an ideal network for our purpose -- where the predictions need to be computed online and displayed to the user.
 
 \subsubsection*{Resnet50V2}
 
-ResNet (short for Residual Networks, \cite{resnet}) is a classic neural network used in many computer vision tasks. ResNet was the winner of ImageNet challenge in 2015 and therefore state-of-art. ResNet architecture allowed to train deeper networks, which was not possible before, because of vanishing gradients. ResNet main idea is to allow "shortcuts" between the layers. This has two main reasons: it mitigate the problem of vanishing gradient and it allows to learn an identity  function for higher layers in the network. ResNetV2 (\cite{resnetv2}) was release as an improvement of the ResNet. It included batch normalization and ReLU activation before 2D convolution. Also a particularity of ResNetV2 was including a residual branch.
+ResNet (short for Residual Networks, \cite{resnet}) is a classic neural network used in many computer vision tasks. ResNet was the winner of the ImageNet challenge in 2015 and, therefore, state-of-art. ResNet architecture allowed to train deeper networks, which was not possible before, because of vanishing gradients. ResNet main idea is to allow "shortcuts" between the layers. This has two main reasons: it mitigates the problem of vanishing gradient and allows to learn an identity function for higher layers in the network. ResNetV2 (\cite{resnetv2}) was released as an improvement of the ResNet. It included batch normalization and ReLU activation before 2D convolution. Also, a particularity of ResNetV2 included a residual branch.
 
-ResNet is still well-known and popular among machine-learning community. Several pretrained models are available and it has well-tested implementations. We use it in the thesis for some experiments, although we prefer MobileNet due to lower prediction time.
+ResNet is still well-known and popular among the machine-learning community. Several pre-trained models are available, and it has well-tested implementations. We use it in the thesis for some experiments, although we prefer MobileNet due to lower prediction time.
 
 \subsubsection*{MobileNetV2}
 
-In April 2017 a group of researchers from Google published a paper (\cite{mobilenet}) introducing a new architecture. This MobileNet was optimized for mobile devices. They optimized the model to deliver high accuracy while keeping the model and mathematical operations fast as possible. Not a year later, MobileNetV2 was introduced by \cite{mobilenetv2}. It extended the predecessor using Inverted Residuals and Linear Bottlenecks (more in the paper). It improved the performance and therefore, we work only with MobilenetV2.
+In April 2017, a group of researchers from Google published a paper (\cite{mobilenet}) introducing a new architecture. This MobileNet was optimized for mobile devices. They optimized the model to deliver high accuracy while keeping the model and mathematical operations as fast as possible. Not a year later, MobileNetV2 was introduced by \cite{mobilenetv2}. It extended the predecessor using Inverted Residuals and Linear Bottlenecks (more in the paper). It improved the performance and therefore, we work only with MobilenetV2.
 
 
 \subsubsection{Dlib}
-Dlib (\cite{king2009dlib}) is a modern C++ toolkit containing machine learning algorithms and tools for creating complex software in C++ to solve real-world problems. Some of the modules are provided with Python API. We use the Dlib library for face detection and also face feature extraction. For both we use face\_recognition API (\cite{geitgey2016machine}). \cite{king2017high} \todo{fix ref}
+Dlib (\cite{king2009dlib}) is a modern C++ toolkit containing machine learning algorithms and tools for creating complex software in C++ to solve real-world problems. Some of the modules are provided with Python API. We use the Dlib library for face detection and also face feature extraction. For both we use face\_recognition API (\cite{geitgey2016machine}). \todo{fix ref \cite{king2017high} }
 
 
+\section{Principal Component Analysis}
 
+In work, we perform Principal Component Analysis on a given set of features. The principal component analysis is one of the popular methods for dimensionality reduction. It uses Singular Value Decomposition (SVD) of the data to project it to a lower-dimensional space. Performing the PCA, we obtain features in lower-dimensional space, which contain most of the information from the original dataset. This has two advantages: the smaller feature vectors are faster to process, and it may even reduce the noise if present. Since the derivation of the formulas for PCA requires some basic knowledge of SVD and Linear Algebra, we refer to the \cite{alpaydin2020introduction} for a more detailed description.
 
