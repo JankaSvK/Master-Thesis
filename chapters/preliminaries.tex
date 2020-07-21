@@ -14,67 +14,51 @@ Presented techniques focus on the known-item search task. An alternative could b
 Following this chapter, we continue with the specifics of the individual approaches we present. Here we formulate the task and the goal.
 
 
-\section{Dataset for experiments}
-\label{s:dataset}
 
-We use Vimeo Creative Commons Collections (V3C1)\footnote{\href{https://www-nlpir.nist.gov/projects/tv2019/data.html}{TRECVID 2019 Video Data}} dataset for experimenting and evaluations. The dataset is composed of 7475 Vimeo videos. We selected only the first 750 videos for proving concepts of our work. From these 750 videos, we used an extraction tool from VIRET \cite{lokovc2019framework}. After extraction, we obtained 111\ 764 images from 750 videos with resolution 320x180. I extend my gratitude to Tomáš Souček and Gregor Kovačík for providing extracted images.
 
-The videos capture a wide range of sceneries on many different occasions. We can see many different landscapes, from seas to mountain views, from desert to snow. A large proportion of the videos contain people. Videos capture people doing different activities, i.e., from Hindi wedding to skateboarding in a park or a news broadcast.
 
-\subsection{Collected queries}
 
-In the chapter \ref{ch:object_location} we evaluate the approaches in different settings. To do that, we beforehand annotated a set of data. The data consist of 102 collages, all containing a visual image description of a given target image. The average size of the images used in the collages covers 15\% of the canvas. Five \% of the dataset consists of images bigger than 80\% of the canvas. We provide visualization of the distribution of the annotated queries in figure \ref{fig:annotated_dataset}. All 102 collages contain 199 images.
+\section{Task formulation}
+\label{s:task_formulation_preliminaries}
 
-For the annotation, we used our application for spatial queries. It is possible to save the collage by clicking "Submit Collage." The average time spent on the annotation of one image was 91 seconds. This time includes searching for images online, pasting them onto the canvas, and usually also waiting for the query to go through.
+The goal of the thesis is to propose a system that can search and retrieve images based on visual similarity.  
 
-We want to highlight that we created more than a hundred collages corresponding to the target images from the dataset.  The annotations were done only by a one-person, and we leave annotation from more people, to study the differences in behavior, for the future work. 
+First we define universe $\mathcal{U}$ as the set of the all possible images:
 
-\begin{figure}
-     \centering
-     \begin{subfigure}[b]{0.48\textwidth}
-         \centering
-         \includegraphics[width=\textwidth]{graphs/num_queries_in_request.pdf}
-         \caption{Number of images on a canvas for a collage.}
-         \label{fig:y equals x}
-     \end{subfigure}
-     \hfill
-     \begin{subfigure}[b]{0.48\textwidth}
-         \centering
-         \includegraphics[width=\textwidth]{graphs/queries_size.pdf}
-         \caption{Size of the canvas which is covered by a query image.}
-         \label{fig:three sin x}
-     \end{subfigure}
-    
-    \caption{Annotated collages properties}
-    \label{fig:annotated_dataset}
-\end{figure}
+$$
+    \mathcal{U} = \bigcup_{h,w \in \mathbb{N}^2} \{0, 1, 2, \ldots 255 \}^{h \times w \times 3}
+$$
 
-\section{Task formulation and evaluations overview}
+This definition follows the standard description of an image as a matrix $w \times h$ of pixels, where three color channels describe each pixel. We work over a dataset $D$ of such images, that we can define as $D \in \mathcal{P(U)}$.
 
-In our task, we have a dataset $D$ of images and a target image $t$. Since we work with a known-item search task, we know that a target image $t$ is also present in the dataset. Our goal is to create a query $q$, to which the most similar image from the dataset is the target image. We extrapolate the from yes-no on the question "is the target image the most similar image to the query" to "if the results are ordered based on the similarity, at which position is our target image?". We order the items in the dataset so that the images on the lowest position (zero is the best, the most similar) have the highest similarity to the query. We refer to the position of our target image $t$ in such ordering as $rank_{q,D}(t)$ given query $q$ and dataset $D$. The range of the $rank_{q,D}(t)$ function is $[0, |D|)$.
+The user is then presented with a target image $T \in D$ and asked to locate the image within the dataset $D$. This task is called a known-item search. 
 
-Our goal is to develop a technique that minimizes the target image's rank, given the query. In the following chapters, we aim to test two different possibilities for query description, and we compare their performance based on their ability to retrieve the target image.
+Our system then serves as a search engine, aiming to provide the user with the most relevant results based on the user input. The system leverages the visual similarity between the images in the dataset $D$ (as in chapter \ref{ch:face_search}), or the similarity between user-provided example pictures and the images from the dataset $D$ (as in chapter \ref{ch:object_location}).
 
-So far, we talked only about one query and one target image. We generalize the results from multiple queries by producing a cumulative summary. For each query coupled with the target image, we obtain the $rank_{q, D}(t)$. Then, we can measure the queries' success rate, as the number of queries solved up to a given rank. For example, let us have 40 items in the dataset and perform five queries. These queries ranked the target image at the following positions: \{0, 23, 7, 14\}. For a given rank, we are interested in, we compute how many queries were ranked below it. In this scenario, for a rank 20, three queries were ranked lower.
+\section{Feature space}
 
-Since the size of the dataset and the number of tested queries may vary, we always present the results with respect to the size of the set it comes from. In the previous scenario, 75\% of the queries were ranked below the rank representing 50\% of the dataset.
-
-We use these cumulative, proportional results to plot the performance of the framework. A sample evaluation is present in the figure \ref{fig:mobilenet_whole_image_example}. In the case described presented, 90\% of the annotated collages (queries), the target image was ranked in the first 50\% of the dataset. In other words, this can be said that in 90\% of cases by stating a query, we were able to eliminate half of the dataset as unrelated. We can also notice a steep curve in the beginning. It shows that 70\% of the collages had the target image ranked in the first 10\% of the dataset. We can see that this particular system worked well for 70\% of the collages, but struggled to solve the rest.
-
-\begin{figure}
-    \centering
-    \includegraphics[width=0.8\linewidth]{img/mobilenet_whole_image.png}
-    \caption{Performance of MobileNetV2 on annotated collages}
-    \label{fig:mobilenet_whole_image_example}
-\end{figure}
-
-For these evaluations, we use annotated queries. We described them in section \ref{s:dataset}.
+To search over a dataset of images $D$, we need a metric of how similar two items are. This similarity could be computed between the images directly, although it is more common to compare two images after a projection by a descriptor. A descriptor is a function $f_e: \mathcal{U} \rightarrow \mathcal{R}$, where $\mathcal{R}$ is a representation universe. Given a descriptor $f_e$, we compute for each image in the dataset $D$ a feature vector $L_I = f_e(I)$, where $I \in \mathcal{U}, L_I \in \mathcal{R}$. In our work, we use various neural networks as our descriptors. It is common for neural networks to produce the representations in the space of real numbers $\mathbb{R}^n$, and in our case, we work only with the representation spaces, which are isomorph to the $\mathbb{R}^n$.
 
 \section{Distance Measures}
 
+To compare, how similar representations of two images are, we use a concept of distance. Similar representations have smaller distance, and vice versa. We use a definition for a distance space and metric space from the book \cite{deza2009encyclopedia}.
+
+\theoremstyle{definition}
+\begin{definition}{Distance space}
+$(\mathcal{U}, \delta )$ is a set $\mathcal{U}$ equipped
+with a distance $\delta : \mathcal{U} \times \mathcal{U} \rightarrow \mathbb{R}^+ \text{ satisfying } \forall x, y \in \mathcal{U}: \delta(x, y) \geq 0 \text{ (nonnegativity), } \delta(x, y) = \delta(y, x) \text{ (symmetry) and } \delta(x, x) = 0.$
+\end{definition}
+
+\theoremstyle{definition}
+\begin{definition}{Metric space}
+$(\mathcal{U}, \delta)$ is a distance space, where $\delta$ additionaly satisfies $\forall x, y, z \in \mathcal{U} : \delta(x,z) \leq \delta(x,y) + \delta(y,z)$ (triangle inequality) and $\delta(x, y) = 0 \Rightarrow x = y$
+\end{definition}
+
 In the next chapters, we often compare two high-dimensional feature vectors. These vectors are often produced as a prediction of a neural network. Our feature space is $\mathbb{R}^n$, given $n$ as the number of features. We search for a distance measure function $d: \mathbb{R}^n \times \mathbb{R}^n \rightarrow \mathbb{R}$. We use the following three:
 
-\subsection{Euclidean Distance}
+Here we present distances over the space $\mathbb{R}^n$ later used in the thesis. Euclidean and Manhattan distances on $\mathbb{R}^n$ are metrics spaces. Cosine distance, deduced from cosine similarity does not follow triangle inequality and forms only a distance space.
+
+\subsection{Euclidean distance}
 
 For given $\bf{p}, \bf{q} \in \mathbb{R}^n$ we compute the distance as:
 \begin{equation}
@@ -82,7 +66,7 @@ d_e({\bf p},{\bf q}) = \sqrt{\sum_{i=1}^n (p_i - q_i)^2}
 \end{equation}
 
 
-\subsection{Manhattan Distance}
+\subsection{Manhattan distance}
 
 For given $\bf{p}, \bf{q} \in \mathbb{R}^n$ we compute the distance as:
 \begin{equation}
@@ -90,12 +74,14 @@ d_m({\bf p},{\bf q}) = {\sum_{i=1}^n |p_i - q_i|}
 \end{equation}
 
 
-\subsection{Cosine Distance}
+\subsection{Cosine similarity}
 
-For given $\bf{p}, \bf{q} \in \mathbb{R}^n$ we compute the distance as:
+For given $\bf{p}, \bf{q} \in \mathbb{R}^n$ we compute the similarity as:
 \begin{equation}
 \text{similarity}({\bf p},{\bf q}) = \cos ({\bf p},{\bf q})= {{\bf p} {\bf q} \over \|{\bf p}\| \|{\bf q}\|} = \frac{ \sum_{i=1}^{n}{p_i q_i} }{ \sqrt{\sum_{i=1}^{n}{p_i^2}} \sqrt{\sum_{i=1}^{n}{q_i^2}} }
 \end{equation}
+
+Since the cosine similarity is bounded by one, we use a transformation $d = 1 - s$ to obtain a distance.
 
 \begin{equation}
     d_{cos}({\bf p},{\bf q}) = 1 - \text{similarity}({\bf p},{\bf q})

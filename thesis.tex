@@ -56,9 +56,26 @@
 \usepackage{todonotes}
 \usepackage{subcaption}
 \usepackage{moreverb}
-\usepackage[hyphens]{url}
-\usepackage{hyperref}
-\usepackage[breaklinks]{hyperref}
+\usepackage[T1]{fontenc}
+\usepackage[acronym]{glossaries}
+\usepackage{amsthm}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+
+\makeglossaries
+
+\newacronym{som}{SOM}{Self-organizing map}
+\newacronym{bmu}{BMU}{Best Matching Unit}
+\newacronym{rgb}{RGB}{Red Green Blue color model}
+\newacronym{kis}{KIS}{Known-item search}
+\newacronym{cnn}{CNN}{Convolutional Neural Network}
+\newacronym{iou}{IoU}{Intersection over Union}
+\newacronym{cbir}{CBIR}{Content-based image retrieval}
+\newacronym{dnn}{DNN}{Deep Neural Network}
+\newacronym{api}{API}{Application programming interface}
+
+
 %%% Basic information on the thesis
 
 % Thesis title in English (exactly as in the formal assignment)
@@ -91,7 +108,7 @@
 % An optional dedication: you can thank whomever you wish (your supervisor,
 % consultant, a person who lent the software, etc.)
 \def\Dedication{%
-I would firstly like to thank my supervisor doc. RNDr. Jakub Lokoč, Ph.D. for ideas, numerous corrections, and spot-on help. My thanks also belong to the SIRET Research group members for sharing their experience and knowledge in the research topic with me. Last but not least, I thank all faculty members and especially my fellow students. They created an amazing growth environment where I could learn. Personal thanks belong to my close friends and family, which helped me to persist in my work.
+I would firstly like to thank my supervisor doc. RNDr. Jakub Lokoč, Ph.D. for ideas, numerous corrections, and spot-on help. My thanks also belong to the SIRET Research group members for sharing their experience and knowledge in the research topic with me. Last but not least, I thank all faculty members and especially fellow students. They created an amazing growth environment where I could learn. Personal thanks belong to my close friends and family, which helped me to persist in my studies.
 }
 
 % Abstract (recommended length around 80-200 words; this is not a copy of your thesis assignment!)
@@ -145,11 +162,10 @@ In a known-item-search task, the goal is to find a previously seen scene/image i
 
 %%% Abbreviations used in the thesis, if any, including their explanation
 %%% In mathematical theses, it could be better to move the list of abbreviations to the beginning of the thesis.
-% \chapwithtoc{List of Abbreviations}
-% SOM Self-organizing Map
-% KIS Known-item-search
-% CNN Convolutional Neural Network
-% IoU Intersection Over Union
+\chapwithtoc{List of Abbreviations}
+
+% \printglossary[type=\acronymtype]
+\printacronyms
 
 
 %%% Attachments to the master thesis, if any. Each attachment must be
