@@ -22,25 +22,16 @@ Solving the KIS task in the VBS setting offers the option of using full video in
 
 We present our technique as a possible enhancement for a complex system in order to support multiple search strategies based on a user-preference. At the same time, it we present a standalone application to preview the described techniques.
 
-\section{Traversal Approaches}
+\subsection{Traversal Approaches}
 
 KIS task is the task of two sides -- the algorithm and the user. It is essential not to forget about the user experience. Smooth user experience with quick navigation over a dataset provides can help to find the searched item faster. As the review of the VBS by \cite{rossetto2020interactive} shows, the most common approach is to show a 2D grid of images to the user. Several approaches also provide an easy way to play the original video. 
 
 The traversal systems often rely on effective visualization techniques for high-dimensional data. Many of the frameworks presented at VBS create a 2D grid of images. The images in the grid are usually organized based on their high-dimensional representation, often produced by neural networks. 
 
-\subsection{Self-organizing maps}
-
-The self-organizing map was introduced by \cite{kohonen1982self}. It is mostly used to project a high dimension dataset into a smaller set of dimensions. Additionally, the SOM structure forms a semantic map, where similar samples are mapped close together and dissimilar ones further apart.
-
-The self-organizing map, shortly \acrshort{som}, stands for a popular neural network based on unsupervised learning. The SOM consists of neurons organized on a regular low-dimensional grid. Each neuron is a $d$-dimensional weight vector, where $d$ is equal to the dimension of the input vectors. Each neuron is connected do the adjacent neurons by a neighborhood relation. This relation creates the structure, topology, of the map. 
-
-During the training, the neurons are initialized with random values. Then, iteratively, we find the closest neuron to a data point, called the Best Matching Unit. We shift the weight vector of the \acrshort{bmu} and also weight vectors of the neighboring neurons closer to the data point. The impact on the neighboring neurons is usually scaled by the distance from the BMU. Once trained, the map can classify a vector from the input space by finding the BMU to the input vector.
-
-The SOM can be thought of as net spread across the data. After the training, the neighboring neurons on the grid get similar weight vectors. For a more detailed description, please refer to \cite{kohonen1982self}, \cite{kohonen2007kohonen}. Extensive research on the topic of image retrieval using SOM was also presented by \cite{koskela2003interactive}.
 
 \section{Overview of the existing frameworks}
 
-In the next section, we shortly investigate existing frameworks, which competed in the Video Browser Showdown.
+In the next section, we shortly investigate some of the existing frameworks, which competed in the Video Browser Showdown. 
 
 \subsection{VIRET}
 
@@ -78,9 +69,21 @@ Vitrivr \citep{rossetto2016vitrivr} is a sophisticated framework for retrieving 
     \label{fig:vitrivr}
 \end{figure}
 
+\section{Dataset}
+\label{s:dataset}
+
+We use Vimeo Creative Commons Collections (V3C1)\footnote{\href{https://www-nlpir.nist.gov/projects/tv2019/data.html}{TRECVID 2019 Video Data}} dataset for experimenting and evaluations. This dataset is used for evaluations at VBS and also at TRECVID. The dataset is composed of 7475 Vimeo videos. We selected only the first 750 videos for proving concepts of our work. From these 750 videos, we used an extraction tool from VIRET \cite{lokovc2019framework}. After extraction, we obtained 111\ 764 images from 750 videos with resolution 320x180. I extend my gratitude to Tomáš Souček and Gregor Kovačík for providing extracted images.
+
+The videos capture a wide range of sceneries on many different occasions. We can see many different landscapes, from seas to mountain views, from desert to snow. A large proportion of the videos contain people. Videos capture people doing different activities, i.e., from Hindi wedding to skateboarding in a park or a news broadcast.
+
+
+\chapter{Theoretical Background}
+
+This chapter intends to review the fundamentals of the theoretical approaches used in this thesis. It includes the fundamental concepts of neural networks, a short description of the networks we use. The chapter also reviews projection methods of high-dimensional data to lower-dimensional space.
+
 \section{Deep Neural Networks}
 
-In recent years we witnessed many records-breaking new machine learning models. Many of those were possible thanks to the advancement of Deep Neural Networks (DNN). Nowadays, these models replaced more traditional Machine Learning approaches in many tasks.
+In recent years we witnessed many records-breaking new machine learning models. Many of those were possible thanks to the advancement of Deep Neural Networks (\acrshort{dnn}). Nowadays, these models replaced more traditional Machine Learning approaches in many tasks.
 
 Deep Neural Network is a machine learning model, whose goal is to approximate a given function \(f\). The set of parameters is often referred to as \(\theta\). One of the everyday tasks performed by these networks is classification, where the goal of the network is to predict which category sample \(X\) belongs. Even though we will not perform a classification task in this thesis, we will use some of the available classification networks.
 
@@ -96,7 +99,7 @@ Since this topic is broad, we recommend more thorough reading, such as Neural Ne
 
 \subsection{Convolution Neural Networks}
 
-Convolution Neural Networks (CNN) are a class of Deep Neural Networks. Even though they emerged in the late 1980s \citep{lecun1989backpropagation}, it took another 20 years for further advancements in the research area. Convolution Neural Networks are mainly used in image-related tasks, such as image classification ("What is on the image?"), object detection ("Where are the objects in the image and what are they?") or even content generation ("Create a new image"). Their abilities were also tested in many, not image-related tasks, e.g., music genre recognition.
+Convolution Neural Networks (\acrshort{cnn}) are a class of Deep Neural Networks. Even though they emerged in the late 1980s \citep{lecun1989backpropagation}, it took another 20 years for further advancements in the research area. Convolution Neural Networks are mainly used in image-related tasks, such as image classification ("What is on the image?"), object detection ("Where are the objects in the image and what are they?") or even content generation ("Create a new image"). Their abilities were also tested in many, not image-related tasks, e.g., music genre recognition.
 
 Convolutional Neural Networks are specialized kind of networks which work with grid-like topology. For 1D can be an example as time-series, or for 2D, most typically image pixels represent a grid. The name \emph{convolution} refers to using a mathematical linear function \emph{convolution} in at least the layers. A simplified overview of the structure is displayed in figure \ref{fig:convolution_neural_network}. We refer to \cite{Goodfellow-et-al-2016} for more understanding of \emph{convolutional layers}.
 
@@ -116,8 +119,6 @@ Transfer Learning is a research problem in machine learning that focuses on stor
 
 We utilize some of the pre-trained Convolution Neural Networks. The ability of a convolutional neural network to transfer to a new task by elevating gained information from other datasets was explored as early as by \cite{donahuedeep}, and many others were able to use this information to gain better models.  Networks we use are mostly pre-trained on \emph{ImageNet}\footnote{http://www.image-net.org/}. ImageNet served as a benchmark for comparing the performance of the different networks. Since the ImageNet is the main classification task, we utilize the transfer learning in a way to obtain deep features. Layers to the end of the networks accumulate semantic information, i.e., they contain high-level features. Therefore, we work with the layers close to the end of the networks. These layers represent encoded information about the image in high dimensional vectors. Our task is to use these deep features obtained for solving our known-item search task.
 
-
-
 \begin{figure}
     \centering
 	\includegraphics[width=0.8\linewidth]{img/network-comparison.jpeg}
@@ -128,13 +129,13 @@ We utilize some of the pre-trained Convolution Neural Networks. The ability of a
 \subsection{Pretrained models}
 \label{ss:pretrained_models}
 
-\subsubsection{Keras}
+\subsection{Keras}
 
 Keras \citep{chollet2015keras} is a deep learning API written in Python, running on top of the machine learning platform TensorFlow \citep{tensorflow2015-whitepaper}. It was developed with a focus on experimentation in deep learning. We use it and its pre-trained models in this thesis. The models available in Keras Applications, which we use, were trained on ImageNet. Keras API allows us to separate the model from the last fully connected layer used for classification (since default ImageNet is a classification task). 
 
 In this thesis, we use pre-trained models to implement new approaches. We do not aim to train new or further train existing models. We try to elevate the information from available models to solve the known-item search task. Here we describe two models, which we experimented most with. Firstly, ResNet was a state of the art model of 2015. Since then, it gained popularity in many tasks. The second network we focus on is MobileNet. MobileNet has an excellent performance to complexity ratio. Therefore, it is an ideal network for our purpose -- where the predictions need to be computed online and displayed to the user.
 
-\subsubsection*{Resnet50V2}
+\subsection*{Resnet50V2}
 
 ResNet (short for Residual Networks, \cite{resnet}) is a classic neural network used in many computer vision tasks. ResNet was the winner of the ImageNet challenge in 2015 and, therefore, state-of-art. ResNet architecture allowed to train deeper networks, which was not possible before because of vanishing gradients. ResNet's main idea is to allow "shortcuts" between the layers. This has two main reasons: it mitigates the problem of the vanishing gradients and allows to learn an identity function for higher layers in the network. ResNetV2 \citep{resnetv2} was released as an improvement of the ResNet. It included batch normalization and ReLU activation before 2D convolution. Also, a particularity of ResNetV2 included a residual branch.
 
@@ -145,7 +146,7 @@ ResNet is still well-known and popular among the machine-learning community. Sev
 In April 2017, a group of researchers from Google published a paper \citep{mobilenet} introducing a new architecture. This MobileNet was optimized for mobile devices. They optimized the model to deliver high accuracy while keeping the model and mathematical operations as fast as possible. Not a year later, MobileNetV2 was introduced by \cite{mobilenetv2}. It extended the predecessor using Inverted Residuals and Linear Bottlenecks (more in the paper). It improved the performance and therefore, we work only with MobilenetV2.
 
 
-\subsubsection{Dlib}
+\subsection{Dlib}
 Dlib \citep{king2009dlib} is a modern C++ toolkit containing machine learning algorithms and tools for creating complex software in C++ to solve real-world problems. Some of the modules are provided with Python API. We use the Dlib library for face detection and also face feature extraction. For both we use face\_recognition API \citep{geitgey2016machine}. \todo{fix ref \citep{king2017high} }
 
 
@@ -153,9 +154,13 @@ Dlib \citep{king2009dlib} is a modern C++ toolkit containing machine learning al
 
 In this work, we perform Principal Component Analysis on a given set of features. The principal component analysis is one of the popular methods for dimensionality reduction. It uses Singular Value Decomposition (SVD) of the data to project it to a lower-dimensional space. Performing the PCA, we obtain features in lower-dimensional space, which contain most of the information from the original dataset. This has two advantages: the smaller feature vectors are faster to process, and it may even reduce the noise if present. Since the derivation of the formulas for PCA requires some basic knowledge of SVD and Linear Algebra, we refer to the \cite{alpaydin2020introduction} for a more detailed description.
 
-\section{Dataset}
-\label{s:dataset}
 
-We use Vimeo Creative Commons Collections (V3C1)\footnote{\href{https://www-nlpir.nist.gov/projects/tv2019/data.html}{TRECVID 2019 Video Data}} dataset for experimenting and evaluations. The dataset is composed of 7475 Vimeo videos. We selected only the first 750 videos for proving concepts of our work. From these 750 videos, we used an extraction tool from VIRET \cite{lokovc2019framework}. After extraction, we obtained 111\ 764 images from 750 videos with resolution 320x180. I extend my gratitude to Tomáš Souček and Gregor Kovačík for providing extracted images.
+\section{Self-organizing maps}
 
-The videos capture a wide range of sceneries on many different occasions. We can see many different landscapes, from seas to mountain views, from desert to snow. A large proportion of the videos contain people. Videos capture people doing different activities, i.e., from Hindi wedding to skateboarding in a park or a news broadcast.
+The self-organizing map was introduced by \cite{kohonen1982self}. It is mostly used to project a high dimension dataset into a smaller set of dimensions. Additionally, the SOM structure forms a semantic map, where similar samples are mapped close together and dissimilar ones further apart.
+
+The self-organizing map, shortly \acrshort{som}, stands for a popular neural network based on unsupervised learning. The SOM consists of neurons organized on a regular low-dimensional grid. Each neuron is a $d$-dimensional weight vector, where $d$ is equal to the dimension of the input vectors. Each neuron is connected do the adjacent neurons by a neighborhood relation. This relation creates the structure, topology, of the map. 
+
+During the training, the neurons are initialized with random values. Then, iteratively, we find the closest neuron to a data point, called the Best Matching Unit. We shift the weight vector of the \acrshort{bmu} and also weight vectors of the neighboring neurons closer to the data point. The impact on the neighboring neurons is usually scaled by the distance from the BMU. Once trained, the map can classify a vector from the input space by finding the BMU to the input vector.
+
+The SOM can be thought of as net spread across the data. After the training, the neighboring neurons on the grid get similar weight vectors. For a more detailed description, please refer to \cite{kohonen1982self}, \cite{kohonen2007kohonen}. Extensive research on the topic of image retrieval using SOM was also presented by \cite{koskela2003interactive}.

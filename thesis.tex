@@ -62,16 +62,21 @@
 
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}[section]
+\usepackage{mathtools, nccmath}
 
+\DeclarePairedDelimiter{\nint}\lfloor\rceil
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter{\abs}\lvert\rvert
 \makeglossaries
 
 \newacronym{som}{SOM}{Self-organizing map}
 \newacronym{bmu}{BMU}{Best Matching Unit}
 \newacronym{rgb}{RGB}{Red Green Blue color model}
+\newacronym{cbir}{CBIR}{Content-based image retrieval}
 \newacronym{kis}{KIS}{Known-item search}
 \newacronym{cnn}{CNN}{Convolutional Neural Network}
 \newacronym{iou}{IoU}{Intersection over Union}
-\newacronym{cbir}{CBIR}{Content-based image retrieval}
 \newacronym{dnn}{DNN}{Deep Neural Network}
 \newacronym{api}{API}{Application programming interface}
 
@@ -162,7 +167,6 @@ In a known-item-search task, the goal is to find a previously seen scene/image i
 
 %%% Abbreviations used in the thesis, if any, including their explanation
 %%% In mathematical theses, it could be better to move the list of abbreviations to the beginning of the thesis.
-\chapwithtoc{List of Abbreviations}
 
 % \printglossary[type=\acronymtype]
 \printacronyms
