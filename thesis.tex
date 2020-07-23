@@ -118,7 +118,11 @@ I would firstly like to thank my supervisor doc. RNDr. Jakub Lokoč, Ph.D. for i
 
 % Abstract (recommended length around 80-200 words; this is not a copy of your thesis assignment!)
 \def\Abstract{%
-In a known-item-search task, the goal is to find a previously seen scene/image in a bigger multimedia collection. We aim to present techniques to solve a specific alternation of this task -- searching for a memorized image, which was previously seen. We test two different approaches in this thesis. The first one incorporates visual descriptions of the objects in the searched image (for example, using example images from common image search engines) together with their spatial information (wherein the image is the object located). The second approach tackles this known-item-search task by extracting only faces of the people in the dataset, and we investigate a browsing system for the faces. This thesis includes evaluations of both approaches and also a working software to test all presented approaches.
+In a known-item search, the goal is to find a previously seen image in a multimedia collection. In this thesis, we discuss approaches based on the visual description of the image. We test two different approaches in this thesis. In the first one, the user creates a collage of images (using images from any image search engine), based on which we provide users with the most similar results from the dataset. We present two techniques, how to work with the spatial information contained in the collage. We either preprocess the images in the dataset by splitting them into several parts, or we use the information from the last convolution block from the convolutional neural network.  We evaluate both approaches on manually collected collages.
+
+We also present an alternative approach to the KIS task, search by faces. In this approach, we work with the crops from the images containing faces. For extracted faces we compute encodings, which we investigate on potential ability, to order people based on their similarity to one another. Using these encodings, we build a traversal structure for an easy way to traverse a set of faces.
+
+We provide a demo, implementing all presented techniques.
 }
 
 % 3 to 5 keywords (recommended), each enclosed in curly braces
@@ -154,6 +158,8 @@ In a known-item-search task, the goal is to find a previously seen scene/image i
 % \include{chap02}
 
 \include{epilog}
+
+
 
 %%% Bibliography
 \include{bibliography}

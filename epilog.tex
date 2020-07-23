@@ -1,2 +1,40 @@
 \chapter*{Conclusion}
 \addcontentsline{toc}{chapter}{Conclusion}
+
+In this thesis we explored techniques to tackle the known-item search task on set of images. We started by reviewing existing approaches presented at Video Browser Showdown. Based on the limits of existing systems, we proposed two approaches, we aimed to verify: search by collage and search by faces. We built both approaches on state-of-art deep learning models. We used these models to extract descriptors from the images. 
+
+\subsection*{Search by collage}
+
+In the search by collage, we let the user to create a collage of images. Based on this collage, we provide most relevant (i.e., most similar) results to the user. We firstly formally defined the task. Then we provided a multistep framework design, which helped us to separate the individual steps.
+
+Firstly, we focused on the feature extraction. We proposed two approaches, based on different extraction model. The first approach cuts the images into fixed set of regions. We thorougly discussed the the specifics of the cutting. For our experiments, we compared how the number and size of the regions influences the performance.
+
+The second approach for extracting features was basde on the last convolution block of the common CNN. As we showed, we can improve the performance of the system, if we only use a correpsonding part of this block, based on the spatial information of the image in the collage. Even though, this approach did not performed as good as the cutting into regions, we were able to utilize moreinformation from the same network, by smart selection.
+
+Additionally to these two, we provided a baseline for the experiments. This baseline uses only images from the collage, not utilizing their spatial information.
+
+As additional parameters, we tested the effect of additional more technical decisions on the performance. We evaluated, three strategies for preprocessing the images, before feeding them into convolutional neural network. We either rescaled image, added black, or white background. As our experiment showed, rescaling the images achieved the best results.
+
+Secondly, we investigated the effect of the dimensionality reduction of the features on the model. Based on the experiments, we can use as low as 128 features to still obtain comparably performing system. Based on this, we propose a further use in the competitions as VBS, where the dataset is ten times bigger, than our tested.
+
+At last, we tested three different networks. MobileNetV2, as it is fast and small network, ResNet50 and Resnet50V2. For the ResNet50 we used a pretrained model on eleven thousands of classes, compared only to one thousand classes in case of MobileNetV2 and Resnet50V2. The experiments showed, that the Resnet50 on eleven thousands of classes performed the best.
+
+For the evaluations, we hand created a set of 102 collages. All experiments presented were tested on this set of queries.
+
+\subsection*{Search by face similarity}
+
+In the second part of the thesis, we discussed a possibility, to search through the dataset using only faces. We firstly extracted faces from the dataset. We investigated and explored obtained faces. We selected only those, which were big enough. For these faces we computed their descriptors in high dimensional space. This space was produced by a neural network trained to identify people. We conducted a case study, where we aimed to verify, if the space of the face descriptors has an ability to order people based on the similarity as people do.
+
+We conducted a study, asking 25 respondents to find 3 most similar faces in the grid of 100 faces to a given face. Each user filled the task for 10 different target faces. We then ranked the faces based on the distance in the feature space and based on the user respondents. The experiments showed a coherence between the people, and the ordering based on the high-dimensional features.
+
+Based on these finding, we build a traversal structure to explore the dataset of faces. We trained a self-organizing map from the data for out bottom layer. For each neuron in this SOM, we assigned a face with the smallest distance to this neuron. Based on this layer, we created top layers, by taking every k-th elemnt in both axis. We also provided a user with ability, to a given face display all closest faces.
+
+In the presented solution, we visually observed a successful clustering of the self organizing map. We observed clusters of older people, people in glasses and so on. Although, this approach not fully cover the original dataset, as some of the data may not be represented in the bottom layer. We leave it for future work, to conduct more thorough experiments, verifying the usefulness of the proposed traversal system.
+
+\vspace{1em}
+
+Overall, we presented two distinctive techniques on tackling the known-item search task. It is important to note, that this task is an open problem, and eventhough we verified promising solution, this problem is not yet solved. This arises also as a fact, that known-item search is task of two -- the user and the algorithm.
+
+\subsection*{Future work}
+
+For both presented approaches, wider set of descriptors extraction functions -- in our case deep neural networks -- may be utlized. We leave the option of combining results of multiple approaches as a future work, where not only information between different collage based ethod, but also with other modality queries used.

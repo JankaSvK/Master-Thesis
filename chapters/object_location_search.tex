@@ -37,6 +37,7 @@ This chapter will present three approaches incorporating pre-trained neural netw
 After the discussion of the options for our system, we evaluate the proposed techniques. We firstly present a set of annotated data -- collages for the target images. Using these queries, we test different sets of hyperparameters and investigate their effect on the system's performance. 
 
 \section{Formal description}
+\label{s:task_formulation}
 
 In this task, we explore the dataset $D$ based on a collage query provided by a user. We shall formally define universe of query images as follows: 
 $$
@@ -232,9 +233,9 @@ We discuss the options of selecting only relevant regions to the query image bas
 
 We visualize the problem in the figure \ref{fig:fish_with_grid}. The query would be an image of the fish placed as the red boundary shows. All regions with a nonempty intersection with the query image are highlighted in green. The region with the highest ``coverage'' is the blue one.
 
-To make this idea over coverage measurable, we use the Jaccard index. We compute the Intersection over Union between the region and the crop, where is the query image located. 
+To make this idea over coverage measurable, we use the Jaccard index. We compute the Intersection over Union between the region and the crop, where the query image is located. 
 
-\emph{Intersection over Union} (also known as Jaccard index\footnote{\href{https://en.wikipedia.org/wiki/Jaccard_index}{https://en.wikipedia.org/wiki/Jaccard\_index}}) measures similarity between two sets. We use it as a metric to express how much two regions (i.e., two rectangles) overlap. 
+\emph{Intersection over Union} (also known as Jaccard index\footnote{\href{https://en.wikipedia.org/wiki/Jaccard_index}{https://en.wikipedia.org/wiki/Jaccard\_index}}) measures similarity between two sets. We use it as a metric to express how much region and query image overlap. 
 
 The definition of the Intersection over Union is following:
 $$
@@ -245,7 +246,7 @@ $$
     \end{cases}
 $$
 
-In our case, the $|A \cap B|$ represents the area that belongs to both, region and query image. The  $|A \cup B|$ represents the area covered by the union of both. A visual representation of the formula is displayed in the figure \ref{fig:intersection_over_union}. Using this index, we can order the regions based on their coverage with the query image. The more relevant regions are the ones with the higher Intersection Over Union with the query image and vice versa.
+In our case, the $|A \cap B|$ represents the area that belongs to both, region and query image. The  $|A \cup B|$ represents the area covered by the union of both. A visual representation of the formula is displayed in the figure \ref{fig:intersection_over_union}. Using this index, we can order the regions based on their coverage with the query image. The more relevant regions are the ones with the higher Intersection Over Union with the query image and vice versa. Please note, that in our particular case, measuring the \acrshort{iou} leads to the same results, as considering only the size of the overlap. However this notation allows for future work to use regions of various sizes.
 
 \begin{figure}
     \centering
@@ -254,7 +255,7 @@ In our case, the $|A \cap B|$ represents the area that belongs to both, region a
 	\label{fig:intersection_over_union}
 \end{figure}
 
-From the regions ordered by their \acrshort{iou} to the query image, we select the first $n$. We leave $n$ as one of our hyperparameters to evaluate in the experiments. Recall that the required output of this stage is only one distance and not multiple from multiple regions. Therefore, when we compare the feature vectors with multiple regions, we select only a winner with the lowest distance for the next phase. 
+From the regions ordered by their \acrshort{iou} to the query image, we select the first $n$. We leave $n$ as one of our hyperparameters to evaluate in the experiments. Recall that the required output of this stage is only one descriptor, not multiple from multiple regions. Therefore, when we compare the feature vectors with multiple regions, we select only a winner, with the lowest distance for the next phase. 
 
 % We present an experiment, where we took all intercepted regions (green regions in the example), only the region with the highest IoU (blue region in the example), or equivalently first 2 with the highest IoU or first three regions. The results of the experiment are shown in figure \ref{fig:crop_limitation}. In the results, we see no significant improvement in any of the provided choices. Although, the selection of only the region with the highest overlap gives us the least computable heavy\todo{mozno nieco ine ako heavy - bud hard ak to fakt je np-tazke alebo nieco typu demanding} approach.
 
@@ -275,11 +276,13 @@ From the regions ordered by their \acrshort{iou} to the query image, we select t
 
 \subsection{Using the representation before pooling}
 
-The disadvantage of the previously presented technique is fixed cutting. The cutting into regions does not adapt to the size of the input query. 
+The disadvantage of the previously presented technique is fixed cutting. The cutting into regions does not adapt to the size of collage image. 
 
 Let us retake a look at the fish in figure \ref{fig:fish_with_grid}. We can see that fish covers approximately two-thirds of the image, but the individual regions cover only one-twelfth. In this case, only this one-twelfth of the image is compared to the query image. The method is missing any adaptation on the size of the query image.
 
-After investigating the structure of the CNNs, we propose an approach based on the information obtained in the last convolution block. In standard architectures, after the last convolution block follows a pooling layer. So far, we worked only with the representation based on this pooling layer. Since we have stripped two layers from the classification CNN -- the fully connected layer used for classification, and the pooling layer --, we also refer to this method as ``antepenultimate'' (meaning ``last, but two'').
+After investigating the structure of the CNNs, we propose an approach based on the information obtained in the last convolution block. In standard architectures, after the last convolution block follows a pooling layer. So far, we only worked with the representation based on this pooling layer.
+
+In this approach we work with the results before applying pooling. As we have stripped two layers from the classification \acrshort{cnn} -- the fully connected layer used for classification, and the pooling layer --, we also refer to this method as ``antepenultimate'' (meaning ``last, but two'').
 
 Since the results we now work with are obtained before global pooling, i.e., from the last convolution block, they are from higher-dimensional space. The space of the feature vectors is now $\mathbb{R}^{k\times l \times c}$. Typically, this space is reduced to $\mathbb{R}^c$ by the global pooling layer.
 
@@ -302,7 +305,9 @@ Query:
 
 \subsubsection{Choosing a region of interest in the layer}
 
-Layer before pooling on which we focus (antepenultimate) is the last convolution block. Therefore, it produces features from space $\mathbb{R}^{K\times L \times C}$, where $K, L, C$ is the shape of the convolution block output. The first two dimensions {\color{red} to jsou cele mnoziny dimenzi ne? mozna napsat, ze K, L odpovida spatial info?} contain spatial information, which is propagated from the previous layers. The third represents the channels (i.e., features).
+Layer before pooling on which we focus (antepenultimate) is the last convolution block. Therefore, it produces features from space $\mathbb{R}^{K\times L \times C}$, where $K, L, C$ is the shape of the convolution block output. The first two dimenisions represent the spatial information, which is propagated from the previous layers. The third represents the channels (i.e., features).
+
+\todo[inline]{two dimensions je tu hore, aj dole a nie je korektne}
 
 To obtain only a part of this layer, we are interested in (i.e., our query was placed in that specific region); we need to take only a subset over the first two dimensions. For a query $Q_i = (I, x_0, y_0, x_1, y_1)$ and a hidden layer $L_i$ represented as a matrix $K \times L \times C$ we select a submatrix based on the query position. 
 
@@ -332,16 +337,18 @@ $$
 
 Both MobileNetV2 and Resnet50V2 end with a convolution block with dimensions $(7,7,C)$, where $C = 1280$ for MobileNetV2 and $C = 2048$ for Resnet50V2. 
 
-In this phase, we have selected a submatrix $L_i'$ with respect to the position of the query image. We apply global average pooling, as was applied in the original network over the layer $L_i'$. Performing the global average pooling over a given matrix $A$ with the dimensions $K' \times L' \times C'$ produces vector $(b_0, b_1, \ldots, b_{C'-1}) \in \mathbb{R}^{C'}$:
+In this phase, we have selected a submatrix $L_i'$ with respect to the position of the query image. We apply global average pooling, as was applied in the original network over the layer $L_i'$. 
+
+Performing the global average pooling over a given matrix $A$ with the dimensions $K' \times L' \times C$ produces vector $(b_0, b_1, \ldots, b_{C-1}) \in \mathbb{R}^{C}$:
 $$
-    b_i = \frac{\sum_{k=0}^{K-1} \sum_{l=0}^{L-1} a_{k, l, i}} {K'L'} \, \forall i \in {0, 1, \ldots C'-1}
+    b_i = \frac{\sum_{k=0}^{K'-1} \sum_{l=0}^{L'-1} a_{k, l, i}} {K'L'} \, \forall i \in {0, 1, \ldots C-1}
 $$
 
-where $a_{k,l,i}$ represents an element of the $A$ in $k$-th row, $l$-th column and $i$-th channel. {\color{red} kde se vzalo C' ?? porad chceme C hodnot}
+where $a_{k,l,i}$ represents an element of the $A$ in $k$-th row, $l$-th column and $i$-th channel.
 
 Finally, by performing the global average pooling over $L_i'$, we obtain our feature vector, which is later used.
 
-Compared to the previous approaches, we aimed to avoid the strict cutting and to provide more flexibility. The caveat of this approach is increased memory consumption, since we store 49 feature vectors per vector ($7\times7$). It also requires to compute the average pool for each of the query images separately. Therefore, also the time complexity is increased. The factor is multiplicative, by the number of images in the collage and the size of the used layer.
+Compared to the previous approaches, we aimed to avoid the strict cutting and to provide more flexibility. The caveat of this approach is increased memory consumption, since we store 49 feature vectors per vector ($7\times7$). It also requires to compute the average pool for each of the query images separately. Therefore, the time complexity is also increased. The factor is multiplicative, by the number of images in the collage and the size of the used layer.
 
 % We present the results in figure \ref{fig:antepenultimate}. Due to its memory limitation, we downsized the dataset to one-tenth. We randomly sampled the images from the dataset. We provide a baseline on this smaller dataset. We can see an improvement compared to the baseline. We were able to implement spatial information of the query successfully. However, the performance is worse compared to one of our region's techniques. We assume that this is caused by the fact that running a network 15 times can extract more information than running it only once.
 
@@ -388,11 +395,15 @@ Finally, we create the ranking of the dataset based on the distance of the colla
 % \label{fig:ranking_funcs}
 % \end{figure}
 
-\section{Padding}
+\section{Additional parameters}
 
-We talked about the importance of the square input in the Regions section. Although, so far we did not discuss, how we handle the case, when the user provides a rectangular image to the collage.
+Additionally, to different techniques of obtaining the feature vectors, we also inspect several other parameters of the system. These parameters include pre-processing of the collage images, post-processing of the features, and selecting the specific \acrshort{cnn}. This section further discusses these parameters.
 
-The option to create non-square queries comes handy when the user wants to include, for example, a picture of a person standing, or a kayak. A question arises, what is the best way to edit the image before feeding it to the CNN. We test three techniques: rescale, black padding, and white padding. We have previously discussed the caveats of the rescale. It distorts the images. If the person in the query image is in a tall and narrow box, the distortion will cause it to appear more full and shorter. The distortion becomes stronger with an increasing imbalance between the box dimensions. The alternative approaches, black and white padding differ only in the filling color. The padding works by resizing the image in a way, that the longer side of the image is the size of the input. Image is then centered among the other axis. The space left is filled by a specified color.
+\subsection{Padding}
+
+We talked about the importance of the square input in the regions section. Although, so far we did not discuss, how we handle the case, when the user provides a rectangular image to the collage.
+
+The option to create non-square queries comes handy when the user wants to include, for example, a picture of a person standing, or a kayak. A question arises, what is the best way to edit the image before feeding it to the CNN. We test three techniques: rescale, black padding, and white padding. We have previously discussed the caveats of the rescale. It distorts the images. If the person in the query image is in a tall and narrow box, the distortion will cause it to appear more full and shorter. The distortion becomes stronger with an increasing imbalance between the box dimensions. The alternative approaches, black and white padding differ only in the filling color. The padding works by resizing the image in a way, that the longer side of the image is the size of the input. Image is then centered along the other axis. The remaining space left is filled by a specified color.
 
 
 
@@ -407,11 +418,11 @@ The option to create non-square queries comes handy when the user wants to inclu
 %     \label{fig:padding}
 % \end{figure}
 
-\section{Dimensionality reduction}
+\subsection{Dimensionality reduction}
 
 In the previous sections, we discussed several hyperparameters of the system we can tune. In this section, we take a look at reducing the dimensionality of the extracted features. Dimensionality reduction could help us to scale our approaches to even bigger datasets and to decrease the query response time.
 
-The extracted features from the neural networks are from high-dimensional space (for MobileNetV2, it is 1280 features, for Resnet50 it is 2048 features). Moreover, the dimensionality reduction can also have a positive effect on reducing noise if present in the feature vector. We aim to evaluate the system with a reduced number of features. For the dimensionality reduction, we use the Principal Component Analysis \todo{ref?} for dimensionality reduction.
+The extracted features from the neural networks are from high-dimensional space (for MobileNetV2, it is 1280 features, for Resnet50 it is 2048 features). Moreover, the dimensionality reduction can also have a positive effect on reducing noise if present in the feature vector. We aim to evaluate the system with a reduced number of features. For the dimensionality reduction, we use the Principal Component Analysis \todo{ref?}.
 
 % The results are shown in figure \ref{fig:pca}. From the results, we can have several interesting observations.\todo{The results offer several...} Even with as low as eight components (8 features), we can obtain performance \todo{comparable to the} as the original Image representation baseline. With the increasing number of components, the system performs better. With 512 components, it even performed slightly better as the original data. For our purposes, we think \todo{conclude / nieco viac scientific ako think} that selecting 128 components offer the best performance-cost ratio. With the need for smaller feature vectors, we would select at minimum 64.
 
@@ -422,15 +433,15 @@ The extracted features from the neural networks are from high-dimensional space 
 %     \label{fig:pca}
 % \end{figure}
 
-\section{Neural network selection}
+\subsection{Neural network selection}
 
 At last, we discussed all the hyperparameters we aim to evaluate. In the evaluation sections, we run several experiments in order to find the best set of parameters. We use MobileNetV2 as our feature extraction model, due to its speed and small size.
 
 After obtaining the best set of hyperparameters, we use the same set of the hyperparameters for comparing the performance between different CNNs.
 
-Amon the MobileNetV2, We use two different instances of the ResNet, Resnet50, and Resnet50V2. Both ResNet50V2 and MobileNetV2 were trained on the classification task to classify 1000 classes. We include the Resnet50 as model pre-trained on more than eleven thousand classes. We aim to experimentally support the claim that network trained on more classes can achieve a better performance level. 
+Aside for the MobileNetV2, We use two different instances of ResNet -- Resnet50, and Resnet50V2. Both ResNet50V2 and MobileNetV2 were trained on the classification task to classify 1000 classes. We include the Resnet50 as model pre-trained on more than eleven thousand classes. We aim to experimentally support the claim that network trained on more classes can achieve a better performance level. 
 
-The downside of using a ResNet50 trained on eleven thousands of classes compared to MobileNetV2 is slower evaluation and availability. Since the classification task on eleven thousands class is not one of the most common state-of-art challenges, the set of pre-trained neural network for this task is smaller. Also, the used Resnet50 is only pre-trained with the input shape 224x224. To use it for the regions, we introduced upscaling for the network input. 
+The downside of using a ResNet50 trained on eleven thousands of classes compared to MobileNetV2 is slower evaluation and availability. Since the classification task on eleven thousands class is not one of the most common state-of-art challenges, the set of pre-trained neural network for this task is smaller. Also, used Resnet50 is only pre-trained with the input shape 224x224. To use it for the regions, we introduced upscaling for the network input. 
 
 % Even with \todo{even with, alebo nieco ine} these difficulties, it proved itself as the best choice out of the compared alternatives.
 
@@ -455,7 +466,7 @@ In this section we provide evaluations for each aforementioned parameter of the 
 
 \section{Collected collages}
 
-We manually created a set of queries to evaluate the proposed system's configurations. The annotated data consists of 102 collages, each containing a visual description of a given target image. The average size of the images used in the collages covers 15\% of the canvas. Five percent of the collected collages contain an image bigger than 80\% of the canvas. We provide visualizations of the distribution of the annotated queries in figure \ref{fig:annotated_dataset}. Together, all 102 collages are described by 199 images.
+We manually created a set of queries to evaluate the proposed system's configurations. The figure \ref{fig:query_collage_comparison} shows one of such query -- target image and collage. The annotated data consists of 102 collages, each contains a visual description of a given target image. The average size of the images used in the collages covers 15\% of the canvas. Five percent of the collected collages contain an image bigger than 80\% of the canvas. We provide visualizations of the distribution of the annotated queries in figure \ref{fig:annotated_dataset}. Together, all 102 collages are described by 199 images.
 
 \begin{figure}
      \centering
@@ -473,13 +484,13 @@ We manually created a set of queries to evaluate the proposed system's configura
          \label{fig:three sin x}
      \end{subfigure}
     
-    \caption{Annotated collages properties}
+    \caption{Collected collages properties}
     \label{fig:annotated_dataset}
 \end{figure}
 
-For the annotation, we used our application. It is possible to save the collage by clicking ``Submit Collage.'' The average time spent on creating a single collage was 91 seconds. This time includes searching for images online, pasting them onto the canvas, and usually also waiting for the responses of the system.
+For the annotation, we used our application. It is possible to save the collage by clicking ``Submit Collage.'' The average time spent on creating a single collage was 91 seconds. This time includes searching for images online, pasting them onto the canvas, and also waiting for the responses of the system.
 
-We want to highlight that we created more than a hundred collages corresponding to the target images from the dataset. The annotations were done only by a one-person. We leave annotation from more people, to study the differences in behavior, for future work. 
+We want to highlight that we created more than a hundred collages corresponding to the target images from the dataset. The annotations were done only by a one person. We leave annotation from more people, to study the differences in behavior, for future work. 
 
 \section{Plots overview}
 
@@ -487,7 +498,7 @@ Using the collected queries and based on the definition of the \emph{rank} we ca
 
 For this purpose we formulate a few additional terms. When measuring the performance system, we work on the set of collected queries $X$. For each of the query collage $Q_i$, we say that the rank of the target image $T_i$ is $r_D(T_i, Q_i)$ given the set of hyperparameters of the system $\theta$.
 
-We define a function, which represents the performance of the system.
+We define a function $s_{D, \theta}$, which represents the performance of the system.
 $$
 s_{D, \theta}:\{0, 1, \ldots |D| - 1\} \rightarrow \{0, 1, \ldots |X| - 1\}
 $$  
@@ -495,7 +506,14 @@ $$
 s_{D, \theta}(h) = \sum_{(T_i, Q_i) \in X}[r_D(T_i, Q_i) \leq h]
 $$
 
-In the plots we scale the both axis as the percentage of the dataset/collected queries. That way we obtain comparable results even in case of different datasets.
+In the plots we scale the both axis as the percentage of the dataset/collected queries. That way we obtain comparable results even in case of different datasets. Similarly to our reasoning in section \ref{s:task_formulation} we claim that this function correlates with the time spent on retrieving all target images.
+
+
+\section{Summary}
+
+In this chapter, we focus on fine-tuning several hyperparameters of the task at hand. We achieved the best results using the approach of cutting the image into regions, with settings of 2x4 and 3x5 regions. Additionally, we showed that the best performing input shapes were $96\times 96$ and $128 \times 128$.  We did not found out that the number of selected crops would a significant role on the performance for tested variants. For the distance function, we chose \emph{cosine distance} since it performed significantly better than the other evaluated distance functions. To merge the rankings, we continue with the \emph{average}. For the padding selection, it emerged from the experiment that \emph{rescale} worked the best. From the tested networks, \emph{Resnet50} trained on eleven thousands of classes performed the best. Finally, we concluded that dimensionality reduction into \emph{128} dimensions has a little, almost no negative effect on the performance of the system. Therefore we recommend using it. 
+
+
 
 \begin{figure}
     \centering
@@ -528,21 +546,21 @@ In the plots we scale the both axis as the percentage of the dataset/collected q
 \begin{figure}
     \centering
     \includegraphics[width=0.8\linewidth]{graphs/adaf8d435bb40406f9ce40654ec396e04453ab76cf0776d2a87d385055d5424f.pdf}
-    \caption{Comparison of baseline, regions and approach using the output of the layer before the global pooling. Due to higher memory requirements, we had to sample the dataset. We randomly sampled one-tenth of the dataset. We also provide a baseline on this smaller dataset, the performance may slightly change, based on the dataset. We can see that using the information from the layer before the global pooling layer improved the performance of the system, compared to the baseline. These are interesting results, due to the fact, that the underlying network is for both approaches identical. This shows, that we can elevate the spatial information about the objects from the last convolution block.}
+    \caption{Comparison of baseline, regions and approach using the output of the layer before the global pooling. Due to higher memory requirements, we had to sample the dataset. We randomly sampled one-tenth of the dataset. We also provide a baseline on this smaller dataset, the performance may slightly change, based on the dataset. We can see that using the information from the layer, before the global pooling layer improved the performance of the system, compared to the baseline. These are interesting results, because, that the underlying network is for both approaches identical. This shows, that we can elevate the spatial information about the objects from the last convolution block.}
     \label{fig:antepenultimate}
 \end{figure}
 
 \begin{figure}
     \centering
     \includegraphics[width=0.8\linewidth]{graphs/3aab502ea602a9f49afaa0a0d998cf226a0a67b9efcaa655d2ddf5063eeabe47.pdf}
-    \caption{Comparison of the performance based on the chosen distance function. As we expected {\color{red} to se moc neda predpokladat... btw. neni to jen tou normalizaci?}, we see a superior performance of the cosine distance.}
+    \caption{Comparison of the performance based on the chosen distance function. We see a superior performance of the cosine distance.}
     \label{fig:regions_distances}
 \end{figure}
 
 \begin{figure}
 \centering
 \includegraphics[width=0.8\linewidth]{graphs/70c56dc52be92e048f57b9bdfb35ddce2be41fd2454ae360588da2e387b09de5.pdf}
-\caption{Performance of the system based on different ranking {\color{red} aggregation?} function}
+\caption{Performance of the system based on different aggregation function}
 \label{fig:ranking_funcs}
 \end{figure}
 
@@ -556,7 +574,7 @@ In the plots we scale the both axis as the percentage of the dataset/collected q
 \begin{figure}
     \centering
     \includegraphics[width=0.8\linewidth]{graphs/6fbd4f70810e1f63f400ef601c1cdba0fd1635749810aa2347a4ff26e6fccf47.pdf}
-    \caption{Effect of PCA on the performance of the system. The results offer several interesting observations. With the increasing number of components, the system performs better. With 512 components, it even performed slightly better than on the original data. For our purposes, we conclude that selecting 128 components offer the best performance-cost ratio. With the need for smaller feature vectors, we would select at minimum 64.}
+    \caption{Effect of PCA on the performance of the system. The results offer several interesting observations. With the increasing number of components, the system performs better. With 512 components, it even performed slightly better than on the original data. For our purposes, we conclude that selecting 128 components offer the best performance-cost ratio. With the need for smaller feature vectors, we would select at minimum 64 components.}
     \label{fig:pca}
 \end{figure}
 
@@ -580,8 +598,3 @@ In the plots we scale the both axis as the percentage of the dataset/collected q
 %     \label{fig:mobilenet_whole_image_example}
 % \end{figure}
 
-
-\section{Summary}
-
-In this chapter, we focused on fine-tuning several hyperparameters of the task at hand. We achieved the best results using the approach of cutting the image into regions, with settings of 2x4 and 3x5 regions both achieving good results. Additionally, we showed that the best performing input shapes were $96\times 96$ and $128 \times 128$.  We found out that the number of selected crops does not play a significant role on the performance for tested variants. For the distance function, we chose \emph{cosine distance} since it performed significantly better than the others. To merge the rankings, we continue with the \emph{average}. For the padding selection, it emerged from the experiment that \emph{rescale} worked the best. From the tested networks, \emph{Resnet50} trained on eleven thousands of classes performed the best. Finally, we concluded that dimensionality reduction into \emph{128} dimensions has a little, almost none negative effect on the performance of the system. 
- therefore is preferred. 
