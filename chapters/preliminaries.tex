@@ -1,9 +1,9 @@
-\chapter{Content-based image retrieval}
+\chapter{Content-based Image Retrieval}
 \label{ch:preliminaries}
 
 Image retrieval and image indexing have been an active research field since the 1970s. In 1978 (\cite{tamura1978textural}), a group of researchers proposed a system for retrieving textures based on the example texture. Since then, a wide range of techniques for image retrieval were presented. Traditional approaches included manual annotation of the images by textual or numerical metadata. The user could then formulate a query against these annotations to retrieve relevant images. This approach is often referred to as Concept-based image retrieval or meta-data search.
 
-There are several drawbacks to the textual or numerical annotations. First of all, extensive human annotations are often needed to provide rich data for filtering. Including also, spatial information of the objects takes more resources than only writing down present objects in the image. Furthermore, the images often include too many details (i.e., type, color, or shape of the objects), which may be impossible to comprehend by manual annotations.  The annotations may not even represent a stable truth. With a different annotator, the annotations may include different details/objects, which were perceived differently. When the user searches for an image, she has to know the exact terms the annotators used in order to be able to retrieve the images they want. As the last problem, we pose with human annotations is the scalability. As the amount of information increases every second, there is no human capability to hand process all the examples.
+There are several drawbacks to the textual or numerical annotations. First of all, extensive human annotations are often needed to provide rich data for filtering. Also, including spatial information of the objects takes more resources than only writing down present objects in the image. Furthermore, the images often include too many details (i.e., type, color, or shape of the objects), which may be impossible to comprehend by manual annotations.  The annotations may not even represent a stable truth. With a different annotator, the annotations may include different details/objects, which were perceived differently. When the user searches for an image, she has to know the exact terms the annotators used in order to be able to retrieve the images they want. As the last problem, we pose with human annotations is the scalability. As the amount of information increases every second, there is no human capability to hand process all the examples.
 
 During the 1990s, content-based image retrieval (\acrshort{cbir}) emerged (trend study from \cite{datta2008image}). In the CBIR approach, the images are indexed by features directly derived from their visual content using automatic or semi-automatic image processing techniques. Such indexing lacks building blocks (for example, verbal description); on the other hand, it provides low-level feature information about the whole images or its regions. The attributes of images are complex functions of regions of the image or the whole image.
 
@@ -11,7 +11,7 @@ CBIR has received considerable research interest in the last decades. With the a
 
 Presented techniques focus on the known-item search task. An alternative could be an Ad Hoc search, where the goal is to retrieve all relevant items to the query. Known-item search task instead works with retrieving a known item from the dataset.
 
-Following this chapter, we continue with the specifics of the individual approaches we present. Here we formulate the task and the goal.
+In the following chapters, we continue with the specifics of the individual approaches we present. Here we formulate the task and the goal.
 
 
 \section{Task formulation}
@@ -38,8 +38,9 @@ Our system then serves as a search engine, aiming to provide the user with the m
 To search over a dataset of images $D$, we need a metric of how similar two items are. This similarity could be computed between the images directly, although it is more common to compare their descriptors (i.e., their  projections by a descriptor extraction function). A descriptor extraction function is a function $f_e: \mathcal{U} \rightarrow \mathcal{F}$, where $\mathcal{F}$ is a feature space. Given a descriptor extraction function $f_e$, we compute for each image in the dataset $D$ a descriptor (or feature vector) $L_I = f_e(I)$, where $I \in \mathcal{U}, L_I \in \mathcal{F}$. In our work, we use various neural networks as our descriptor extraction functions. It is common for neural networks to produce the descriptors in the space of real numbers $\mathbb{R}^n$, and in our case, we work only with the descriptor spaces, which are isomorph to the $\mathbb{R}^n$.
 
 \section{Distance Measures}
+\label{s:distance_measures}
 
-To compare, how similar descriptors of two images are, we use a concept of distance. Similar descriptors have smaller distance, and vice versa. We use a definition for a distance space and metric space from the book \cite{deza2009encyclopedia}.
+To compare, how similar descriptors of two images are, we use a concept of distance. Similar descriptors have smaller distance, and vice versa. We use a definitions for a distance space and metric space from the book \cite{deza2009encyclopedia}.
 
 \theoremstyle{definition}
 \begin{definition}{Distance space}
@@ -52,7 +53,7 @@ with a distance $\delta : \mathcal{F} \times \mathcal{F} \rightarrow \mathbb{R}^
 $(\mathcal{F}, \delta)$ is a distance space, where $\delta$ additionaly satisfies $\forall x, y, z \in \mathcal{F} : \delta(x,z) \leq \delta(x,y) + \delta(y,z)$ (triangle inequality) and $\delta(x, y) = 0 \Rightarrow x = y$
 \end{definition}
 
-In the next chapters, we often compare two high-dimensional descriptors. These descriptors are often produced as a prediction of a neural network. Our feature space is $\mathbb{R}^n$, given $n$ as the number of features. We present distance functions over the space $\mathbb{R}^n$ later used in the thesis. Euclidean and Manhattan distance on $\mathbb{R}^n$ form metric spaces. Note that, cosine distance, deduced from cosine similarity does not follow triangle inequality and forms only a distance space.
+In the next chapters, we often compare two high-dimensional descriptors. These descriptors are often produced as an output of a neural network. Our feature space is $\mathbb{R}^n$, given $n$ as the number of features. We present distance functions over the space $\mathbb{R}^n$ later used in the thesis. Euclidean and Manhattan distance on $\mathbb{R}^n$ form metric spaces. Note that, cosine distance, deduced from cosine similarity does not follow triangle inequality and forms only a distance space.
 
 \subsection{Euclidean distance}
 
