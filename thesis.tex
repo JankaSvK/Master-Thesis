@@ -115,14 +115,14 @@
 % An optional dedication: you can thank whomever you wish (your supervisor,
 % consultant, a person who lent the software, etc.)
 \def\Dedication{%
-I would firstly like to thank my supervisor doc. RNDr. Jakub Lokoč, Ph.D. for ideas, numerous corrections, and spot-on help. My thanks also belong to the SIRET Research group members for sharing their experience and knowledge in the research topic with me. Last but not least, I thank all faculty members and especially fellow students. They created an amazing growth environment where I could learn. Personal thanks belong to my close friends and family, who helped me persist in my studies.
+I firstly would like to thank my supervisor doc. RNDr. Jakub Lokoč, Ph.D. for ideas, numerous corrections, and spot-on help. My thanks also belong to the SIRET Research group members for sharing their experience and knowledge in the research topic with me. Last but not least, I thank all faculty members and especially fellow students. They created an amazing growth environment where I could learn. Personal thanks belong to my close friends and family, who helped me persist in my studies.
 }
 
 % Abstract (recommended length around 80-200 words; this is not a copy of your thesis assignment!)
 \def\Abstract{%
 In a known-item search task (KIS), the goal is to find a previously seen image in a multimedia collection. In this thesis, we discuss two different approaches based on the visual description of the image.
 
-In the first one, the user creates a collage of images (using images from an external search engine), based on which we provide the most similar results from the dataset. Our results show that preprocessing the images in the dataset by splitting them into several parts is a better way to work with the spatial information contained in the user input. We compared the approach to a baseline, which does not utilize this spatial information and an approach that alters a layer in a deep neural network.
+In the first one, the user creates a collage of images (using images from an external search engine), based on which we provide the most similar results from the dataset. Our experiments show that we can provide more relevant results when incorporating spatial information by splitting the images into several parts. We compared this approach to a baseline, which does not utilize this spatial information and an approach that alters a layer in a deep neural network.
 
 We also present an alternative approach to the KIS task, search by faces. In this approach, we work with the faces extracted from the images. We investigate face representations for their ability to sort people based on their similarity. Based on these similarities, we build a structure that allows easy exploration of the set of faces.
 
@@ -166,7 +166,9 @@ We provide a demo, implementing all presented techniques.
 
 
 %%% Bibliography
+\normalem
 \include{bibliography}
+\ULforem
 
 %%% Figures used in the thesis (consider if this is needed)
 \listoffigures
@@ -179,8 +181,9 @@ We provide a demo, implementing all presented techniques.
 %%% In mathematical theses, it could be better to move the list of abbreviations to the beginning of the thesis.
 
 % \printglossary[type=\acronymtype]
-\printacronyms
 
+\printacronyms
+\addcontentsline{toc}{chapter}{Acronyms}
 
 %%% Attachments to the master thesis, if any. Each attachment must be
 %%% referred to at least once from the text of the thesis. Attachments
@@ -193,10 +196,10 @@ We provide a demo, implementing all presented techniques.
 %%% source code, data files, interactive charts, etc.). Electronic attachments
 %%% should be uploaded to SIS and optionally also included in the thesis on a~CD/DVD.
 %%% Allowed file formats are specified in provision of the rector no. 72/2017.
-\appendix
-\chapter{Attachments}
+% \appendix
+% \chapter{Attachments}
 
-\section{First Attachment}
+% \section{First Attachment}
 
 \openright
 \end{document}
