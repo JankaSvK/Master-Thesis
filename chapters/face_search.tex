@@ -87,7 +87,7 @@ Firstly, we investigate how likely it is that the human subject notices that the
 
 As our next step, we empirically evaluate, if the model used for obtaining the face encodings, can sort the faces based on the distances similarly as human subjects do.
 
-We further investigate the seven target faces, which were not present in the grid. Excluding the three cases, where the target face is in the grid, we avoid overestimating the quality of our model, since we know, that the model is performing well on the verification task. For each of the faces $F\in G$ from the grid $G$, we compute the euclidean distance from the target face $T\in D$, where $D$ denotes our dataset of faces (between their encodings). We then reorder the faces from the grid based on this distance (similar to the ranking from the previous chapters). 
+We further investigate the seven target faces, which were not present in the grid. Excluding the three cases, where the target face is in the grid, we avoid overestimating the quality of our model, since we know, that the model is performing well on the verification task. For every face $F$ from the grid $G$, we compute the euclidean distance from the target face $T\in D$, where $D$ denotes our dataset of faces (between their encodings). We then reorder the faces from the grid based on this distance (similar to the ranking from the previous chapters). 
 
 Formally we define distance $\gamma$ between faces $F, F' \in D$ based on the descriptor extraction function $f$ and euclidean distance $d_e$:
 
@@ -121,14 +121,14 @@ $$
 Finally, to provide comprehensive overview, we compute combined probability of selecting face with rank $R$ by combining the results for all target faces $\mathcal{T}$:
 
 $$
-p(R) = \frac{\sum_{T\in \mathcal{T}} p_T(R)}{|\mathcal{T}|}
+p(R) = \frac{1}{\abs{\mathcal{T}}}\sum_{T\in \mathcal{T}} p_T(R)
 $$
 
 Note that as each user selects three faces, it holds: $\sum_{R\in\{0,1,\ldots99\}} p(R) = 3$.
 
 We plot the empirical probability $p$, of a user selecting the face on the $k$-th rank, given the target face. If the user is fully coherent with the model, they would choose the closest three faces based on the euclidean distance, and for the $R \in \{0,1,2\}$ we would see a probability $p(R) = 1$ and zero otherwise. 
 
-This plot of the probabilities is displayed in figure \ref{fig:survey_distribution}. Note that, this is not a probabilistic distribution, since it does not sum up to one, but rather three. We do not normalize this plot, so we can talk about the probability, given our experimental settings, i.e., selecting exactly three faces.
+This plot of the probabilities is displayed in figure \ref{fig:survey_distribution}. We do not normalize this plot, so we can talk about the probability, given our experimental settings, i.e., selecting exactly three faces.
 
 % In the same figure \ref{fig:survey_distribution} we can see the distribution only of the seven presented faces.
 
@@ -141,7 +141,7 @@ We are interested in the distribution of ranks given the faces selected by the u
 
 % We also show a comparison to the performing only six tasks, excluding the one, where the target person was child. The used network for feature extraction as many other are not performing well on the children from the dataset. This is caused by fact that most of the available face datasets contain only adults. This causes the networks to often put children closer together, even though, they may be a different person. Encodings of two different children tend to be closer to each other compared to the encoding of the two adults (source: \href{https://face-recognition.readthedocs.io/en/latest/readme.html#caveats}{Face Recognition Caveats}). Therefore we can see a significant improvement over the lowest ranks, since selecting a child from the map resulted in smaller distances, compared to the adults.
 
-As the last investigation from the case study we provide a graph (figure \ref{fig:cumsum_faces}) displaying the expected value of the number of faces selected up to a given rank $\mathbb{E}[R] = \sum_{R' \leq R}p(R')$. On average, one of the three selected faces by the user has a rank of less than 12. In the plot, we also present a ``random selection''. This would be the case of no underlying information on the face similarity from the model. Therefore, users would be equally likely to choose face at any given rank.
+As the last investigation from the case study we provide a graph (figure \ref{fig:cumsum_faces}) displaying the expected value of the number of faces $X_R$ selected up to rank $R$, which can be expressed in terms of $p$ as $\mathbb{E}[X_R] = \sum_{R' \leq R}p(R')$. On average, one of the three selected faces by the user has a rank of less than 12. In the plot, we also present a ``random selection''. This would be the case of no underlying information on the face similarity from the model. Therefore, users would be equally likely to choose face at any given rank.
 
 We leave for future work, a more comprehensive study with more target faces providing more reliable estimates. Based on the experimental results of this user study, it seems to indicate that the distance over encodings correlates with the similarity of the original faces as perceived by the human subjects.
 
@@ -160,7 +160,7 @@ We leave for future work, a more comprehensive study with more target faces prov
     %  \label{fig:suvery_childless}
     % \end{subfigure}
     
-    \caption{Collected statistic on how likely user selects $k$-th closest face to the target in the face grid. Ideally, if user had been fully coherent with the distances in the features space, $p(R) = 1$ on $\{0,1,2\}$, since the user selected exactly 3 faces, and $p(R) = 0$ for all other $R$.}
+    \caption{Collected statistic on how likely user selects $k$-th closest face to the target in the face grid}
     \label{fig:survey_distribution}
 \end{figure}
 
