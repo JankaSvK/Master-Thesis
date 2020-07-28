@@ -1,7 +1,7 @@
 \chapter{Search by Face Similarity}
 \label{ch:face_search}
 
-In this chapter, we propose another approach to the \acrshort{cbir} task. This approach focuses only on the case, where the images include people.
+In this chapter, we propose another approach to the \acrshort{kis} task. This approach focuses only on the case, where the images include people.
 We investigate the option of finding the target image based on the person's face in the image and other faces in the dataset.
 
 This approach arises from practical reasons. Once we investigated the V3C1 dataset, we realized that in many of the images are people. We can use the previously investigated approaches based on the location and visual similarity to find the target image. However, with the increasing number of images showing people, it becomes difficult to retrieve the correct target image. Simply searching for a person in the top left corner would retrieve all images with a person in the said corner (not just the one we are looking for). Also, finding a good representative face with similar background becomes a challenging task.
@@ -27,7 +27,7 @@ The question we ask in the following sections is if the face descriptors can sor
 
 \section{Extraction of the faces}
 
-If we look at the dataset, we notice that only a small portion of the people look directly into the camera. Since the images come from the videos, most of the people captured are doing some activity and not looking directly into the camera. As discussed in section \ref{s:dlib}, we select the CNN based approach to extract the faces since it worked better with a wider variety of poses.
+If we look at the dataset, we notice that only a small portion of the people look directly into the camera. Since the images come from the videos, most of the people captured are doing some activity and not looking directly into the camera. As discussed in section \ref{s:dlib}, we select the \acrshort{cnn} based approach to extract the faces since it worked better with a wider variety of poses.
 
 For our experiment, we use only a part of the original dataset. We extract faces only from the first 316 videos of the V3C1 dataset. Again, we firstly use image extraction from videos (refer to section \ref{s:dataset}), and only then we extract faces from images. 
 
@@ -141,7 +141,7 @@ We are interested in the distribution of ranks given the faces selected by the u
 
 % We also show a comparison to the performing only six tasks, excluding the one, where the target person was child. The used network for feature extraction as many other are not performing well on the children from the dataset. This is caused by fact that most of the available face datasets contain only adults. This causes the networks to often put children closer together, even though, they may be a different person. Encodings of two different children tend to be closer to each other compared to the encoding of the two adults (source: \href{https://face-recognition.readthedocs.io/en/latest/readme.html#caveats}{Face Recognition Caveats}). Therefore we can see a significant improvement over the lowest ranks, since selecting a child from the map resulted in smaller distances, compared to the adults.
 
-As the last investigation from the case study we provide a graph (figure \ref{fig:random_selection_faces}) displaying the expected value of the number of faces selected up to a given rank $\mathbb{E}[R] = \sum_{R' \leq R}p(R')$. On average, one of the three selected faces by the user has a rank of less than 12. In the plot, we also present a ``random selection''. This would be the case of no underlying information on the face similarity from the model. Therefore, users would be equally likely to choose face at any given rank.
+As the last investigation from the case study we provide a graph (figure \ref{fig:cumsum_faces}) displaying the expected value of the number of faces selected up to a given rank $\mathbb{E}[R] = \sum_{R' \leq R}p(R')$. On average, one of the three selected faces by the user has a rank of less than 12. In the plot, we also present a ``random selection''. This would be the case of no underlying information on the face similarity from the model. Therefore, users would be equally likely to choose face at any given rank.
 
 We leave for future work, a more comprehensive study with more target faces providing more reliable estimates. Based on the experimental results of this user study, it seems to indicate that the distance over encodings correlates with the similarity of the original faces as perceived by the human subjects.
 
@@ -169,7 +169,7 @@ We leave for future work, a more comprehensive study with more target faces prov
     \centering
     \includegraphics[width=0.8\linewidth]{graphs/survey_cumsum_without_the_easy.pdf}
     \caption{Expected value of the number of images selected up to a given rank.}
-    \label{fig:random_selection_faces}
+    \label{fig:cumsum_faces}
 \end{figure}
 
 \section{Building a traversal scheme}
@@ -220,7 +220,7 @@ In this structure, we support six types of navigation: left, right, down, up, in
 
 In the bottom layer, we would like to make use of the face encodings. As we reviewed in \autoref{ch:related_work}, Self-organizing maps showed a promising way to project high-dimensional data onto the 2D grid. We train a self-organizing map on our dataset of face encodings. For our particular dataset, we train a network of size $50\times 50$. This offers us 2500 neurons, having more neurons than there are faces in the dataset.
 
-To train a SOM, we use a MiniSom framework \citep{vettigli2013minisom}. We use the default setting for the SOM, a gaussian neighborhood function with an asymptotic decay for the parameters. This setting showed the best results after visual inspection. We train the SOM for 200\,000 iterations, i.e., each example was seen on average 100 times during the training. Since the training of the SOM highly depends on the random initialization, we first run the same settings for ten different seeds for 30 000 iterations. Based on the results, we selected a seed with the lowest quantization error (refer to \autoref{s:som}). We reran the training with the best seed and trained for 200\,000 iterations.
+To train a \acrshort{som}, we use a MiniSom framework \citep{vettigli2013minisom}. We use the default setting for the SOM, a gaussian neighborhood function with an asymptotic decay for the parameters. This setting showed the best results after visual inspection. We train the \acrshort{som} for 200\,000 iterations, i.e., each example was seen on average 100 times during the training. Since the training of the \acrshort{som} highly depends on the random initialization, we first run the same settings for ten different seeds for 30 000 iterations. Based on the results, we selected a seed with the lowest quantization error (refer to \autoref{s:som}). We reran the training with the best seed and trained for 200\,000 iterations.
 
 \begin{figure}
     \centering

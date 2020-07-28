@@ -11,7 +11,7 @@
 
 We can imagine that at that particular moment we were shooting a video of the scenery. However, years later, with a vast set of videos in our collections, it may be impossible to re-watch every one of them to find that particular memory. Not all of us can visualize the memory, but about those who can, we say that they have an excellent visual memory \footnote{\url{https://en.wikipedia.org/wiki/Visual_memory}}. We present a technique that can be used to search in a dataset based on such memories of the scenery.
 
-In this chapter, we elaborate approaches for known-item search based on a visual description of the memorized image. We characterise the image by the set of interesting objects in it, the way how they looked (by providing example images) and by their relative location in the image (i.e., top left corner). With that information, we look for a match in the database to the described image. We refer to our input as \emph{collage query}, or simply just as a collage. Collage is created by taking images and placing them onto an empty canvas. The placement of the images also carries a piece of information. We show an example of such a collage (query) in figure \ref{fig:query_collage_comparison}. On the left, we can see a cat in the center behind a window. On the right, we can see a possible visualization of such memory. On the grey canvas, we placed a window, which reminded us of the original one. At the center, we added a similarly colored cat.
+In this chapter, we elaborate approaches for \acrlong{kis} based on a visual description of the memorized image. We characterise the image by the set of interesting objects in it, the way how they looked (by providing example images) and by their relative location in the image (i.e., top left corner). With that information, we look for a match in the database to the described image. We refer to our input as \emph{collage query}, or simply just as a collage. Collage is created by taking images and placing them onto an empty canvas. The placement of the images also carries a piece of information. We show an example of such a collage (query) in figure \ref{fig:query_collage_comparison}. On the left, we can see a cat in the center behind a window. On the right, we can see a possible visualization of such memory. On the grey canvas, we placed a window, which reminded us of the original one. At the center, we added a similarly colored cat.
 
 \begin{figure}
 \centering
@@ -60,7 +60,7 @@ $$
     r_D: (D \times \mathcal{P(Q)}) \rightarrow \{0, 1, \ldots, |D|-1  \}
 $$
 $$
-    \text{ s.t. } \{r_D(d, Q) | d \in D \} = \{0, 1, \ldots, |D|-1  \} \,\, \forall Q \subset \mathcal{Q}
+    \text{ s.t. } \{r_D(d, Q) \mid d \in D \} = \{0, 1, \ldots, |D|-1  \} \,\, \forall Q \subset \mathcal{Q}
 $$
 
 % TODO, je to function a for fixed Q je to ranking
@@ -113,9 +113,9 @@ As the next step, our goal is to obtain the distance for descriptor of each quer
 
 To summarize, we compute the dissimilarity score $\delta'(d, Q)$ between $d \in D$ and collage $Q \subset \mathcal{Q}$, we do following:
 $$
-   \delta'(d, Q) = A(\{\delta(f_q(q_u), z(f_d(d), q_m))|q\in Q\})
+   \delta'(d, Q) = A(\{\delta(f_q(q_u), z(f_d(d), q_m)) \mid q\in Q\})
 $$
-where $A$ denotes the aggregation function over a multiset. We use notation $Q = (q_u, q_m)$, where $q_u$ represents the collage image and $q_m$ the metadata, i.e., position in the canvas. Also, in this particular equation, we use the $\{(\cdot)\}$ for a multiset.
+where $A$ denotes the aggregation function over a multiset. We use notation $q = (q_u, q_m)$, where $q_u$ represents the collage image and $q_m$ the metadata, i.e., position in the canvas. Also, in this particular equation, we use the $\{(\cdot)\}$ for a multiset.
 
 While the described pipeline offers a reasonably straightforward approach to the task at hand, the individual stages' internal factors require a fair amount of tuning. We evaluate the hyperparameters with respect to the performance of the whole framework. Throughout the following sections, we progressively build the pipeline while describing the particular approaches we use. We start with the discussion on feature extraction, and then progress towards the next stages of the system.  
 
@@ -167,7 +167,7 @@ Query:
 
 In the next presented approach, we will focus on using the spatial information of the images in the collage. This position of the objects can serve as highly distinguishing criteria while looking for the target image. In the previous subsection, we described the image in the dataset by only one prediction of the neural network. We obtain higher granularity for the data, by splitting the image into multiple regions and then computing the feature vector on each of the region separately.
 
-Let us assume that, we split the image into $m$ cuts. For each image of the dataset, we now need to store $m$ times more information. Resulting feature vector is of space $\mathbb{R}^{nm}$, where $n$ is the size of the DNN output. To avoid increasing the time complexity by the multiplicative factor of $m$, we investigate a principle, how to compare the query image only with the one or few out of these $m$ cuts and not to all. That way, we preserve the same time complexity except for some additive factor, compared to the Baseline.
+Let us assume that, we split the image into $m$ cuts. For each image of the dataset, we now need to store $m$ times more information. Resulting feature vector is of space $\mathbb{R}^{nm}$, where $n$ is the size of the \acrshort{dnn} output. To avoid increasing the time complexity by the multiplicative factor of $m$, we investigate a principle, how to compare the query image only with the one or few out of these $m$ cuts and not to all. That way, we preserve the same time complexity except for some additive factor, compared to the Baseline.
 
 First we describe the selection of the cuts, and then we discuss the principle of selection for the cuts. The overview of the information preserved for this approach is in figure \ref{fig:overview_regions}.
 
@@ -209,7 +209,7 @@ Our fixed parameters are regions' width $s$ and the number of regions we want to
 
 \begin{align*}
 step_h = (h - s) / (N - 1) \\
-r_i = {i \, step_h\,\text{for}\,i \in \{0, 1, 2, \dots, N - 1\}}
+r_i = {i \, step_h\,\,\text{for}\,i \in \{0, 1, 2, \dots, N - 1\}}
 \end{align*}
 
 % {\color{green}
@@ -373,7 +373,7 @@ In this phase, we have selected a submatrix $L_i'$ with respect to the position 
 
 Performing the global average pooling over a given matrix $A$ with the dimensions $K' \times L' \times C$ produces vector $(b_0, b_1, \ldots, b_{C-1}) \in \mathbb{R}^{C}$:
 $$
-    b_i = \frac{\sum_{k=0}^{K'-1} \sum_{l=0}^{L'-1} a_{k, l, i}} {K'L'} \, \forall i \in {0, 1, \ldots C-1}
+    b_i = \frac{\sum_{k=0}^{K'-1} \sum_{l=0}^{L'-1} a_{k, l, i}} {K'L'} \,\, \forall i \in \{0, 1, \ldots C-1\}
 $$
 
 where $a_{k,l,i}$ represents an element of the $A$ in $k$-th row, $l$-th column and $i$-th channel.
@@ -451,21 +451,18 @@ The option to create non-square queries comes handy when the user wants to inclu
          \centering
          \includegraphics[height=4.2cm]{img/original.png}
          \caption{Original image}
-         \label{fig:y equals x}
      \end{subfigure}
      \hfill
      \begin{subfigure}[b]{0.3\textwidth}
          \centering
          \includegraphics[height=4.2cm]{img/original-distortion.png}
          \caption{Rescaled}
-         \label{fig:three sin x}
      \end{subfigure}
      \hfill
      \begin{subfigure}[b]{0.3\textwidth}
          \centering
          \includegraphics[height=4.2cm]{img/black_padding.png}
          \caption{Black padding}
-         \label{fig:five over x}
      \end{subfigure}
         \caption{Overview of padding techniques}
         \label{fig:penguin}
@@ -491,7 +488,7 @@ The option to create non-square queries comes handy when the user wants to inclu
 
 In this section, we take a look at reducing the dimensionality of the extracted features. Dimensionality reduction could help us to scale our approaches to even bigger datasets and to decrease the query response time.
 
-The extracted features from the neural networks are from high-dimensional space (for MobileNetV2, it is 1280 features, for Resnet50 it is 2048 features). Moreover, the dimensionality reduction can also have a positive effect on reducing noise if present in the feature vector. We aim to evaluate the system with a reduced number of features. For the dimensionality reduction, we use the Principal Component Analysis (described in section \ref{s:pca}).
+The extracted features from the neural networks are from high-dimensional space (for MobileNetV2, it is 1280 features, for Resnet50 it is 2048 features). Moreover, the dimensionality reduction can also have a positive effect on reducing noise if present in the feature vector. We aim to evaluate the system with a reduced number of features. For the dimensionality reduction, we use the \acrlong{pca} (described in section \ref{s:pca}).
 
 % The results are shown in figure \ref{fig:pca}. From the results, we can have several interesting observations.\todo{The results offer several...} Even with as low as eight components (8 features), we can obtain performance \todo{comparable to the} as the original Image representation baseline. With the increasing number of components, the system performs better. With 512 components, it even performed slightly better as the original data. For our purposes, we think \todo{conclude / nieco viac scientific ako think} that selecting 128 components offer the best performance-cost ratio. With the need for smaller feature vectors, we would select at minimum 64.
 
@@ -546,14 +543,12 @@ We manually created a set of queries to evaluate the proposed system's configura
          \centering
          \includegraphics[width=\textwidth]{graphs/num_queries_in_request.pdf}
          \caption{Number of images on a canvas for a collage.}
-         \label{fig:y equals x}
      \end{subfigure}
      \hfill
      \begin{subfigure}[b]{0.48\textwidth}
          \centering
          \includegraphics[width=\textwidth]{graphs/queries_size.pdf}
          \caption{Size of the canvas which is covered by a query image.}
-         \label{fig:three sin x}
      \end{subfigure}
     
     \caption{Collected collages properties}
@@ -620,7 +615,7 @@ In this chapter, we focus on fine-tuning several hyperparameters of the task at 
 \begin{figure}
     \centering
     \includegraphics[width=0.8\linewidth]{graphs/adaf8d435bb40406f9ce40654ec396e04453ab76cf0776d2a87d385055d5424f.pdf}
-    \caption{Comparison of baseline, regions and approach using the output of the layer before the global pooling. Due to higher memory requirements, we had to sample the dataset. We randomly sampled one-tenth of the dataset. We also provide a baseline on this smaller dataset, the performance may slightly change, based on the dataset. We can see that using the information from the layer, before the global pooling layer improved the performance of the system, compared to the baseline. These are interesting results, because, that the underlying network is for both approaches identical. This shows, that we can elevate the spatial information about the objects from the last convolution block.}
+    \caption[Comparison of baseline, regions and approach using the output of the layer before the global pooling]{Comparison of baseline, regions and approach using the output of the layer before the global pooling. Due to higher memory requirements, we had to sample the dataset. We randomly sampled one-tenth of the dataset. We also provide a baseline on this smaller dataset, the performance may slightly change, based on the dataset. We can see that using the information from the layer, before the global pooling layer improved the performance of the system, compared to the baseline. These are interesting results, because, that the underlying network is for both approaches identical. This shows, that we can elevate the spatial information about the objects from the last convolution block.}
     \label{fig:antepenultimate}
 \end{figure}
 
@@ -648,14 +643,14 @@ In this chapter, we focus on fine-tuning several hyperparameters of the task at 
 \begin{figure}
     \centering
     \includegraphics[width=0.8\linewidth]{graphs/6fbd4f70810e1f63f400ef601c1cdba0fd1635749810aa2347a4ff26e6fccf47.pdf}
-    \caption{Effect of PCA on the performance of the system. The results offer several interesting observations. With the increasing number of components, the system performs better. With 512 components, it even performed slightly better than on the original data. For our purposes, we conclude that selecting 128 components offer the best performance-cost ratio. With the need for smaller feature vectors, we would select at minimum 64 components.}
+    \caption{Effect of \acrshort{pca} on the performance of the system. The results offer several interesting observations. With the increasing number of components, the system performs better. With 512 components, it even performed slightly better than on the original data. For our purposes, we conclude that selecting 128 components offer the best performance-cost ratio. With the need for smaller feature vectors, we would select at minimum 64 components.}
     \label{fig:pca}
 \end{figure}
 
 \begin{figure}
     \centering
     \includegraphics[width=0.8\linewidth]{graphs/2536f6c96149dea24dae84dbf52f760d7d58b0dffa7d660656e1784d9dca277f.pdf}
-    \caption{Comparison of the performance based on different feature extraction models. The performance of the Resnet50 trained on 11 thousands of classes is better compared to the other two. This experiment shows results after performing the PCA to 128 dimensions.}
+    \caption{Comparison of the performance based on different feature extraction models. The performance of the Resnet50 trained on 11 thousands of classes is better compared to the other two. This experiment shows results after performing the \acrshort{pca} to 128 dimensions.}
     \label{fig:networks}
 \end{figure}
 

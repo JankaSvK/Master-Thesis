@@ -48,15 +48,15 @@ We highly recommend more thorough description of the VIRET tool presented in \ci
     \label{fig:viret}
 \end{figure}
 
-\subsection{SOM Hunter}
+\subsection{SOM-Hunter}
 
-A SOM Hunter was for the first time introduced at the \acrshort{vbs}2020. This tool is related to our approach because it also supports Self-organizing Maps to solve a Known-item-search task. The typical workflow (as described in \cite{kratochvil2020som}) starts with search based on the keywords. This reduces the dataset only to relevant images. During the entire browsing session, they preserve relevance score for each image. To display the results, they use a mapping onto a trained self-organizing map weighted by the relevance scores or a grid view sorted by the relevance scores. The user can continue to explore the dataset further by browsing or they also can reformulate the query. For more exploitation it is possible to browse over provided results. Since the showed displays are relatively small ($8\times8$ images when using a SOM), the corresponding self-organizing map can be computed quickly. The user can also explore the temporal context of any of the images. A sample interaction with the system is displayed in \autoref{fig:som_hunter}.
+A SOM-Hunter was for the first time introduced at the \acrshort{vbs}2020. This tool is related to our approach because it also supports Self-organizing Maps to solve a Known-item-search task. The typical workflow (as described in \cite{kratochvil2020som}) starts with search based on the keywords. This reduces the dataset only to relevant images. During the entire browsing session, they preserve relevance score for each image. To display the results, they use a mapping onto a trained self-organizing map weighted by the relevance scores or a grid view sorted by the relevance scores. The user can continue to explore the dataset further by browsing or they also can reformulate the query. For more exploitation it is possible to browse over provided results. Since the showed displays are relatively small ($8\times8$ images when using a \acrshort{som}), the corresponding self-organizing map can be computed quickly. The user can also explore the temporal context of any of the images. A sample interaction with the system is displayed in \autoref{fig:som_hunter}.
 
 
 \begin{figure}
     \centering
     \includegraphics[width=0.99\linewidth]{img/som_hunter_small.png}
-    \caption{A sample search in SOM Hunter. Source: \href{https://videobrowsershowdown.org/hall-of-fame/}{Video Broser Showdown, Hall of Fame}}
+    \caption{A sample search in SOM-Hunter. Source: \href{https://videobrowsershowdown.org/hall-of-fame/}{Video Broser Showdown, Hall of Fame}}
     \label{fig:som_hunter}
 \end{figure}
 
@@ -149,25 +149,39 @@ In our work we use various pretrained models. We obtain the models from Keras, D
 
 \subsection{Keras}
 
-Keras \citep{chollet2015keras} is a deep learning API written in Python, running on top of the machine learning platform TensorFlow \citep{tensorflow2015-whitepaper}. It was developed with a focus on experimentation in deep learning. We use it and its pre-trained models in this thesis. The models, which we use from Keras Applications, were trained on ImageNet. Keras API allows us to remove the last fully connected layer used for classification (since default ImageNet is a classification task) from the selected neural network.
+Keras \citep{chollet2015keras} is a deep learning \acrshort{api} written in Python, running on top of the machine learning platform TensorFlow \citep{tensorflow2015-whitepaper}. It was developed with a focus on experimentation in deep learning. We use it and its pre-trained models in this thesis. The models, which we use from Keras Applications, were trained on ImageNet. Keras API allows us to remove the last fully connected layer used for classification (since default ImageNet is a classification task) from the selected neural network.
 
 In this thesis, we use pre-trained models to implement new approaches. We do not aim to train new models or further train existing ones. We try to extract the information from available models to solve the known-item search task. Here we describe two models which we experimented with the most. ResNet was a state of the art model as of 2015. Since then, it gained popularity in many tasks. The second network we focus on is MobileNet. MobileNet has an excellent performance to complexity ratio. Therefore, it is an ideal network for our purpose where the predictions need to be computed online and displayed to the user.
 
 \subsection*{Resnet50V2}
 
-ResNet (short for Residual Networks, \cite{resnet}) is a classic neural network used in many computer vision tasks. ResNet was the winner of the ImageNet challenge in 2015. ResNet architecture allowed training deeper networks, which was not possible before because of vanishing gradients. ResNet's main idea is to allow ``skipping connections'' between the layers. This has two main reasons: it mitigates the problem of the vanishing gradients and allows learning an identity function for higher layers in the network. ResNetV2 \citep{resnetv2} was released as an improvement of the ResNet. It included batch normalization and ReLU activation prior 2D convolution layer. 
+ResNet (abbv. for Residual Networks, \cite{resnet}) is a classic neural network used in many computer vision tasks. ResNet was the winner of the ILSVRC 2015 (\citep{ILSVRC15}). The authors aimed to solve a problem of degrading training accuracy of the neural networks, when more layers were added. 
 
-ResNet is still well-known and popular among the machine-learning community. Several pre-trained models are available, and it has well-tested implementations. We use it in the thesis for some experiments, although we prefer MobileNet due to shorter prediction time.
+The authors argued that the reason behind the degradation is that approximating identity function by a layer in a neural network is difficult (otherwise the added layers should learn to approximate identity and resulting error should be no greater then when using shallower counterpart). To solve this problem they, instead of trying to approximate underlaying mapping $H(x)$, they ask the neural network to approximate residual function $F(x)=H(x) - x$. That way if identify is suitable function the weights just needed to be driven to zero (achieve $0 = H(x) - x$ i.e. $H(x) = x$). They do so by replacing simple layers by residual building blocks (see figure \ref{fig:resnetv2}).
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\textwidth]{img/resnetv2.png}
+    \caption{Left: ResNet residual unit as proposed in \citep{resnet}. Right: ResNetV2 residual unit by \citep{resnetv2}. Source: \cite{resnetv2}}
+    \label{fig:resnetv2}
+\end{figure}
+
+In \citep{resnetv2}  the authors improved the architecture of ResNet by changing the position of activation an batch normalization layers. By doing so they made the easiest path for the information to propagate even simpler. For details see the figure \ref{fig:resnetv2}. This improved architecture is commonly known as ResNetV2.
+
+
+% ResNet (short for Residual Networks, \cite{resnet}) is a classic neural network used in many computer vision tasks. ResNet was the winner of the ImageNet challenge in 2015. ResNet architecture allowed training deeper networks, which was not possible before because of vanishing gradients. ResNet's main idea is to allow ``skipping connections'' between the layers. This has two main reasons: it mitigates the problem of the vanishing gradients and allows learning an identity function for higher layers in the network. ResNetV2 \citep{resnetv2} was released as an improvement of the ResNet. It included batch normalization and ReLU activation prior 2D convolution layer. 
+
+% ResNet is still well-known and popular among the machine-learning community. Several pre-trained models are available, and it has well-tested implementations. We use it in the thesis for some experiments, although we prefer MobileNet due to shorter prediction time.
 
 \subsubsection*{MobileNetV2}
 
-In April 2017, a group of researchers from Google published a study \citep{mobilenet} introducing a new neural network architecture. This MobileNet was optimized for mobile devices. They optimized the model to deliver high accuracy while keeping the model and mathematical operations as fast as possible. Not a year later, MobileNetV2 was introduced by \cite{mobilenetv2}. It extended the predecessor by using Inverted Residuals and Linear Bottlenecks. For more details, please refer to the original research. In our work, we use only MobileNetV2 out of MobileNets.
+In April 2017, a group of researchers from Google published a study \citep{mobilenet} introducing a new neural network architecture. This MobileNet was optimized for mobile devices. They optimized the model to deliver high accuracy while keeping the model and mathematical operations as fast as possible. Not a year later, MobileNetV2 was introduced by \cite{mobilenetv2}. It extended the predecessor by using Inverted Residuals with Linear Bottlenecks. For more details, please refer to the original research. In our work, we use only MobileNetV2 out of MobileNets.
 
 
 \subsection{Dlib}
 \label{s:dlib}
 
-Dlib \citep{king2009dlib} is a modern C++ toolkit containing machine learning algorithms and tools for creating complex software in C++ to solve real-world problems. We use the Dlib library for face detection and also face feature extraction. For both, we use Python API provided by \verb+face_recognition+ \citep{geitgey2016machine}. 
+Dlib \citep{king2009dlib} is a modern C++ toolkit containing machine learning algorithms and tools for creating complex software in C++ to solve real-world problems. We use the Dlib library for face detection and also face feature extraction. For both, we use Python \acrshort{api} provided by \verb+face_recognition+ \citep{geitgey2016machine}. 
 
 \subsubsection*{Face detection}
 
@@ -198,7 +212,8 @@ The SOM can be thought of as net spread across the data. After the training, the
 Various measures have been developed to quantify a map's quality. In this thesis we use following two: quantization error and topographic error. For motivation behind the errors and more information about them, we refer to \cite{breard2017evaluating} and the original research. Here we present their definition and brief description.
 
 \subsubsection*{Quantization Error}
-A quantization error was introduced by \cite{kohonen1982self}. It is a measure of the average distance between the data points $x_i \in X$ and the map nodes to which they are mapped. The quantization error $QE$ for a map $M$ is calculated as follows:
+
+A quantization error is formulated for example in \cite{wandeto2019quantization}. It is a measure of the average distance between the data points $x_i \in X$ and the map nodes to which they are mapped. The quantization error $QE$ for a map $M$ is calculated as follows:
 
 $$
  QE(M) = \frac{1}{n}\sum_{i=0}^{n-1} ||\phi(\mu(x_i)) - x_i ||
