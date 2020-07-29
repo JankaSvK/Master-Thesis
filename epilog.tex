@@ -1,21 +1,25 @@
 \chapter*{Conclusion}
 \addcontentsline{toc}{chapter}{Conclusion}
 
-In this thesis, we explored techniques to tackle the known-item search task on a set of images. We started by reviewing existing approaches presented at Video Browser Showdown. Based on the limits of existing systems, we proposed two approaches: search by collage and search by face similarity. We built both approaches utilizing state-of-art deep learning models. 
+In this thesis, we explored techniques to tackle the known-item search task on a set of images. We started by reviewing the existing approaches presented at Video Browser Showdown. Based on the limits of existing systems, we proposed two approaches: search by collage and search by face similarity. We built both approaches utilizing state-of-art deep learning models. 
 
 \subsection*{Search by collage}
 
-In the search by collage, we let the user create a collage of images. Based on this collage, we provide the most relevant (i.e., most similar) results. Firstly, we formally defined the task. Based on this formulation, we proposed a multistage framework design, which allowed us to experiment with different settings for the individual stages.
+In the search by collage, we let the user create a collage of images. Based on this collage, we provide the most relevant (i.e., most similar) results. We proposed a multistage framework design, which allowed us to experiment with different settings for the individual stages.
 
 We explored the possibilities to obtain the descriptors while utilizing spatial information about the collage images. We proposed two approaches. The region's approach cuts the images into a fixed set of regions. Based on the position of the image in the collage, we then select only relevant regions for further processing. Our experiments showed that this approach performed the best. 
 
-The second approach took advantage of the last convolution block from \acrshort{cnn}. We selected the interesting subset of the convolution block corresponding to the image's position in the collage. We showed, that computing the descriptors using only a part of this block, improved the performance. 
+The second approach took advantage of the last convolution block of the \acrshort{cnn}. We selected the interesting subset of the convolution block corresponding to the image's position in the collage. We showed, that computing the descriptors using only a part of this block, improved the performance. 
 
-As additional parameters, we evaluated three strategies for preprocessing the images before feeding them into a convolutional neural network. We either rescaled image, added black, or white stripes. As our experiment showed, rescaling the images achieved the best results.
+As additional parameters, we evaluated three strategies for preprocessing the images before feeding them into a convolutional neural network. We either rescaled the image, added black, or white strips. As our experiments showed, rescaling the images achieved the best results.
 
-Secondly, we investigated the effect of the dimensionality reduction of the features on the model. Based on the experiments, we can use as low as 128 features to\todo{we were able to reduce the number of features as low as 128 without losing too much performance of the whole system, while substantially improving processing speeds (ak si to teda merala alebo aspon nejak uviedla)} still obtain a comparably performing system. Based on this, we propose a further use in the competitions as VBS, where the dataset is ten times bigger than the dataset we worked with.
+Secondly, we investigated the effect of the dimensionality reduction of the features on the model. We were able to reduce the number of features to as low as 128 without losing too much performance of the whole system. Based on this, we propose a further use of our system in the competitions such as VBS, where the dataset is ten times bigger than the dataset we worked with.
 
-At last \todo{Finally, at last znie nervozne}, we tested three different networks. MobileNetV2, as it is a fast and small network, ResNet50 and Resnet50V2. For the ResNet50, we used a pre-trained model on eleven thousand of classes compared to one thousand classes in the case of MobileNetV2 and Resnet50V2. The experiments showed that the ResNet50 on eleven thousand classes performed the best.
+
+% Secondly, we investigated the effect of the dimensionality reduction of the features on the model. Based on the experiments, we can use as low as 128 features to\todo{we were able to reduce the number of features as low as 128 without losing too much performance of the whole system, while substantially improving processing speeds (ak si to teda merala alebo aspon nejak uviedla)} still obtain a comparably performing system. Based on this, we propose a further use of our system in the competitions such as VBS, where the dataset is ten times bigger than the dataset we worked with.
+
+
+Finally, we tested three different networks. MobileNetV2, as it is a fast and small network, ResNet50 and Resnet50V2. For the ResNet50, we used a pre-trained model on eleven thousand of classes compared to one thousand classes in the case of MobileNetV2 and Resnet50V2. The experiments showed that the ResNet50 on eleven thousand classes performed the best.
 
 For the evaluations, we hand crafted a set of 102 collages. All experiments presented were tested on this set of queries.
 
@@ -23,22 +27,24 @@ For the evaluations, we hand crafted a set of 102 collages. All experiments pres
 
 In the second part of the thesis, we discussed a possibility to search through the dataset using only faces. Firstly, we extracted faces from the dataset. We investigated and explored obtained faces. We selected only those, which were big enough. For these faces, we computed their descriptors. These descriptors were produced by a neural network trained to identify people. We conducted a case study, where we aimed to verify if the space of the face descriptors has an ability to sort people based on the similarity as people do.
 
-We conducted a study, asking 25 respondents to find three most similar faces in the grid of 100 faces to a given face. Each user filled the task for ten different target faces. The experiments showed a correlation between the people's answers, and the ordering based on distances in the high-dimensional features.
+We conducted a study, asking 25 respondents to find three most similar faces in the grid of 100 faces to a given face. Each user completed the task for ten different target faces. The experiments showed a correlation between the people's answers, and the ordering based on distances in the high-dimensional features.
 
-Based on these findings, we build a traversal structure to explore the dataset of faces. We trained a self-organizing map from the data for our bottom layer. For each neuron in this SOM, we assigned a face with the smallest distance to this neuron. Based on this layer, we created upper layers by taking every $k$-th element in both axes. We also provided a user with the ability display all similar faces  to a given face.
+Based on these findings we have organized the faces from the dataset into 2D grid with the help of self-organizing map. We further present traversal structure to allow quick searching withing the grid. The user is also provided with the option to display all similar faces to a given face.
 
-In the presented solution, we observed clusters of older people, people in glasses, etc. However, this approach did not fully cover the original dataset, as some of the data may not be represented in the bottom layer. We leave it for future work, to conduct more thorough experiments, verifying the usefulness of the proposed traversal system.
+% Based on these findings, we build a traversal structure to explore the dataset of faces. We trained a self-organizing map from the data for our bottom layer. For each neuron in this SOM, we assigned a face with the smallest distance to this neuron. Based on this layer, we created upper layers by taking every $k$-th element in both axes. We also provided a user with the ability display all similar faces  to a given face.
+
+% In the presented solution, we observed clusters of older people, people in glasses, etc. However, this approach did not fully cover the original dataset, as some of the data may not be represented in the bottom layer. We leave it for future work, to conduct more thorough experiments, verifying the usefulness of the proposed traversal system.
 
 \vspace{1em}
 
-Overall, we presented two distinctive \todo{distinct - Distinct and distinctive are likely confused most often. Distinct means easily separable or discrete, but distinctive is used to describe a unique feature or quality belonging to one person or thing} techniques for tackling the known-item search task. It is important to note that this task is an open problem, and even though we proposed and tested promising solutions, this problem is not yet solved. 
+Overall, we presented two distinct techniques for tackling the known-item search task. It is important to note that this task is an open problem, and even though we proposed and tested promising solutions, this problem is not yet solved. 
 
 \subsection*{Future work}
 
 Although our experiments were successful in providing new approaches to the known-item search task, it left much room for further improvements. We provide a couple of suggestions for future work:
 
 \begin{itemize}
-    \item Experiments with combination of differently sized regions in the Regions' based approach
+    \item Experiments with regions of mixed sizes in the Regions' based approach
     \item Exploration of other network architectures for the feature extraction step
     \item Implementing proposed approaches into existing tools, to support multi-modal queries
     \item Explore the options of additional techniques used for face features extraction
