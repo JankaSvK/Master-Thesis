@@ -19,11 +19,7 @@ Our experiments suggest that the feature space of the descriptors has a limited 
 
 Our goal is to propose a traversal structure based on the faces found in the dataset. Ideally, we would like to group similar faces so that users can quickly decide if the group of people corresponds to the target face they look for, or not.
 
-% We, as people, do not perceive the similarity of faces always the same way. We hypothesize that when we two people find the most similar faces to a given face, they will not choose the same set. We verify this hypothesis in the case study, presented in section \ref{s:case_study}.
-
 The question we ask in the following sections is if the face descriptors can sort people based on the similarity, similarly to human perception. If yes, then we can argue that traversal structure based on these face descriptors may help. We leave experiments with additional descriptors for future work. In our case, we compare only one type of face descriptors to human perception, although, in future work, it may be experimented further with other descriptors.
-
-% If we do not observe any correlation between the ordering based on the descriptors and survey responses, then the descriptors would not be able to group similar faces as people do.
 
 \section{Extraction of the faces}
 
@@ -34,8 +30,6 @@ For our experiment, we use only a part of the original dataset. We extract faces
 From these 316 videos, we were able to extract more than seventeen thousand faces. However, after investigation of the dataset, we found out that many of the extracted faces had too low resolution. The majority of the extracted faces did not even cover 5\% of the image. Therefore, we decided to filter out the dataset further and remove all the faces that did not cover at least ten percent of the image. The distribution of the area covered by a face is displayed in figure \ref{fig:faces_size_distribution}. After the filtering,  we obtained 2047 faces from the 316 videos. A random selection of faces is shown in figure \ref{fig:random_selection_faces}. 
 
 We then visually investigated the extracted faces. The dataset contains people of different ethnicity, age, and gender. The faces are displayed from a wide range of angles, including even full side views. Some of the people wear glasses, headphones or other accessories. The dataset also contains some pictures of children. The model also extracted a few drawn faces or faces of sculptures.
-
-% Because most of the faces cover at least 5\% of the image, we decided to filter out too small faces. We filtered out the faces, which covered less than ten percent of the image.
 
 \begin{figure}
     \centering
@@ -72,14 +66,10 @@ The library, from which we use the model, refers to a threshold 0.6 in the eucli
 \section{Case study}
 \label{s:case_study}
 
-% We want to find out if the space of the obtained face features, can order faces based on their similarity similarly to human subjects.
-
 In this section, we investigate a possible correlation between the given faces as perceived by humans and the distances between their encodings.
 
 We conducted a study with 25 participants. We presented to them a $10\times10$ grid of randomly selected faces from the dataset. 
 Then we showed them ten randomly selected target faces of different people (same set of faces to each participant). We asked the participant to select for each target face \emph{exactly} three faces from the grid that looked the most similar. 
-
-%Then we asked them to select exactly three faces, which are the most similar to the provided target face. Our test contained ten randomly pre-selected faces of different people. Out of 10, one of them was a child, we estimate below ten years old. Two of the other target faces were present in the grid.
 
 Out of 10 target faces, three were also represented in the grid. Two of the faces were extracted from the same image, i.e., the same angle of the face. The third face, which was also present in the grid, had two representants in the grid. First identical to the target face and the second with only a minor change of the angle.
 
@@ -103,13 +93,6 @@ $$
 
 Again, to ``break ties'', we use any arbitrary total ordering $<_F$ over faces, as in \autoref{s:task_formulation}.
 
-% \todo{chyba kucerava zatvorka}
-% $$
-%  r_T(F) = |\{F'\in G\}| \gamma(F', T) < \gamma(F, T) \lor (\gamma(F', T) = \gamma(F, T) \land F' <_F F)\} |
-% $$
-
-% The closest face has the lowest index. We refer to the face's index in the sorted set of faces as $rank_t$ with respect to the target face $t$.
-
 Note that this ranking function is a bijection between the faces in the grid and a set $\{0, 1, \ldots |G| - 1\}$, given the target image. Therefore, it is reversible, i.e., we can obtain the face from the given rank. Based on this ranking, and the data obtained from the respondents, we aim to verify the correspondence of the ranking based on distances of the encodings and the most similar faces as identified by the respondents.
 
 This allows estimation (based on the results of the survey)  of the probability $p$ that for given target face $T$ user selects a face with rank $R$. We also denote the number of respondents that selected face $F$ for target face $T$ as $N_T(F)$. The resulting probability then is:
@@ -130,16 +113,7 @@ We plot the empirical probability $p$, of a user selecting the face on the $k$-t
 
 This plot of the probabilities is displayed in figure \ref{fig:survey_distribution}. We do not normalize this plot, so we can talk about the probability, given our experimental settings, i.e., selecting exactly three faces.
 
-% In the same figure \ref{fig:survey_distribution} we can see the distribution only of the seven presented faces.
-
-% In this experiment we excluded a target face, which belonged to a child (the only child among the 10 target faces). \todo{}.
-
 We are interested in the distribution of ranks given the faces selected by the users. We want to know if there is any correlation between similarity in the feature space and the similarity perceived by the human respondents. 
-
-% From the survey responses we create a heatmap for each task. The size of the heatmap corresponds to the size of the face grid, i.e., $10\times10$. The element on the position $task, i, j$ of the heatmap corresponds to the number of times, the face at $i$-th row and in $j$-th column was selected in the given $task$. We use the heatmap and the ranking based on the distances in the feature space, to compute, how many closest faces from feature space were actually selected. We do the same for each rank. The normalized results over all possible ranks (from 0 to 99) are plotted in the figure \ref{fig:survey_distribution}. If the users perception was fully coherent with the ordering based on the distances in the feature space, the  
-% probability on the first three ranks (0,1,2) would be equal to 1. Even though we do not see such full coherence in the results, we can see a trend of decreasing probability of choosing a face by user with the increasing distance from the target face.
-
-% We also show a comparison to the performing only six tasks, excluding the one, where the target person was child. The used network for feature extraction as many other are not performing well on the children from the dataset. This is caused by fact that most of the available face datasets contain only adults. This causes the networks to often put children closer together, even though, they may be a different person. Encodings of two different children tend to be closer to each other compared to the encoding of the two adults (source: \href{https://face-recognition.readthedocs.io/en/latest/readme.html#caveats}{Face Recognition Caveats}). Therefore we can see a significant improvement over the lowest ranks, since selecting a child from the map resulted in smaller distances, compared to the adults.
 
 As the last investigation from the case study we provide a graph (figure \ref{fig:cumsum_faces}) displaying the expected value of the number of faces $X_R$ selected up to rank $R$, which can be expressed in terms of $p$ as $\mathbb{E}[X_R] = \sum_{R' \leq R}p(R')$. On average, one of the three selected faces by the user has a rank of less than 12. In the plot, we also present a ``random selection''. This would be the case of no underlying information on the face similarity from the model. Therefore, users would be equally likely to choose face at any given rank.
 
@@ -147,19 +121,7 @@ We leave for future work, a more comprehensive study with more target faces prov
 
 \begin{figure}
     \centering
-    % \begin{subfigure}[b]{0.48\textwidth}
-    %  \centering
     \includegraphics[width=0.6\textwidth]{graphs/survey_distribution_without_the_easy.pdf}
-    % \caption{Performed on seven tasks, which did not contain the target person in the grid}
-    % \label{fig:survey_all}
-    % \end{subfigure}
-    % \begin{subfigure}[b]{0.48\textwidth}
-    %  \centering
-    %  \includegraphics[width=\textwidth]{graphs/survey_distribution_childless.pdf}
-    %  \caption{Performed on six tasks, extracting the task involving a child}
-    %  \label{fig:suvery_childless}
-    % \end{subfigure}
-    
     \caption{Collected statistic on how likely user selects $k$-th closest face to the target in the face grid}
     \label{fig:survey_distribution}
 \end{figure}
@@ -177,9 +139,6 @@ We leave for future work, a more comprehensive study with more target faces prov
 In the previous sections, we extracted and encoded faces. In the case study, we investigated the feature space for the correspondence to the human annotations. Here we propose a solution of organizing faces into a multilevel view. 
 
 As we discussed in \autoref{ch:related_work}, a common solution for the traversal system is a 2D grid.  In the 2D grid, a user can navigate using the following commands: move left, right, up, and down.
-
-
-% This usually allows users navigation queries, as left, right, top, bottom. We call a set of images, which is visible at a particular step a \emph{display}. The display may contain tens to hundreds of images at once, depending on multiple factors, e.g., a user's screen size and the size of the displayed image.
 
 Since most of the time, we want to browse more than a hundred images, it becomes inconvenient to preview dataset only in one layer. Therefore, we build a simple multilevel structure to ease the navigation.
 
@@ -259,8 +218,6 @@ For our experiment, we use ten randomly selected target images, which include fa
 We measured the time required to successfully find the target image. We set the limit for this task to ten minutes. We obtained 20 measurements per approach. Respondent A was unable to retrieve a ``face 4'' within the time limit using either of the search approaches. These attempts were considered as 10 minutes of searching for the purposes of the evaluation. Respondent B successfully retrieved target images an all tasks.
 
 Based on the experiment, we present results in graph \ref{fig:search_time}. In the case of both respondents, the median of the time required to solve the task was lower for the traversal search compared to the linear search. We also note that in terms of the average, we do not see any improvement.
-
-% By the results, the traversal system did not performed significantly better, nor worse compared to the linear search. The traversal approach may still present a desired solution, when it comes to larger datasets. In such large datasets it may be impossible to go through all presented faces, one by one. The traversal search have an advantage of the interactive environment, where faces from several videos can be visually evaluated at once.
 
 \begin{figure}
     \centering
