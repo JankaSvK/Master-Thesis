@@ -37,7 +37,7 @@ This chapter presents three approaches incorporating pre-trained neural networks
 
 After the discussion of the options for our system, we evaluate the proposed techniques. We firstly present a set of annotated data -- collages for the target images. Using these queries, we test different sets of hyperparameters and investigate their effect on the system's performance. 
 
-\section{Formal description}
+\section{Formal Description}
 \label{s:task_formulation}
 
 In this task, we explore the dataset $D$ based on a collage query provided by a user. We shall formally define universe of query images as follows: 
@@ -82,13 +82,13 @@ $$
 $$
 where $<_a$ is any arbitrary total ordering of the dataset $D$. For theoretical purposes, we could use the lexicographical ordering. In the implementation, we make use of a priori ordering of the dataset $D$ for this as ordering $<_a$.
 
-\section{User-program interaction}
+\section{User-program Interaction}
 
 We provide the user with a canvas where they can place, move, and resize the collage images. They can add images by providing an URL of the image, or by pasting the image from a clipboard. One possible way to obtain images for the collage is to use an image search engine (e.g., Google Images). The images can be usually copied to the clipboard by selecting copy in the right-click menu. A quicker approach, we preferred, is using selective screenshots. With the selective screenshot, we can even crop the image, focusing on the part we like, and paste it onto the canvas.
 
 Based on the provided collage, the program searches for similar images in the dataset and interactively presents them back to the user. The user can then alter the query for a new search, or investigate the displayed results. Figure \ref{fig:collage_example} shows an example of the query -- the collage of two images (window and cat). 
 
-\section{Framework overview}
+\section{Framework Overview}
 
 \begin{figure}[p!]
     \centering
@@ -113,13 +113,13 @@ where $A$ denotes the aggregation function over a multiset. We use notation $q =
 
 While the described pipeline offers a reasonably straightforward approach to the task at hand, the individual stages' internal factors require a fair amount of tuning. We evaluate the hyperparameters with respect to the performance of the whole framework. Throughout the following sections, we progressively build the pipeline while describing the particular approaches we use. We start with the discussion on feature extraction and then progress towards the next stages of the system.  
 
-\section{Features extraction strategies}
+\section{Features Extraction Strategies}
 
 In the following section, we present three feature extraction techniques. We begin this section with the description of the baseline model. The baseline model does not use spatial information about the images in the collage. This baseline approach is currently used, for example, by the VIRET tool \citep{kovalvcik2020viret}. 
 
 Following the baseline model, we present two approaches that utilize the spatial information from the collage. The first one splits the images in the dataset to fixed regions. The second one utilizes information from the neural network before the last pooling layer.
 
-\subsection{Baseline -- Image representation}
+\subsection{Baseline -- Image Representation}
 
 The baseline ignores the spatial information of the images in the collage. We set this approach as our baseline since it is relatively simple and can solve our task. In this baseline approach, we compute the feature vector for an image in the dataset using a deep neural network as a descriptor extraction function and directly compare them with the descriptors of the collage's images.
 
@@ -139,7 +139,7 @@ Query:
 \caption{Overview of the Baseline -- Image representation approach}
 \end{figure}
 
-\subsection{Splitting the image into regions}
+\subsection{Splitting the Image into Regions}
 
 In the next presented approach, we will focus on using the spatial information of the images in the collage. This position of the objects can serve as highly distinguishing criteria while looking for the target image. In the previous subsection, we described the image in the dataset by only one prediction of the neural network. We obtain higher granularity for the data by splitting the image into multiple regions and then computing the feature vector on each of the regions separately.
 
@@ -163,7 +163,7 @@ Query:
 \label{fig:overview_regions}
 \end{figure}
 
-\subsubsection{Cutting the image}
+\subsubsection{Cutting the Image}
 
 Each image in the dataset is divided into $N \times M$ regions. The descriptor is then computed and stored for each region separately. The defined cutting is identical for all images in the dataset.
 
@@ -188,7 +188,7 @@ r_i = {i \, step_h\,\,\text{for}\,i \in \{0, 1, 2, \dots, N - 1\}}
 
 With the condition on full coverage of the image (i.e., $s N \geq \text{h}$, and for $M$ respectively), we obtain full coverage of the image by the regions. Overlaps are evenly distributed over both axes. Note that, with bigger sized regions, overlaps may occur between more than two regions. For example, if we split an image with width 180 into three regions with a width of 96 pixels, some areas of the image will be included in all three regions. This happens when the $step < s/2$.
 
-\subsubsection{Selecting regions}
+\subsubsection{Selecting Regions}
 
 Previously, we defined cutting into the regions for each item in the dataset. One of the possible steps further in the pipeline could be to compare all regions' feature vector to the query image feature vector. Although this would be an entirely valid approach, it has two caveats: firstly, it does not take advantage of knowing the position of the query image in the collage, and secondly, it multiplicatively increases the time required, when comparing to $N \cdot M$ more feature vectors, than before.
 
@@ -232,7 +232,7 @@ From the regions ordered by their \acrshort{iou} to the query image, we select t
 \label{fig:fish_with_grid}
 \end{figure}
 
-\subsection{Using the representation before pooling}
+\subsection{Using the Representation Before Pooling}
 
 The disadvantage of the previously presented technique is fixed cutting. The cutting into regions does not adapt to the size of the collage image. 
 
@@ -261,7 +261,7 @@ Query:
 \end{figure}
 
 
-\subsubsection{Choosing a region of interest in the layer}
+\subsubsection{Choosing a Region of Interest in the Layer}
 
 Layer before pooling on which we focus (antepenultimate) is the last convolution block. Therefore, it produces features from space $\mathbb{R}^{K\times L \times C}$, where $K, L, C$ is the shape of the convolution block output. The first two dimensions represent the spatial information, which is propagated from the previous layers. The third represents the channels (i.e., features).
 
@@ -316,7 +316,7 @@ Then we proceed to compute the dissimilarity score between the collages and imag
 
 As the final step, we compute the ranking, as defined in section \ref{s:task_formulation} using computed dissimilarity scores.
 
-\section{Additional parameters}
+\section{Additional Parameters}
 
 In addition to different techniques of obtaining the feature vectors, we also inspect several other parameters of the system. These parameters include pre-processing of the collage images, post-processing of the features, and selecting the specific \acrshort{cnn}. This section further discusses these parameters.
 
@@ -349,13 +349,13 @@ The option to create non-square queries comes handy when the user wants to inclu
         \label{fig:penguin}
 \end{figure}
 
-\subsection{Dimensionality reduction}
+\subsection{Dimensionality Reduction}
 
 In this section, we take a look at reducing the dimensionality of the extracted features. Dimensionality reduction could help us to scale our approaches to even bigger datasets and to decrease the query response time.
 
 The extracted features from the neural networks are from high-dimensional space (for MobileNetV2, it is 1280 features, for Resnet50 it is 2048 features). Moreover, the dimensionality reduction can also have a positive effect on reducing noise if present in the feature vector. We aim to evaluate the system with a reduced number of features. For the dimensionality reduction, we use the \acrlong{pca} (described in section \ref{s:pca}).
 
-\subsection{Neural network selection}
+\subsection{Neural Network Selection}
 
 At last, we discussed all the hyperparameters we aim to evaluate. In the evaluation sections, we run several experiments in order to find the best set of parameters. We use MobileNetV2 as our baseline feature extraction model due to its speed and small size.
 
@@ -370,7 +370,7 @@ The downside of using ResNet50 trained on eleven thousands of classes compared t
 
 In this section, we provide evaluations for each aforementioned parameter of the framework. The presented evaluations are performed on the collected collages.
 
-\section{Collected collages}
+\section{Collected Collages}
 
 We manually created a set of queries to evaluate the proposed system's configurations. The figure \ref{fig:query_collage_comparison} shows one of such query -- target image and collage. The annotated data consists of 102 collages. Each contains a visual description of a given target image. The average size of the images used in the collages covers 15\% of the canvas. Five percent of the collected collages contain an image bigger than 80\% of the canvas. We provide visualizations of the distribution of the annotated queries in figure \ref{fig:annotated_dataset}. We use a total of 199 images to create these 102 collages.
 
@@ -396,7 +396,7 @@ For the annotation, we used our application. It is possible to save the collage 
 
 We want to highlight that we created more than a hundred collages corresponding to the target images from the dataset. The annotations were done only by one person. We leave annotation from more people, to study the differences in behavior, for future work. 
 
-\section{Plots overview}
+\section{Plots Overview}
 
 Using the collected queries and based on the definition of the \emph{rank} we can visualize the performance of the system.
 

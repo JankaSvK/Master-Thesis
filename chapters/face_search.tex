@@ -21,7 +21,7 @@ Our goal is to propose a traversal structure based on the faces found in the dat
 
 The question we ask in the following sections is if the face descriptors can sort people based on the similarity, similarly to human perception. If yes, then we can argue that traversal structure based on these face descriptors may help. We leave experiments with additional descriptors for future work. In our case, we compare only one type of face descriptors to human perception, although, in future work, it may be experimented further with other descriptors.
 
-\section{Extraction of the faces}
+\section{Extraction of the Faces}
 
 If we look at the dataset, we notice that only a small portion of the people look directly into the camera. Since the images come from the videos, most of the people captured are doing some activity and not looking directly into the camera. As discussed in section \ref{s:dlib}, we select the \acrshort{cnn} based approach to extract the faces since it worked better with a wider variety of poses.
 
@@ -45,7 +45,7 @@ We then visually investigated the extracted faces. The dataset contains people o
     \label{fig:random_selection_faces}
 \end{figure}
 
-\section{Face similarity based on the deep features}
+\section{Face Similarity Based on the Deep Features}
 
 For extracting descriptors (i.e., feature vectors), we use the dlib pre-trained model, as discussed in \ref{s:dlib}. The network outputs vectors from space $\mathbb{R}^{128}$. We use the output of the network directly as our feature vectors. 
 
@@ -63,7 +63,7 @@ The library, from which we use the model, refers to a threshold 0.6 in the eucli
     \label{fig:closest_faces}
 \end{figure}
 
-\section{Case study}
+\section{Case Study}
 \label{s:case_study}
 
 In this section, we investigate a possible correlation between the given faces as perceived by humans and the distances between their encodings.
@@ -134,7 +134,7 @@ We leave for future work, a more comprehensive study with more target faces prov
     \label{fig:cumsum_faces}
 \end{figure}
 
-\section{Building a traversal scheme}
+\section{Building a Traversal Scheme}
 
 In the previous sections, we extracted and encoded faces. In the case study, we investigated the feature space for the correspondence to the human annotations. Here we propose a solution of organizing faces into a multilevel view. 
 
@@ -142,7 +142,7 @@ As discussed in \autoref{ch:related_work}, a common solution for the traversal s
 
 Most of the time, we want to browse more than a hundred images, it becomes inconvenient to preview dataset only in one layer. Therefore, we build a simple multilevel structure to ease the navigation.
 
-\subsection{Tree-based structure}
+\subsection{Tree-based Structure}
 
 Our goal is to organize a dataset of images $D$ to allow easy navigation. Let us assume that the dataset can be organized into a grid of size $N\times M$. We leave the choice of specific dimensions to the user. We prefer a square setting, although it is not required. In case that the size of the dataset $|D|$ is not square of any number, we recommend adding placeholder images.
 
@@ -175,7 +175,7 @@ In this structure, we support six types of navigation: left, right, down, up, in
     \label{fig:tree_structure}
 \end{figure}
 
-\subsection{Bottom Layer -- Self-organizing map}
+\subsection{Bottom Layer -- Self-organizing Map}
 
 In the bottom layer, we would like to make use of the face encodings. As we reviewed in \autoref{ch:related_work}, Self-organizing maps showed a promising way to project high-dimensional data onto the 2D grid. We train a self-organizing map on our dataset of face encodings. For our particular dataset, we train a network of size $50\times 50$. This offers us 2500 neurons, having more neurons than there are faces in the dataset.
 
@@ -195,7 +195,7 @@ Note that this way of selecting representatives does not avoid duplicates (i.e.,
 
 We explored the assignments, and these are the observations we made: 345 faces out of original 2047 is not assigned to any of the neurons. However, only 22 out of these 345 faces have the distance to the closest face, which is assigned to a neuron, higher than 0.45. In the original study, the authors of the model suggest considering encodings closer than 0.6 to be of the same person. As our investigation of the dataset in the figure \ref{fig:closest_faces} shows, threshold 0.45 is strict for assigning the same person. Therefore, we expect that those 323 faces missing represent a person, which is already among the representants. The maximum distance for the excluded 22 faces is 0.56, which is still below the initially proposed threshold for assigning the same person. Nevertheless, we verified that all of these faces, which are not selected as representants to any of the neurons of the \acrshort{som}, are still accessible from the structure by an additional utility that shows the most similar faces to a given face. We discuss this utility in the next section.
 
-\subsection{Accessing the most similar faces}
+\subsection{Accessing the Most Similar Faces}
 
 We enhance the tree-structure to support, displaying the most similar faces to a given face. A user can click on any of the displayed faces. Images, which contain a face considering to be the same person (threshold 0.6), are then displayed. This is helpful in finding the exact target image when the user finds the same person on the map. This also provides a way to learn for the user. The user can display close faces, and investigate the characteristics by which faces are grouped by. Based on this, the user can utilize information about the structure to perform the face search faster in the next searches.
 
@@ -207,7 +207,7 @@ We created the bottom layer with the help of a self-organizing map. We assigned 
 
 In the last section, we present a preliminary evaluation. More thorough evaluations, with more participants, would be needed to limit the user's memory and other factors. This would require different participants searching the datasets using different approaches and evaluating the time needed to find a face. Although we do not provide such a complex study, we include the results of two respondents searching for ten faces using two different approaches.
 
-\section{Preliminary evaluation}
+\section{Preliminary Evaluation}
 
 In this section, we present a preliminary evaluation of the proposed navigational system. The goal of this chapter was to propose an exploration method over the dataset of faces. Therefore, we evaluate it by conducting an experiment with a user.
 

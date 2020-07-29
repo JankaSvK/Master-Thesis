@@ -5,7 +5,7 @@ In the previous chapters, we developed and evaluated several methods for a known
 
 The user can access the application via a web-based interface. Once the webpage is opened, we can see by default a module for search based on the collage (refer to \ref{ch:object_location}). The second module includes face similarity search (chapter \ref{ch:face_search}). We proceed to describe both modules.
 
-\section{Running the application}
+\section{Running the Application}
 
 The easiest way to run the application is to install Docker\footnote{\url{https://docs.docker.com/desktop/}}. Once the Docker is installed, it is enough to run following commands from the top-level directory, i.e., where \verb+README.md+ is located.
 
@@ -24,7 +24,7 @@ $ docker run -p 8000:8000  \
 
 Once the application is running, we can access it via browser at following web address: \url{http://127.0.0.1:8000/}. The first initialization takes longer, the website will load itself once the initialization completes. 
 
-\subsection*{Included dataset}
+\subsection*{Included Dataset}
 
 The provided demo includes a small dataset of images to search on. These images come from Open Image Dataset\footnote{\url{https://opensource.google/projects/open-images-dataset}, CC-by 4.0}. The dataset contains 20\,035 images, for which we computed the region splitting for 2x4 regions. For an approach using the antepenultimate layer, we only provide extracted features for half of the dataset, due to the size limit of attachments. Finally, we extracted 528 faces from the dataset used for the search by collage (with the same settings as described in \autoref{ch:face_search}).
 
@@ -38,7 +38,7 @@ Our application is separated into two modules: spatial search and face search. U
 
 The default module, which opens, is search by collage. On the screen, we can see a canvas for creating the queries and some control elements. On the first load, a target image (the searched scene) is displayed for several seconds over the canvas. During the creation of the collage, we can always access the target image by clicking on the image button (``Display hint''), see \autoref{fig:ui_collage}.
 
-\subsubsection*{Creating a collage}
+\subsubsection*{Creating a Collage}
 
 We can create custom collages on the canvas. To add an image to the canvas, we can either \emph{paste} it, or add it via the URL of the image. To paste an image, it needs to be available in the clipboard. The easiest way to do that for most images is to right-click on the image and select ``Copy image''. We can also recommend a selective screenshot feature, which can speed up the copying of the images and add the possibility of selecting only a part of the image. For Windows 10, it is possible via key combination Shift + Win Key + S. Linux users with KDE may use Spectacle (usually invoked via Print Screen key) or a similar utility.
 
@@ -48,7 +48,7 @@ Once the image is placed in the canvas, we can resize it by grabbing the bottom 
 
 It is possible to switch between the approaches used for feature extraction. The list of available approaches can be accessed by clicking on the three dots, next to the query button.
 
-\subsubsection*{Displayed results}
+\subsubsection*{Displayed Results}
 
 \begin{figure}
     % \centering
@@ -61,7 +61,7 @@ By default, the application displays only the best 100 matched results. The imag
 
 Results are presented based on the ranking, as we described in \autoref{s:task_formulation}. More similar results are displayed first. If the image is not present in the loaded dataset, the rank will not be displayed. This may be a case if the features for a given approach are not available for all images in the dataset.
 
-\subsection{Search by face similarity}
+\subsection{Search by Face Similarity}
 
 \begin{figure}
     \centering
@@ -79,7 +79,7 @@ By clicking at any face, we step down one layer. The image which we clicked is i
 Each image in the traversal structure also supports two additional operations: show images from the video and show the closest faces. In the case of images, which did not come from the videos (the case of the demo dataset), the images displayed by the first option, are arbitrary. The second option displays all images, which contain a face similar to the queried. Both these options are available by corresponding icons in the top right corner of the face, available at any layer. A top layer for our demo dataset is displayed in the figure \ref{fig:face_grid_app}
 
 
-\chapter{Extracting features for new datasets}
+\chapter{Extracting Features for a Custom Datasets}
 \label{ch:custom_dataset}
 
 In the previous chapter, we described how to run a demo with a preprocessed dataset of images. In this chapter, we describe the steps required to run the application for a new set of images. If we do not want to change the dataset but only evaluate different approaches (i.e., changing the underlying neural network), it is enough to do only the corresponding step.
@@ -95,7 +95,7 @@ $ docker build . -t lib
 
 The user needs to prepare a directory with images to be processed. If the images come from videos, this directory should be further divided into subdirectories. Each subdirectory should then contain images from one video.
 
-\section{Feature extraction for Collage approaches}
+\section{Feature Extraction for Collage Approaches}
 
 In this section, we provide an example of extracting features for our system for both collage approaches: regions and using the last convolution block. In this example, we extract features by \verb+MobileNetV2+, using regions \verb+2x4+ with the \verb+input_size=96+. The system expects equally sized images.
 
@@ -141,7 +141,7 @@ The second step includes preprocessing with optional \acrshort{pca} dimension re
 
 The content of the \verb+$features+ can be then copied to the corresponding directory (see section \ref{s:dir_structure}) and immediately used, by running the app (see chapter \ref{ch:user_guide}).
 
-\section{Feature extraction for Face Similarity}
+\section{Feature Extraction for Face Similarity}
 
 For the extraction of faces and their encodings, we use similar steps as in the previous section:
 
@@ -171,7 +171,7 @@ $ docker run \
 
 where the \verb+crop_size+ specifies filtering criteria on the minimum area covered by the face in the image.
 
-\subsection{Training Self-organizing map}
+\subsection{Training Self-organizing Map}
 
 After obtaining the face encodings, we can train the underlying self-organizing map, which we use to obtain a grid of faces for the bottom layer.
 
@@ -193,7 +193,7 @@ $ docker run \
 
 For \verb+train_som.py+ additional arguments as \verb+learning_rate+, \verb+sigma+, \verb+distance+ may be explored. The scripts saves all intermediate self-organizing maps and also plots the errors during the training. It is possible to choose any of the stored \acrshort{som}s for the application and observe the differences between them.
 
-\section{Running the server with new data}
+\section{Running the Server with Custom Data}
 \label{s:dir_structure}
 
 We can replace any of the existing data by the new ones, either in their original location \verb+images_representations+, or we can create a new location for the data with following structure:

@@ -10,7 +10,7 @@ Our goal is to perform a known-item-search task on a set of images. Developing a
 
 At the end of this chapter, we provide an overview of the face recognition topic. We link to the recent overviews of the most successful systems based on deep neural networks.
 
-\section{Known-item-search Task}
+\section{Known-item Search Task}
 
 The known-item-search task is present in any multimedia format. We may look for a particular article in the database of the newspaper or for a specific photo in a family album. This thesis focuses on visual KIS task; specifically, we retrieve images. In this chapter, we review a few of the systems for the visual KIS task presented at the last \acrshort{vbs}2019. We mainly follow the summarization from \cite{rossetto2020interactive}. As the study presents, the most popular approach at the VBS2019 was \emph{Query by an Image} and \emph{Concept Labeling}. 
 
@@ -31,7 +31,7 @@ We designed our techniques as a possible enhancement for a complex system in ord
 The traversal systems often rely on effective visualization techniques for high-dimensional data. Many of the frameworks presented at VBS create a 2D grid of images. The images in the grid are usually organized based on their high-dimensional representation, often produced by neural networks. 
 
 
-\section{Overview of the existing frameworks}
+\section{Overview of the Existing Frameworks}
 
 In the next section, we shortly investigate some of the existing frameworks, which competed in the Video Browser Showdown. 
 
@@ -113,9 +113,9 @@ There are many reasons for the advancement of neural networks in the past years.
 
 Since this topic is broad, we recommend more thorough reading, such as Neural Networks and Deep learning online book \citep{nielsen2015neural}.
 
-\subsection{Convolution Neural Networks}
+\subsection{Convolutional Neural Networks}
 
-Convolution Neural Networks (\acrshort{cnn}) are a class of Deep Neural Networks. Even though they emerged in the late 1980s \citep{lecun1989backpropagation}, it took another 20 years for further advancements in the research area. Convolution Neural Networks are mainly used in image-related tasks, such as image classification (``What is on the image?''), object detection (``Where are the objects in the image and what are they?'') or even content generation (``Create a new image''). Their abilities were also tested in many, not image-related tasks, e.g., music genre recognition.
+Convolutional Neural Networks (\acrshort{cnn}) are a class of Deep Neural Networks. Even though they emerged in the late 1980s \citep{lecun1989backpropagation}, it took another 20 years for further advancements in the research area. Convolutional Neural Networks are mainly used in image-related tasks, such as image classification (``What is on the image?''), object detection (``Where are the objects in the image and what are they?'') or even content generation (``Create a new image''). Their abilities were also tested in many, not image-related tasks, e.g., music genre recognition.
 
 Convolutional Neural Networks are specialized kind of networks which usually work with grid-like topology. For the 2D case, most typically image pixels represent a grid. The name \emph{convolution} refers to using a mathematical linear function \emph{convolution} in at least one of the layers. A simplified overview of the structure is displayed in figure \ref{fig:convolution_neural_network}. We refer to \cite{Goodfellow-et-al-2016} for additional information about the \emph{convolutional layers}.
 
@@ -139,7 +139,7 @@ We utilize some of the pre-trained Convolution Neural Networks. The possibility 
 	\label{fig:camera-setup}
 \end{figure}
 
-\subsection{Pretrained models}
+\subsection{Pretrained Models}
 \label{ss:pretrained_models}
 
 In our work, we use various pre-trained models. We obtain the models from Keras, dlib, or other open-sourced projects. In the following sections, we describe the frameworks and libraries we use.
@@ -175,13 +175,13 @@ In April 2017, a group of researchers from Google published a study \citep{mobil
 
 Dlib \citep{king2009dlib} is a modern C++ toolkit containing machine learning algorithms and tools for creating complex software in C++ to solve real-world problems. We use the Dlib library for face detection and also face feature extraction. For both, we use Python \acrshort{api} provided by \verb+face_recognition+ \citep{geitgey2016machine}. 
 
-\subsubsection*{Face detection}
+\subsubsection*{Face Detection}
 
 The authors of dlib implemented two key approaches to face detection. The first one, the frontal face detector, is based on the histogram of gradients. This approach is very fast in learning to detect the faces and also fast on performing the detections. It is still used in a variety of online tasks. The original release notes are available in \citep{king2017dlib_hog}.
 
 The second approach present in the dlib is based on the convolutional neural network. This approach has a longer inference time. However, based on evaluations, it has higher accuracy in non-frontal face views. The overview of both approaches is provided, for example, by \citep{arun2018cnndlib}.
 
-\subsubsection*{Face encodings}
+\subsubsection*{Face Encodings}
 
 Dlib also presents a model for face encoding extraction. This model was trained for the face verification task. Based on published results (\href{http://vis-www.cs.umass.edu/lfw/results.html}{Labeled Faces in the Wild Benchmark}), the model achieves  99.38\% accuracy on the verification task. The network architecture is based on the ResNet34 and trained on the mix of the available datasets of faces. The review of the model is available at \citep{king2017high}.
 
@@ -190,7 +190,7 @@ Dlib also presents a model for face encoding extraction. This model was trained 
 
 In projection methods for dimensionality reduction, the goal is to find a mapping of the input vectors from the original $d$-dimensional space to a new $k$-dimensional space (where $k < d$) with minimum information loss. \acrshort{pca} is one of such methods. It is an unsupervised method, which employs linear projection to decrease the number of dimensions while preserving the explanation for variance within the data. Since the derivation of the formulas for \acrshort{pca} requires several technicals steps and some advanced knowledge of Linear Algebra, we refer to the \cite{alpaydin2020introduction} for a more detailed description.
 
-\section{Self-organizing maps}
+\section{Self-organizing Maps}
 \label{s:som}
 
 The self-organizing map was introduced by \cite{kohonen1982self}. The self-organizing map, abbreviated as \acrshort{som}, is an example of a popular neural network based on unsupervised learning.  It produces low-dimension (typically two-dimension), discretized representation of the input space. Additionally, the \acrlong{som} structure forms a semantic map, where similar samples are mapped close together and dissimilar ones further apart.
