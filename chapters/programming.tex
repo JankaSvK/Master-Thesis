@@ -79,14 +79,6 @@ By clicking at any face, we step down one layer. The image which we clicked is i
 Each image in the traversal structure also supports two additional operations: show images from the video and show closest faces. In case of images, which did not come from the videos (the case of the demo dataset), the images displayed by the first option, are arbitrary. The second option displays all images, which contain a face similar to the queried. Both these options are available by corresponding icons in the top right corner of the face, available at any layer. A top layer for our demo dataset is displayed in the figure \ref{fig:face_grid_app}
 
 
-
-
-
-
-
-
-
-
 \chapter{Extracting features for new datasets}
 \label{ch:custom_dataset}
 
@@ -230,65 +222,3 @@ image_representations/
 \vspace{0.5cm}
 
 It is not necessary to provide all the data for all the approaches. Only the modules with correctly provided data will work as expected.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-% In this chapter we provide an overview
-
-% \section{Code Overview}
-% To provide a brief, structured overview of the project, we firstly provide an overview of used libraries and frameworks. We continue by describing the modules of our application.
-
-% Our application is split into two parts: web-based application and the library. In the web application, we include the frontend for creating queries and interactive environment for the search. In the library, we perform every part of the inference.
-
-% \subsection{Libraries and Frameworks}
-
-% Our language of choice is mainly Python (v3.7). We selected this languages due to its popularity among the machine learning community. Based on this choice, we wanted to limit the number of programming languages used in this project. We therefore select Django, as our choice for web framework.  We further describe both individually.
-
-% \subsubsection{Web-based application}
-
-% For ourproject we chose Django (v3.0.8) as our web-framework. For interactive frontend we further use JavaScript to implement features like rescaling, dragging, etc.
-
-% \subsubsection*{CSS}
-
-% We use Syntactically Awesome Style Sheets\footnote{\url{https://sass-lang.com/}} (SCSS) to generate our CSS files. This provides us with an advantage to use variables and nesting to reduce the size and repetition of our CSS files.
-
-% \subsubsection*{JavaScript}
-
-% We use pure JavaScript in combination with jQuery\footnote{\url{https://jquery.com/}} to power our web interface. Regarding the querying process from our frontend to the Django, we use mostly AJAX requests (asynchronous HTTP). We use \verb+POST+ method to send the data to Django, which we encode into string using JSON.
-
-% \subsubsection*{Material Design Lite\footnote{\url{https://getmdl.io/}}}
-
-% For the frontend we use Material Design Lite. In our application we use several components from the Material Design Lite, including: buttons, icons, layouts, loading and other.
-
-% \subsubsection{Library}
-
-% \cite{pedregosa2011scikit}
-% \cite{van2011numpy}
-
