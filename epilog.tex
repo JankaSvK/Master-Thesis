@@ -15,10 +15,6 @@ As additional parameters, we evaluated three strategies for preprocessing the im
 
 Secondly, we investigated the effect of the dimensionality reduction of the features on the model. We were able to reduce the number of features to as low as 128 without losing too much performance of the whole system. Based on this, we propose a further use of our system in the competitions such as VBS, where the dataset is ten times bigger than the dataset we worked with.
 
-
-% Secondly, we investigated the effect of the dimensionality reduction of the features on the model. Based on the experiments, we can use as low as 128 features to\todo{we were able to reduce the number of features as low as 128 without losing too much performance of the whole system, while substantially improving processing speeds (ak si to teda merala alebo aspon nejak uviedla)} still obtain a comparably performing system. Based on this, we propose a further use of our system in the competitions such as VBS, where the dataset is ten times bigger than the dataset we worked with.
-
-
 Finally, we tested three different networks. MobileNetV2, as it is a fast and small network, ResNet50 and Resnet50V2. For the ResNet50, we used a pre-trained model on eleven thousand of classes compared to one thousand classes in the case of MobileNetV2 and Resnet50V2. The experiments showed that the ResNet50 on eleven thousand classes performed the best.
 
 For the evaluations, we hand crafted a set of 102 collages. All experiments presented were tested on this set of queries.
@@ -30,10 +26,6 @@ In the second part of the thesis, we discussed a possibility to search through t
 We conducted a study, asking 25 respondents to find three most similar faces in the grid of 100 faces to a given face. Each user completed the task for ten different target faces. The experiments showed a correlation between the people's answers, and the ordering based on distances in the high-dimensional features.
 
 Based on these findings we have organized the faces from the dataset into 2D grid with the help of self-organizing map. We further present traversal structure to allow quick searching withing the grid. The user is also provided with the option to display all similar faces to a given face.
-
-% Based on these findings, we build a traversal structure to explore the dataset of faces. We trained a self-organizing map from the data for our bottom layer. For each neuron in this SOM, we assigned a face with the smallest distance to this neuron. Based on this layer, we created upper layers by taking every $k$-th element in both axes. We also provided a user with the ability display all similar faces  to a given face.
-
-% In the presented solution, we observed clusters of older people, people in glasses, etc. However, this approach did not fully cover the original dataset, as some of the data may not be represented in the bottom layer. We leave it for future work, to conduct more thorough experiments, verifying the usefulness of the proposed traversal system.
 
 \vspace{1em}
 
