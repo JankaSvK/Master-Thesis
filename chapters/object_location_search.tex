@@ -410,10 +410,10 @@ $$
 s_{D, \theta, X}(h) = \sum_{(T_i, Q_i) \in X}[r_D(T_i, Q_i) \leq h]
 $$
 
-In the plots we scale the both axis as the percentage of the dataset/collected queries. I.e., we display $r_D(T_i, Q_i) / |D|$ on $x$-axis and $s_{D, \theta, X}(h) / |X|$ on $y$-axis. That way we obtain comparable results even in case of different datasets. 
+In the plots we scale the both axis as the percentage of the dataset/collected queries. I.e., we display $r_D(T_i, Q_i) / |D|$ on $x$-axis and $s_{D, \theta, X}(h) / |X|$ on $y$-axis. For example, in \autoref{fig:mobilenet_whole_image_example} we can see that about 80\% (y-axis) of the target images were found within the first 20\% (x-axis) of the dataset after sorting the dataset based on the corresponding collage.
+That way we obtain comparable results even in case of different datasets. 
 
 Similarly to our reasoning in section \ref{s:task_formulation}, we claim that this function correlates with the time spent on retrieving all target images.
-
 
 \section{Summary}
 
