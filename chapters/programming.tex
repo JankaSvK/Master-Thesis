@@ -1,9 +1,9 @@
 \chapter{User Guide}
 \label{ch:user_guide}
 
-In the previous chapters, we developed and evaluated several methods for a known-item-search task. In this chapter, we provide a user guide for our implementation of the aforementioned techniques. This chapter only covers user interaction and does not cover experimenting with new datasets nor the overview of the implementation.
+In the previous chapters, we developed and evaluated several methods for a Known-item search task. In this chapter, we provide a user guide for our implementation of the aforementioned techniques. This chapter only covers user interaction and does not cover experimenting with new datasets nor the overview of the implementation.
 
-The user can access the application via a web-based interface. Once the webpage is opened, we can see by default a module for search based on the collage (refer to \ref{ch:object_location}). The second module includes face similarity search (chapter \ref{ch:face_search}). We proceed to describe both modules.
+The user can access the application via a web-based interface. Once the webpage is opened, we can see by default a module for search based on the collage (refer to \autoref{ch:object_location}). The second module includes face similarity search (\autoref{ch:face_search}). We proceed to describe both modules.
 
 \section{Running the Application}
 
@@ -26,9 +26,9 @@ Once the application is running, we can access it via browser at following web a
 
 \subsection*{Included Dataset}
 
-The provided demo includes a small dataset of images to search on. These images come from Open Image Dataset\footnote{\url{https://opensource.google/projects/open-images-dataset}, CC-by 4.0}. The dataset contains 20\,035 images, for which we computed the region splitting for 2x4 regions. For an approach using the antepenultimate layer, we only provide extracted features for half of the dataset, due to the size limit of attachments. Finally, we extracted 528 faces from the dataset used for the search by collage (with the same settings as described in \autoref{ch:face_search}).
+The provided demo includes a small dataset of images to search on. These images come from Open Image Dataset\footnote{\url{https://opensource.google/projects/open-images-dataset}, CC-by 4.0}. The dataset contains 20\,035 images, for which we computed the region splitting for 2x4 regions. For an approach using the antepenultimate layer, we only provide extracted features for half of the dataset, due to the size limit of the attachments. Finally, we extracted 528 faces from the dataset for the search by face similarities (with the same settings as described in \autoref{ch:face_search}).
 
-The data, which the model uses is in the directory \verb+image_representation+. In the next chapter, we describe how to work with custom data. It is possible to either replace the existing ones or to create a new directory and update the path in the provided example.
+The data, which the model uses is in the directory \verb+image_representation+. In the next chapter, we describe how to work with custom data. It is possible to either replace the existing ones or to create a new directory and update the path in the provided command.
 
 \section{Modules}
 
@@ -72,14 +72,14 @@ Results are presented based on the ranking, as we described in \autoref{s:task_f
 
 Upon loading the face module, there is a grid with faces, and also a target image is displayed. Like the Search by collage module, the target image can be accessed at any moment by clicking on \verb+Show the image+. 
 
-The grid, which is displayed, represents the top layer of the multilevel structure. This layer fully fits into a display; therefore, move commands do not have an effect. We can step up from any (except top layer, where it does not have any effect) layer by clicking on the link \verb+Out+.
+The grid, which is displayed, represents the top layer of the multilevel structure. This layer fully fits into a display; therefore, move commands do not have an effect. We can step up from any (except top layer, where it does not have any effect) layer by clicking on the \verb+Zoom Out+.
 
-By clicking at any face, we step down one layer. The image which we clicked is in the center of the next layer, if possible. This is not possible for images near the corners and edges. In such a case, the grid is displayed in a way that full display is used, and the clicked image is as close to the center as possible.
+By clicking at any face, we step down one layer. The image which we clicked is in the center of the next layer, if possible. This is not possible for images near the corners and edges. In such case, the grid is displayed in a way that full display is used, and the clicked image is as close to the center as possible.
 
-Each image in the traversal structure also supports two additional operations: show images from the video and show the closest faces. In the case of images, which did not come from the videos (the case of the demo dataset), the images displayed by the first option, are arbitrary. The second option displays all images, which contain a face similar to the queried. Both these options are available by corresponding icons in the top right corner of the face, available at any layer. A top layer for our demo dataset is displayed in the figure \ref{fig:face_grid_app}
+Each image in the traversal structure also supports two additional operations: show images from the video and show the closest faces. In the case of images, which did not come from the videos (the case of the demo dataset), the images displayed by the first option, are arbitrary. The second option displays all images, which contain a face similar to the queried one. Both these options are available by corresponding icons in the top right corner of the face, available at any layer. A top layer for our demo dataset is displayed in the \autoref{fig:face_grid_app}
 
 
-\chapter{Extracting Features for a Custom Datasets}
+\chapter{Extracting Features for a Custom Dataset}
 \label{ch:custom_dataset}
 
 In the previous chapter, we described how to run a demo with a preprocessed dataset of images. In this chapter, we describe the steps required to run the application for a new set of images. If we do not want to change the dataset but only evaluate different approaches (i.e., changing the underlying neural network), it is enough to do only the corresponding step.
@@ -97,7 +97,7 @@ The user needs to prepare a directory with images to be processed. If the images
 
 \section{Feature Extraction for Collage Approaches}
 
-In this section, we provide an example of extracting features for our system for both collage approaches: regions and using the last convolution block. In this example, we extract features by \verb+MobileNetV2+, using regions \verb+2x4+ with the \verb+input_size=96+. The system expects equally sized images.
+In this section, we provide an example of extracting features for our system for both collage approaches: regions and the approach using the last convolution block. In this example, we extract features by \verb+MobileNetV2+, using regions \verb+2x4+ with the \verb+input_size=96+. The system expects equally sized images.
 
 \vspace{0.5cm}
 \begin{boxedverbatim}
@@ -125,7 +125,7 @@ $ docker run \
 
 \vspace{0.5cm}
 
-Parameters options for feature extraction are:
+Parameter options for feature extraction are:
 \begin{itemize}
     \item \verb+--feature_model+: \verb+resnet50v2antepenultimate+, \verb+resnet50v2+, \\ \verb+mobilenetv2antepenultimate+, \verb+mobilenetv2+, 
     \item \verb+--input_size+: depends on the model used, check with Keras Applications
@@ -134,12 +134,12 @@ Parameters options for feature extraction are:
 
 The second step includes preprocessing with optional \acrshort{pca} dimension reduction. The parameters are:
 \begin{itemize}
-    \item \verb+--empty_pipeline+: no \acrshort{pca} is applied, data are only preprocessed forming structure for the application or
+    \item \verb+--empty_pipeline+: no \acrshort{pca} is applied, data are only preprocessed forming structure for the application
     \item \verb+--explained_ratio+: \acrshort{pca} into given number of components is applied
     \item \verb+--regions+: to specify that the data reflect the regions' structure
 \end{itemize}
 
-The content of the \verb+$features+ can be then copied to the corresponding directory (see section \ref{s:dir_structure}) and immediately used, by running the app (see chapter \ref{ch:user_guide}).
+The content of the \verb+$features+ directory can be then copied to the corresponding directory (see  \autoref{s:dir_structure}) and immediately used, by running the app (see \autoref{ch:user_guide}).
 
 \section{Feature Extraction for Face Similarity}
 
@@ -149,7 +149,7 @@ For the extraction of faces and their encodings, we use similar steps as in the 
 \begin{boxedverbatim}
 $ images="/path/to/images/"
 $ intermediate_output="/path/to/intermediate_output/"
-$ features="/path/to/features/"
+$ face_features="/path/to/face_features/"
 
 $ docker run \
   -v $images:/images \
@@ -161,7 +161,7 @@ $ docker run \
 
 $ docker run \
   -v $intermediate_output:/feature_records \
-  -v $features:/features \
+  -v $face_features:/features \
   lib \
     python diplomova_praca_lib/preprocess_face_data.py \
       --input=/feature_records --output=/features \
@@ -173,7 +173,7 @@ where the \verb+crop_size+ specifies filtering criteria on the minimum area cove
 
 \subsection{Training Self-organizing Map}
 
-After obtaining the face encodings, we can train the underlying self-organizing map, which we use to obtain a grid of faces for the bottom layer.
+After obtaining the face encodings, we can train the underlying Self-organizing Map, which we use to obtain a grid of faces for the bottom layer.
 
 
 \vspace{0.5cm}
@@ -191,12 +191,12 @@ $ docker run \
 \end{boxedverbatim}
 \vspace{0.5cm}
 
-For \verb+train_som.py+ additional arguments as \verb+learning_rate+, \verb+sigma+, \verb+distance+ may be explored. The scripts saves all intermediate self-organizing maps and also plots the errors during the training. It is possible to choose any of the stored \acrshort{som}s for the application and observe the differences between them.
+For \verb+train_som.py+ additional arguments as \verb+learning_rate+, \verb+sigma+, \verb+distance+ may be explored. The scripts saves all intermediate Self-organizing Maps and also plots the errors during the training. It is possible to choose any of the stored \acrshort{som}s for the application and observe the differences between them.
 
 \section{Running the Server with Custom Data}
 \label{s:dir_structure}
 
-We can replace any of the existing data by the new ones, either in their original location \verb+images_representations+, or we can create a new location for the data with following structure:
+We can replace any of the existing data by the new ones, either in their original location \verb+image_representations+, or we can create a new location for the data with following structure:
 
 
 \vspace{0.5cm}

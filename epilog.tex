@@ -1,7 +1,7 @@
 \chapter*{Conclusion}
 \addcontentsline{toc}{chapter}{Conclusion}
 
-In this thesis, we explored techniques to tackle the known-item search task on a set of images. We started by reviewing the existing approaches presented at Video Browser Showdown. Based on the limits of existing systems, we proposed two approaches: search by collage and search by face similarity. We built both approaches utilizing state-of-art deep learning models. 
+In this thesis, we explored techniques to tackle the Known-item search task on a set of images. We started by reviewing the existing approaches presented at Video Browser Showdown. Based on the limits of existing systems, we proposed two approaches: search by collage and search by face similarity. We built both approaches utilizing state-of-art deep learning models. 
 
 \subsection*{Search by collage}
 
@@ -21,25 +21,25 @@ For the evaluations, we handcrafted a set of 102 collages. All experiments prese
 
 \subsection*{Search by face similarity}
 
-In the second part of the thesis, we discussed a possibility to search through the dataset using only faces. Firstly, we extracted faces from the dataset. We investigated and explored obtained faces. We selected only those which were big enough. For these faces, we computed their descriptors. These descriptors were produced by a neural network trained to identify people. We conducted a case study, where we aimed to verify if the space of the face descriptors has an ability to sort people based on the similarity as people do.
+In the second part of the thesis, we discussed a possibility to search through the dataset using only faces. Firstly, we extracted faces from the dataset. We investigated and explored obtained faces. We used a neural network trained to identify people to extract the descriptors. We conducted a case study, where we aimed to verify if the space of the face descriptors has an ability to sort people based on the similarity as people do.
 
-We conducted a study, asking 25 respondents to find three most similar faces in the grid of 100 faces to a given face. Each user completed the task for ten different target faces. The experiments showed a correlation between the people's answers, and the ordering based on distances in the high-dimensional features.
+We conducted a study, asking 25 respondents to find three most similar faces in the grid of 100 faces to a given face. Each user completed the task for ten different target faces. The experiments indicate a correlation between the people's answers, and the ordering based on distances in the high-dimensional features.
 
-Based on these findings, we have organized the faces from the dataset into a 2D grid with the help of the self-organizing map. We further present a traversal structure to allow quick searching withing the grid. The user is also provided with the option to display all similar faces to a given face.
+Based on these findings, we have organized the faces from the dataset into a 2D grid with the help of the Self-organizing Map. We further presented a traversal structure to allow quick searching within the grid. We also provided an option to the user to display the most similar faces to a given face.
 
 \vspace{1em}
 
-Overall, we presented two distinct techniques for tackling the known-item search task. It is important to note that this task is an open problem, and even though we proposed and tested promising solutions, this problem is not yet solved. 
+Overall, we presented two distinct techniques for tackling the Known-item search task. It is important to note that this task is an open problem, and even though we proposed and tested promising solutions, this problem is not yet solved. 
 
 \subsection*{Future work}
 
-Although our experiments were successful in providing new approaches to the known-item search task, it left much room for further improvements. We provide a couple of suggestions for future work:
+Although our experiments were successful in providing new approaches to the Known-item search task, it left much room for further improvements. We provide a couple of suggestions for future work:
 
 \begin{itemize}
     \item Experiments with regions of mixed sizes in the Regions' based approach
     \item Exploration of other network architectures for the feature extraction step
     \item Implementing proposed approaches into existing tools, to support multi-modal queries
-    \item Explore the options of additional techniques used for face features extraction
+    \item Explore the effect of descriptors and extraction methods on the search by faces
     \item More thorough studies on the performance of our traversal system
 \end{itemize}
 
