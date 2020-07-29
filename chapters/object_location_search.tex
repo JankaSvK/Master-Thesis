@@ -83,9 +83,6 @@ $$
 $$
 where $<_a$ is any arbitrary total ordering of the dataset $D$. For theoretical purposes we could use the lexicographical ordering. In the implementation, we make use of a priori ordering of the dataset $D$ for this as ordering $<_a$.
 
-% we costruct the rank based on the similarity
-
-
 \section{User-program interaction}
 
 We provide the user with a canvas where they can place, move, and resize the collage images. They can add images by providing an URL of the image, or by pasting the image from a clipboard. One possible way to obtain images for the collage is to use an image search engine (e.g., Google Images). The images can be usually copied to the clipboard by selecting copy in the right-click menu. A quicker approach, we preferred, is using selective screenshots. With the selective screenshot, we can even crop the image, focusing on the part we like, and paste it onto the canvas.
@@ -105,8 +102,6 @@ Our approach consists of several individual steps. Figure \ref{fig:processing_pi
 
 We often split feature vector into several parts (each describing only a part of the image). Appropriate part is then selected based on the position of the query image in the canvas and compared with the descriptor of the collage image. We denote \emph{selection function} $z: (\mathbb{R}^k, [0,1]^4) \rightarrow \mathbb{R}^n$, where $[0,1]^4$ refers to the position of the image in the canvas.
 
-% In the figure, we show the possibility of having multiple feature vectors for the same record. Using multiple feature vectors is still following our theoretical model since the space from the concatenation of the feature vectors is isomorph to the $\mathbb{R}^n$ {\color{red} jaky $R^n$ nebo spis $n$ se mysli? nebo spis chcete rict, ze se to da porad chapat jako vektor jak se pise hned dal? chce to zjednodusit ... }. Therefore, we can still think of it as one feature vector. This first step is done only once per descriptor. We obtain the feature vectors offline by a separate module.
-
 In the collage processing path, we use feature extraction function $f_q: \mathcal{U} \rightarrow \mathbb{R}^n$ to obtain feature vectors of the images from the query collage (one vector for each image). This part is done online; therefore, we need to obtain the descriptors on the fly to perform the search. Since we only extract descriptors for a couple of images, it is possible to use the predictions from the neural networks even without the access to GPU.
 
 As the next step, our goal is to obtain the distance for descriptor of each query image and descriptor of each image in the dataset, i.e., between the results of $f_q$ and $z$. Finally, we obtain for each image in the dataset a multiset of distances. We \emph{aggregate} these distances in order to compute the final dissimilarity score. Based on the dissimilarity scores, we compute the final \emph{ranking}, as described in section \ref{s:task_formulation}.
@@ -118,22 +113,6 @@ $$
 where $A$ denotes the aggregation function over a multiset. We use notation $q = (q_u, q_m)$, where $q_u$ represents the collage image and $q_m$ the metadata, i.e., position in the canvas. Also, in this particular equation, we use the $\{(\cdot)\}$ for a multiset.
 
 While the described pipeline offers a reasonably straightforward approach to the task at hand, the individual stages' internal factors require a fair amount of tuning. We evaluate the hyperparameters with respect to the performance of the whole framework. Throughout the following sections, we progressively build the pipeline while describing the particular approaches we use. We start with the discussion on feature extraction, and then progress towards the next stages of the system.  
-
-
-
-% Then, we can measure the queries' success rate, as the number of queries solved up to a given rank. For example, let us have 40 items in the dataset and perform four queries. These queries ranked the target images at the following positions: \{0, 23, 7, 14\}. For a given rank, we are interested in, we compute how many queries were ranked below it. In this scenario, for a rank 20, three queries were ranked lower.
-
-% Since the size of the dataset and the number of tested queries may vary, we always present the results with respect to the size of the set it comes from. In the previous scenario, 75\% of the queries {\color{red} jako ze queries = hledanych objektu? hrozne tezko se to cte a lusti... a to tusim predem, co chcete napsat...} were ranked below the rank representing 50\% of the dataset.
-
-% We use these cumulative, proportional {\color{red} jako ze na ose X se bere \% DB?} results to plot the performance of the framework. A sample evaluation is present in the figure \ref{fig:mobilenet_whole_image_example}. In the case described presented {\color{red} ???????}, 90\% of the annotated collages (queries), the target image was ranked in the first 50\% of the dataset. In other words, this can be said that in 90\% of cases by stating a query, we were able to eliminate half of the dataset as unrelated {\color{red} nechapu co chcete rict...}. We can also notice a steep curve in the beginning. It shows that 70\% of the collages had the target image ranked in the first 10\% of the dataset. We can see that this particular system worked well for 70\% of the collages, but struggled to solve the rest.
-
-% \begin{figure}
-%     \centering
-%     \includegraphics[width=0.8\linewidth]{img/mobilenet_whole_image.png}
-%     \caption{Performance of MobileNetV2 on annotated collages}
-%     \label{fig:mobilenet_whole_image_example}
-% \end{figure}
-
 
 \section{Features extraction strategies}
 
@@ -148,8 +127,6 @@ The baseline ignores the spatial information of the images in the collage. We se
 In this approach we use a given \acrshort{cnn} to obtain the descriptors of the collage's images and also dataset images. Therefore, $f_q = f_d$. Since, we directly compare the descriptors, the selection function $z(x, q_m) = x$.
 
 Since the resolution of the query images and images in the dataset may not match the input shape of the \acrshort{cnn}, we rescale them to the required input size.
-
-% In figure \ref{fig:mobilenet_whole_image_example}, used for the explanation of the graphs, we show the performance on the annotated set of collages. We present the results on the MobileNetV2. We use MobileNetV2\todo{refy ak nie su niekde vyssie} due to its low computability needs and therefore offering quick annotations {\color{red} spis representation extraction?}. It is widely used in the task, where we expect online or near online evaluation. We included a short description of the Related Work (section \ref{ss:pretrained_models}).
 
 \begin{figure}
 \centering
@@ -201,8 +178,6 @@ Our limitations summarized are square regions, not extending over the image and 
 
 We propose a cutting, which for the desired number of regions $N \times M$ with the desired width $s$ of the region, produces evenly distributed regions. In case the regions cover greater area than the image itself (that is, $sN > h$, where $h$ is the height of the image), the regions are evenly distributed over the axis.
 
-% We require a non-negative excess $sN - h$, where $h$ represents image height, $s$ the dimension of the CNN, and $N$ number of desired regions over the vertical axis. The excess is evenly split between all regions in the given axis and creates overlaps. Analogously, we handle the horizontal axis.
-
 The side effect of the overlaps also plays an important role in this technique. With the rigid frame without overlapping, we could face a situation where a single object would be split into two separate parts. Both parts separately could lack enough visual information on the object to provide consistent results. With the excess distributed to all regions, we share the information alongside the cut to both regions.
 
 Our fixed parameters are regions' width $s$ and the number of regions we want to use $N \times M$ and image size $h, w$. We solve the task of choosing regions splits for one axis; the second is done analogously. We know that the last region has to end with the edge of the image. Therefore, the starting coordinate of the last region is $h - s$. We then split the remaining ``space'' (space not covered by the last region) over $N-1$ regions equally. We call this distance $step$ since it says the distance between the starting points of the regions. The starting coordinate $r_i$ of the $i$-th region in a given axis is:
@@ -212,43 +187,7 @@ step_h = (h - s) / (N - 1) \\
 r_i = {i \, step_h\,\,\text{for}\,i \in \{0, 1, 2, \dots, N - 1\}}
 \end{align*}
 
-% {\color{green}
-
-% We can now precisely define the regions. However, let us first introduce auxiliary function $S: \mathbb{R}^4 \rightarrow \mathcal{P}(\mathbb{R}^2)$ for computing the rectangular area corresponding to the coordinates of the top left and bottom right corner:
-
-% $$
-%     S(x_0, x_1, y_0, y_1) = \{(x, y) | x_0 \leq x \leq x_1 \land y_0 \leq y \leq y_1\}
-% $$
-
-% We can then define single region as:
-% $$
-%     r_{i,j} = S(i \cdot step_h, i \cdot step_h + h, j \cdot step_w, j \cdot step_w + w)
-% $$
-
-% And corresponding set of regions as:
-% $$
-%     R = \{r_{i, j} | i \in \{0, 1, \ldots, N-1\}, j \in \{0, 1, \ldots M-1\}\}
-% $$
-% }
-
 With the condition on full coverage of the image (i.e., $s N \geq \text{h}$, and for $M$ respectively), we obtain full coverage of the image by the regions. Overlaps are evenly distributed over both axes. Note that, with bigger sized regions, overlaps may occur between more than two regions. For example, if we split an image with width 180 into three regions with a width of 96 pixels, some areas of the image will be included in all three regions. This happens when the $step < s/2$.
-
-% We evaluate the performance of the same network using a different number of regions. This experiment is shown in the figure \ref{fig:different_number_regions}. Even though the number of regions was almost doubled (from 8 to 15), we only saw a slight improvement in performance. In the figure \ref{fig:different_region_size} we show the effect of the regions size. We see that the best performing model worked with $2\times4$ regions with the input size of $128\times128$. For this particular setup, it was able to rank 90\% of the collages in the 8\% of the database.
-
-% \begin{figure}
-% \centering
-% \includegraphics[width=0.8\linewidth]{graphs/0c36458e4a7754f349e4dd02e823acc5f192f0aaa42647313045530525f3db19.pdf}
-% \caption{An experiment comparing the effect of the changing number of regions.}
-% \label{fig:different_number_regions}
-% \end{figure}
-
-% \begin{figure}
-% \centering
-% \includegraphics[width=0.8\linewidth]{graphs/901175c0015f71987720d10953133afa566d88a09a6d7182a074859ff4e8409e.pdf}
-% \caption{An experiment comparing the effect of the changing regions size.}
-% \label{fig:different_region_size}
-% \end{figure}
-
 
 \subsubsection{Selecting regions}
 
@@ -287,26 +226,12 @@ In our case, the $|A \cap B|$ represents the area that belongs to both, region a
 
 From the regions ordered by their \acrshort{iou} to the query image, we select the first $n$. We leave $n$ as one of our hyperparameters to evaluate in the experiments. Recall that the required output of this stage is only one descriptor, not multiple from multiple regions. Therefore, when we compare the feature vectors with multiple regions, we select only a winner, with the lowest distance for the next phase. 
 
-% {\color{green}
-% To formally define this selection let us first definde 
-% }
-
-% We present an experiment, where we took all intercepted regions (green regions in the example), only the region with the highest IoU (blue region in the example), or equivalently first 2 with the highest IoU or first three regions. The results of the experiment are shown in figure \ref{fig:crop_limitation}. In the results, we see no significant improvement in any of the provided choices. Although, the selection of only the region with the highest overlap gives us the least computable heavy\todo{mozno nieco ine ako heavy - bud hard ak to fakt je np-tazke alebo nieco typu demanding} approach.
-
 \begin{figure}
 \centering
 \includegraphics[width=0.63\textwidth]{img/fish_grid_regions}
 \caption[Example of choosing the corresponding regions]{Example of choosing the corresponding regions. Red: query position; Green: all intercepted regions; Blue: region with highest IoU.}
 \label{fig:fish_with_grid}
 \end{figure}
-
-
-% \begin{figure}
-% \centering
-% \includegraphics[width=0.8\linewidth]{graphs/5c4a781f8e6f3eac93db2083bde3963c06582a92a8141411bf29e41251a98e75.pdf}
-% \caption{Performance of the system based on different number of chosen crops}
-% \label{fig:crop_limitation}
-% \end{figure}
 
 \subsection{Using the representation before pooling}
 
@@ -382,15 +307,6 @@ Finally, by performing the global average pooling over $L_i'$, we obtain our fea
 
 Compared to the previous approaches, we aimed to avoid the strict cutting and to provide more flexibility. The caveat of this approach is increased memory consumption, since we store 49 feature vectors per vector ($7\times7$). It also requires to compute the average pool for each of the query images separately. Therefore, the time complexity is also increased. The factor is multiplicative, by the number of images in the collage and the size of the used layer.
 
-% We present the results in figure \ref{fig:antepenultimate}. Due to its memory limitation, we downsized the dataset to one-tenth. We randomly sampled the images from the dataset. We provide a baseline on this smaller dataset. We can see an improvement compared to the baseline. We were able to implement spatial information of the query successfully. However, the performance is worse compared to one of our region's techniques. We assume that this is caused by the fact that running a network 15 times can extract more information than running it only once.
-
-% \begin{figure}
-%     \centering
-%     \includegraphics[width=0.8\linewidth]{graphs/adaf8d435bb40406f9ce40654ec396e04453ab76cf0776d2a87d385055d5424f.pdf}
-%     \caption{Comparison of baseline, regions and aproach using the antepenultimate layer.}
-%     \label{fig:antepenultimate}
-% \end{figure}
-
 \section{Ranking}
 
 Let us remind an overview from figure \ref{fig:processing_pipeline}. In the previous section, we have seen three approaches presented for feature extraction and the extraction of the relevant features. The first presented approach is the baseline; the second cuts the image into regions and the third uses information from the antepenultimate layer of CNN. Now we shall focus on the remaining steps in the pipeline.
@@ -400,40 +316,6 @@ The first of these steps is computing distance between the descriptors of collag
 Then we proceed to compute the dissimilarity score between the collages and images in the dataset. We do so by aggregating computed distances by the aggregation function $A$. Again, we test and evaluate various aggregation functions: minimum, maximum, and average.
 
 As the final step, we compute the ranking, as defined in section \ref{s:task_formulation} using computed dissimilarity scores.
-
-% Now we continue describing the steps in the second part of the pipeline. To these belong, computing distance between two representations and ranking the results.
-
-% % extracting distances and ranking the records in the database. We continue to work with our so far best-performing model -- MobileNetV2 spitted into 2x4 regions with the input size 128x128.
-
-% We have a feature representation for each image in the dataset from the previous stage of the pipeline. As the next step, we compute the distance from each query image to each dataset image. Based on these distances, we construct the ranking of the dataset, as described in the task formulation, section \ref{}\todo{}. We later compare the effect of the chosen distance measure on the performance of the system. We include Mannhattan, Euclidean and cosine distance for our experiments. We expect to see a lower performance of the Euclidean distance compared to the cosine distance, due to the curse of dimensionality\footnote{\url{https://en.wikipedia.org/wiki/Curse\_of\_dimensionality\#Distance\_functions}}. {\color{red} no to bych teda netvrdil... cosine distance ma prece stejny pocet dimenzi}
-
-% Finally, we create the ranking of the dataset based on the distance of the collage to the image in the dataset. We define the distance of the collage to the image, as following: \todo{}. We test three functions as $ $\todo{}. The mean, min and maximum. Then we order the dataset based on the distances to the collage, close images first.
-
-% In figure \ref{fig:regions_distances}, we show a comparison between three different distance measures we compared. We see a superior performance of the cosine distance over Euclidean and Manhattan distance. Since we work with a high dimensional space (in case of MobileNetV2, it produces 1280 dimensions after pooling), the Euclidean distance suffers from the curse of the dimensionality\footnote{\url{https://en.wikipedia.org/wiki/Curse\_of\_dimensionality\#Distance\_functions}}. 
-
-% \begin{figure}
-%     \centering
-%     \includegraphics[width=0.8\linewidth]{graphs/3aab502ea602a9f49afaa0a0d998cf226a0a67b9efcaa655d2ddf5063eeabe47.pdf}
-%     \caption{Comparison of the performance based on the chosen distance function.}
-%     \label{fig:regions_distances}
-% \end{figure}
-
-% We already discussed techniques for feature extraction and distance. We produced the ranking of the dataset for each query image. In this section, we solve a question of how to merge these rankings from multiple query images to obtain one final ranking, which is presented to the user.
-
-% For our task, we do not assign any weights to the input query images. We neither work with the order of their placement. A collage is an unordered set of images with their location. In this section, we assume we already have the ranks per query image. Our goal is to merge them and produce one ranking.
-
-% We define ranking $R$ as a set of distances between the query image $q$ and database item $i$. We look for a function $r: R^n \rightarrow R$, which merges multiple rankings into one final ranking.
-
-% We test three such functions, $min(\cdot)$, $mean(\cdot)$ and $max(\cdot)$.  For a database image, we compute the distance as a given function from the distances to the query images. Afterward, we rank the database images based on their distances. 
-
-% A comparison of these functions for MobileNetV2 can be seen in figure \ref{fig:ranking_funcs}. The $min(\cdot)$ has the advantage of "forgiving" if some of the images provided in the collage were unrelated. The $max(\cdot)$, on the other hand, ranks the images based on the worst match. As our results show, it best performs $mean(\cdot)$, as it assigns the importance to each image from the collage equally.
-
-% \begin{figure}
-% \centering
-% \includegraphics[width=0.8\linewidth]{graphs/70c56dc52be92e048f57b9bdfb35ddce2be41fd2454ae360588da2e387b09de5.pdf}
-% \caption{Performance of the system based on different ranking function}
-% \label{fig:ranking_funcs}
-% \end{figure}
 
 \section{Additional parameters}
 
@@ -468,36 +350,11 @@ The option to create non-square queries comes handy when the user wants to inclu
         \label{fig:penguin}
 \end{figure}
 
-
-% resizing the image in a way, that the longer side of the image is the size of the input. Image is then centered along the other axis. The remaining space left is filled by a specified color.
-
-
-
-% Our question \todo{duplicita - The following experiment compares the approaches of ...} is if it is better to distort the image or provide the image with padding to fill the square shape. For almost square images, the padding covers only a small portion of the image. For images with a significant imbalance in the dimensions, it includes much space with no useful information for the network. A second question we ask is if the color of the padding results in different performance.
-
-% The results are shown in figure \ref{fig:padding}. We can see that a rescaling achieved the best performance. A small improvement is achieved by using white padding instead of black. Since the results show favor in rescale, we use it for all other experiments.
-
-% \begin{figure}
-%     \centering
-%     \includegraphics[width=0.8\linewidth]{graphs/bf57efafbbbc7b5a1744054d87d4ecfa381c9eaf2459186904190d97bcb99a81.pdf}
-%     \caption{Comparison of different padding method for images in the query.}
-%     \label{fig:padding}
-% \end{figure}
-
 \subsection{Dimensionality reduction}
 
 In this section, we take a look at reducing the dimensionality of the extracted features. Dimensionality reduction could help us to scale our approaches to even bigger datasets and to decrease the query response time.
 
 The extracted features from the neural networks are from high-dimensional space (for MobileNetV2, it is 1280 features, for Resnet50 it is 2048 features). Moreover, the dimensionality reduction can also have a positive effect on reducing noise if present in the feature vector. We aim to evaluate the system with a reduced number of features. For the dimensionality reduction, we use the \acrlong{pca} (described in section \ref{s:pca}).
-
-% The results are shown in figure \ref{fig:pca}. From the results, we can have several interesting observations.\todo{The results offer several...} Even with as low as eight components (8 features), we can obtain performance \todo{comparable to the} as the original Image representation baseline. With the increasing number of components, the system performs better. With 512 components, it even performed slightly better as the original data. For our purposes, we think \todo{conclude / nieco viac scientific ako think} that selecting 128 components offer the best performance-cost ratio. With the need for smaller feature vectors, we would select at minimum 64.
-
-% \begin{figure}
-%     \centering
-%     \includegraphics[width=0.8\linewidth]{graphs/6fbd4f70810e1f63f400ef601c1cdba0fd1635749810aa2347a4ff26e6fccf47.pdf}
-%     \caption{Effect of PCA on the performance of the system}
-%     \label{fig:pca}
-% \end{figure}
 
 \subsection{Neural network selection}
 
@@ -509,23 +366,6 @@ Aside from the MobileNetV2, we use two different instances of ResNet -- ResNet50
 
 The downside of using ResNet50 trained on eleven thousands of classes compared to MobileNetV2 is slower evaluation and availability. Since the classification task on eleven thousand class is not one of the most common state-of-art challenges, the set of pre-trained neural network for this task is smaller. Also, used ResNet50 is only pre-trained with the input shape 224x224. To use it for the regions, we introduced upscaling for the network input. 
 
-% Even with \todo{even with, alebo nieco ine} these difficulties, it proved itself as the best choice out of the compared alternatives.
-
-
-% In the experiment, we can see that both ResNets work better than MobileNetV2. At the same time, we can see that ResNet trained on more classes performed significantly better in the beginning. Although, we have to note that Resnet50V2 was more successfully solving the rest of the queries.
-
-
-% In figure \ref{fig:networks}, we present a comparison between the three models. 
-
-
-
-% \begin{figure}
-%     \centering
-%     \includegraphics[width=0.8\linewidth]{graphs/2536f6c96149dea24dae84dbf52f760d7d58b0dffa7d660656e1784d9dca277f.pdf}
-%     \caption{Comparison of the performance based on different feature extraction models.}
-%     \label{fig:networks}
-% \end{figure}
-
 \chapter{Evaluations}
 \label{ch:evaluation}
 
@@ -534,8 +374,6 @@ In this section, we provide evaluations for each aforementioned parameter of the
 \section{Collected collages}
 
 We manually created a set of queries to evaluate the proposed system's configurations. The figure \ref{fig:query_collage_comparison} shows one of such query -- target image and collage. The annotated data consists of 102 collages, each contains a visual description of a given target image. The average size of the images used in the collages covers 15\% of the canvas. Five percent of the collected collages contain an image bigger than 80\% of the canvas. We provide visualizations of the distribution of the annotated queries in figure \ref{fig:annotated_dataset}. We use total of 199 images to create these 102 collages.
-
-% Together, all 102 collages are described by 199 images.
 
 \begin{figure}
      \centering
@@ -653,17 +491,3 @@ In this chapter, we focus on fine-tuning several hyperparameters of the task at 
     \caption[Comparison of the performance based on different feature extraction models]{Comparison of the performance based on different feature extraction models. The performance of the Resnet50 trained on 11 thousands of classes is better compared to the other two. This experiment shows results after performing the \acrshort{pca} to 128 dimensions.}
     \label{fig:networks}
 \end{figure}
-
-% Then, we can measure the queries' success rate, as the number of queries solved up to a given rank. For example, let us have 40 items in the dataset and perform four queries. These queries ranked the target images at the following positions: \{0, 23, 7, 14\}. For a given rank, we are interested in, we compute how many queries were ranked below it. In this scenario, for a rank 20, three queries were ranked lower.
-
-% Since the size of the dataset and the number of tested queries may vary, we always present the results with respect to the size of the set it comes from. In the previous scenario, 75\% of the queries {\color{red} jako ze queries = hledanych objektu? hrozne tezko se to cte a lusti... a to tusim predem, co chcete napsat...} were ranked below the rank representing 50\% of the dataset.
-
-% We use these cumulative, proportional {\color{red} jako ze na ose X se bere \% DB?} results to plot the performance of the framework. A sample evaluation is present in the figure \ref{fig:mobilenet_whole_image_example}. In the case described presented {\color{red} ???????}, 90\% of the annotated collages (queries), the target image was ranked in the first 50\% of the dataset. In other words, this can be said that in 90\% of cases by stating a query, we were able to eliminate half of the dataset as unrelated {\color{red} nechapu co chcete rict...}. We can also notice a steep curve in the beginning. It shows that 70\% of the collages had the target image ranked in the first 10\% of the dataset. We can see that this particular system worked well for 70\% of the collages, but struggled to solve the rest.
-
-% \begin{figure}
-%     \centering
-%     \includegraphics[width=0.8\linewidth]{img/mobilenet_whole_image.png}
-%     \caption{Performance of MobileNetV2 on annotated collages}
-%     \label{fig:mobilenet_whole_image_example}
-% \end{figure}
-
