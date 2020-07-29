@@ -281,7 +281,7 @@ In our case, the $|A \cap B|$ represents the area that belongs to both, region a
 \begin{figure}
     \centering
 	\includegraphics[width=0.4\linewidth]{img/Intersection_over_Union_-_visual_equation.png}
-	\caption{Intersection over Union between regions. Source: Wikipedia, CC BY-SA 4.0}
+	\caption[Intersection over Union between regions]{Intersection over Union between regions. Source: Wikipedia, CC BY-SA 4.0}
 	\label{fig:intersection_over_union}
 \end{figure}
 
@@ -296,7 +296,7 @@ From the regions ordered by their \acrshort{iou} to the query image, we select t
 \begin{figure}
 \centering
 \includegraphics[width=0.63\textwidth]{img/fish_grid_regions}
-\caption{Example of choosing the corresponding regions. Red: query position; Green: all intercepted regions; Blue: region with highest IoU.}
+\caption[Example of choosing the corresponding regions]{Example of choosing the corresponding regions. Red: query position; Green: all intercepted regions; Blue: region with highest IoU.}
 \label{fig:fish_with_grid}
 \end{figure}
 
@@ -608,7 +608,7 @@ In this chapter, we focus on fine-tuning several hyperparameters of the task at 
 \begin{figure}
 \centering
 \includegraphics[width=0.8\linewidth]{graphs/5c4a781f8e6f3eac93db2083bde3963c06582a92a8141411bf29e41251a98e75.pdf}
-\caption{Performance of the system based on different number of chosen crops. This experiment shows only a minor change in performance with the increasing number of selected regions.}
+\caption[Performance of the system based on different number of chosen crops]{Performance of the system based on different number of chosen crops. This experiment shows only a minor change in performance with the increasing number of selected regions.}
 \label{fig:crop_limitation}
 \end{figure}
 
@@ -636,21 +636,21 @@ In this chapter, we focus on fine-tuning several hyperparameters of the task at 
 \begin{figure}
     \centering
     \includegraphics[width=0.8\linewidth]{graphs/bf57efafbbbc7b5a1744054d87d4ecfa381c9eaf2459186904190d97bcb99a81.pdf}
-    \caption{Comparison of different padding method for images in the query. Based on the experiment, rescaling is the best option.}
+    \caption[Comparison of different padding method for images in the query]{Comparison of different padding method for images in the query. Based on the experiment, rescaling is the best option.}
     \label{fig:padding}
 \end{figure}
 
 \begin{figure}
     \centering
     \includegraphics[width=0.8\linewidth]{graphs/6fbd4f70810e1f63f400ef601c1cdba0fd1635749810aa2347a4ff26e6fccf47.pdf}
-    \caption{Effect of \acrshort{pca} on the performance of the system. The results offer several interesting observations. With the increasing number of components, the system performs better. With 512 components, it even performed slightly better than on the original data. For our purposes, we conclude that selecting 128 components offer the best performance-cost ratio. With the need for smaller feature vectors, we would select at minimum 64 components.}
+    \caption[Effect of \acrshort{pca} on the performance of the system]{Effect of \acrshort{pca} on the performance of the system. The results offer several interesting observations. With the increasing number of components, the system performs better. With 512 components, it even performed slightly better than on the original data. For our purposes, we conclude that selecting 128 components offer the best performance-cost ratio. With the need for smaller feature vectors, we would select at minimum 64 components.}
     \label{fig:pca}
 \end{figure}
 
 \begin{figure}
     \centering
     \includegraphics[width=0.8\linewidth]{graphs/2536f6c96149dea24dae84dbf52f760d7d58b0dffa7d660656e1784d9dca277f.pdf}
-    \caption{Comparison of the performance based on different feature extraction models. The performance of the Resnet50 trained on 11 thousands of classes is better compared to the other two. This experiment shows results after performing the \acrshort{pca} to 128 dimensions.}
+    \caption[Comparison of the performance based on different feature extraction models]{Comparison of the performance based on different feature extraction models. The performance of the Resnet50 trained on 11 thousands of classes is better compared to the other two. This experiment shows results after performing the \acrshort{pca} to 128 dimensions.}
     \label{fig:networks}
 \end{figure}
 

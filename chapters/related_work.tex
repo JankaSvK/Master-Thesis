@@ -44,7 +44,7 @@ We highly recommend more thorough description of the VIRET tool presented in \ci
 \begin{figure}
     \centering
     \includegraphics[width=\linewidth]{img/viret_overview.pdf}
-    \caption{Example search in VIRET framework. Source: \cite{kovalvcik2020viret}}
+    \caption[Example search in VIRET framework]{Example search in VIRET framework. Source: \cite{kovalvcik2020viret}}
     \label{fig:viret}
 \end{figure}
 
@@ -56,7 +56,7 @@ A SOM-Hunter was for the first time introduced at the \acrshort{vbs}2020. This t
 \begin{figure}
     \centering
     \includegraphics[width=0.99\linewidth]{img/som_hunter_small.png}
-    \caption{A sample search in SOM-Hunter. Source: \href{https://videobrowsershowdown.org/hall-of-fame/}{Video Broser Showdown, Hall of Fame}}
+    \caption[A sample search in SOM-Hunter]{A sample search in SOM-Hunter. Source: \href{https://videobrowsershowdown.org/hall-of-fame/}{Video Broser Showdown, Hall of Fame}}
     \label{fig:som_hunter}
 \end{figure}
 
@@ -67,7 +67,7 @@ Vitrivr [\cite{rossetto2016vitrivr}, \autoref{fig:vitrivr}] is a sophisticated f
 \begin{figure}
     \centering
     \includegraphics[width=\linewidth]{img/vitrivr.png}
-    \caption{Overview of the separation in the Vitrivr framework. Source: \url{https://vitrivr.org/vitrivr.html}}
+    \caption[Overview of the separation in the Vitrivr framework]{Overview of the separation in the Vitrivr framework. Source: \url{https://vitrivr.org/vitrivr.html}}
     \label{fig:vitrivr}
 \end{figure}
 
@@ -122,7 +122,7 @@ Convolutional Neural Networks are specialized kind of networks which usually wor
 \begin{figure}
     \centering
     \includegraphics[width=0.98\textwidth]{img/convolution_neural_network.jpg}
-    \caption{Schematic diagram of a convolutional neural network. Source: Phung, V.H.; Rhee, E.J. A High-Accuracy Model Average Ensemble of Convolutional Neural Networks for Classification of Cloud Image Patches on Small Datasets. Appl. Sci. 2019, 9, 4500.}
+    \caption[Schematic diagram of a convolutional neural network]{Schematic diagram of a convolutional neural network. Source: Phung, V.H.; Rhee, E.J. A High-Accuracy Model Average Ensemble of Convolutional Neural Networks for Classification of Cloud Image Patches on Small Datasets. Appl. Sci. 2019, 9, 4500.}
     \label{fig:convolution_neural_network}
 \end{figure}
 
@@ -138,7 +138,7 @@ We utilize some of the pre-trained Convolution Neural Networks. The possibility 
 \begin{figure}
     \centering
 	\includegraphics[width=0.8\linewidth]{img/network-comparison.jpeg}
-	\caption{Top-1 one-crop accuracy versus amount of operations required for a single forward pass. The size of the blobs is proportional to the number of network parameters. Source: \cite{canziani2016analysis}}
+	\caption[Top-1 one-crop accuracy versus amount of operations required for a single forward pass]{Top-1 one-crop accuracy versus amount of operations required for a single forward pass. The size of the blobs is proportional to the number of network parameters. Source: \cite{canziani2016analysis}}
 	\label{fig:camera-setup}
 \end{figure}
 
@@ -155,18 +155,18 @@ In this thesis, we use pre-trained models to implement new approaches. We do not
 
 \subsection*{Resnet50V2}
 
-ResNet (abbv. for Residual Networks, \cite{resnet}) is a classic neural network used in many computer vision tasks. ResNet was the winner of the ILSVRC 2015 (\citep{ILSVRC15}). The authors aimed to solve a problem of degrading training accuracy of the neural networks, when more layers were added. 
+ResNet (abbv. for Residual Networks, \cite{resnet}) is a classic neural network used in many computer vision tasks. ResNet was the winner of the ILSVRC 2015 (\citep{ILSVRC15}). The authors aimed to solve the problem of degrading training accuracy of the neural networks when more layers were added. 
 
-The authors argued that the reason behind the degradation is that approximating identity function by a layer in a neural network is difficult (otherwise the added layers should learn to approximate identity and resulting error should be no greater then when using shallower counterpart). To solve this problem they, instead of trying to approximate underlaying mapping $H(x)$, they ask the neural network to approximate residual function $F(x)=H(x) - x$. That way if identify is suitable function the weights just needed to be driven to zero (achieve $0 = H(x) - x$ i.e. $H(x) = x$). They do so by replacing simple layers by residual building blocks (see figure \ref{fig:resnetv2}).
+The authors argued that the reason behind the degradation is that approximating identity function by a layer in a neural network is difficult (otherwise, the added layers should learn to approximate identity, and the resulting error should be no greater than when using shallower counterpart). To solve this problem, instead of trying to approximate underlying mapping $H(x)$, they ask the neural network to approximate residual function $F(x)=H(x) - x$. That way if identify is suitable function the weights just needed to be driven to zero (achieve $0 = H(x) - x$ i.e. $H(x) = x$). They do so by replacing simple layers by residual building blocks (see figure \ref{fig:resnetv2}).
 
 \begin{figure}
     \centering
     \includegraphics[width=0.5\textwidth]{img/resnetv2.png}
-    \caption{Left: ResNet residual unit as proposed in \citep{resnet}. Right: ResNetV2 residual unit by \citep{resnetv2}. Source: \cite{resnetv2}}
+    \caption[Residual units]{Left: ResNet residual unit as proposed in \citep{resnet}. Right: ResNetV2 residual unit by \citep{resnetv2}. Source: \cite{resnetv2}}
     \label{fig:resnetv2}
 \end{figure}
 
-In \citep{resnetv2}  the authors improved the architecture of ResNet by changing the position of activation an batch normalization layers. By doing so they made the easiest path for the information to propagate even simpler. For details see the figure \ref{fig:resnetv2}. This improved architecture is commonly known as ResNetV2.
+In \citep{resnetv2}, the authors improved the architecture of ResNet by changing the position of activation a batch normalization layers. By doing so, they made the easiest path for the information to propagate even simpler. For details see the figure \ref{fig:resnetv2}. This improved architecture is commonly known as ResNetV2.
 
 
 % ResNet (short for Residual Networks, \cite{resnet}) is a classic neural network used in many computer vision tasks. ResNet was the winner of the ImageNet challenge in 2015. ResNet architecture allowed training deeper networks, which was not possible before because of vanishing gradients. ResNet's main idea is to allow ``skipping connections'' between the layers. This has two main reasons: it mitigates the problem of the vanishing gradients and allows learning an identity function for higher layers in the network. ResNetV2 \citep{resnetv2} was released as an improvement of the ResNet. It included batch normalization and ReLU activation prior 2D convolution layer. 

@@ -2,15 +2,15 @@
 \label{ch:developers_guide}
 \label{ch:programmers_guide}
 
-When creating our application, we kept in mind to make it as easy as possible for user to use. We therefore selected a web-based front-end, with which users come in contact daily. From the user point of view, it does not require installation of any application and it can be used from almost any platform.
+When creating our application, we kept in mind to make it as easy as possible for users to use. We, therefore, selected a web-based front-end, with which users come in contact daily. From the user point of view, it does not require the installation of any application, and it can be used from almost any platform.
 
-Creating simple, shareable environment from the user perspective gives us opportunity of collecting more annotated data by the users. Comparing to the classical applications, which need to be installed and run, using a web-based application is enough to run it on the server by researcher and share the links with the respondents. This way it may be easier to reach bigger audience.
+Creating a simple, shareable environment from the user perspective allows us to collect more annotated data from the users. Compared to the classical applications, which need to be installed and run, a web-based application is enough to run it on the server by the researcher and share the links with the respondents. This way, it may be easier to reach a bigger audience.
 
-We decided to use Python for our back-end as it has big machine learning community with ever growing possibilities of open-source projects. As the results of this, we decided to use Django easily scalable Python web-framework.
+We decided to use Python for our back-end as it has a big machine learning community with ever-growing possibilities of open-source projects. As a result of this, we decided to use Django easily scalable Python web-framework.
 
-Since our implementation covers a wide range of tasks -- from a web-based front-end to library able to work with deep learning models. We do not include an exhaustive enumeration of the specific classes/functions in this chapter. Rather we provide an overview of the individual parts of the application. We start with the separation of the application into three layers, as displayed in figure \ref{fig:implementation_overview}.
+Since our implementation covers a wide range of tasks -- from a web-based front-end to library able to work with deep learning models, we do not include an exhaustive enumeration of the specific classes/functions in this chapter. Instead, we provide an overview of the individual parts of the application. We start with the separation of the application into three layers, as displayed in figure \ref{fig:implementation_overview}.
 
-This figure represents the individual layers of our solution and provides a summary of the technologies used in the layers. Our application consists of two main Python modules: \verb+diplomova_praca+ and \verb+diplomova_praca_lib+. In the figure, the front-end and backend belong to the first one, and the library represents module \verb+diplomova_praca_lib+.
+This figure represents the individual layers of our solution and provides a summary of the technologies used in the layers. Our application consists of two main Python modules: \verb+diplomova_praca+ and \verb+diplomova_praca_lib+. In the figure, the front-end and back-end belong to the first one, and the library represents module \verb+diplomova_praca_lib+.
 
 We shortly describe each of the parts, as displayed in the figure.
 

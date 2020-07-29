@@ -13,9 +13,9 @@ The second approach took advantage of the last convolution block from \acrshort{
 
 As additional parameters, we evaluated three strategies for preprocessing the images before feeding them into a convolutional neural network. We either rescaled image, added black, or white stripes. As our experiment showed, rescaling the images achieved the best results.
 
-Secondly, we investigated the effect of the dimensionality reduction of the features on the model. Based on the experiments, we can use as low as 128 features to still obtain a comparably performing system. Based on this, we propose a further use in the competitions as VBS, where the dataset is ten times bigger than the dataset we worked with.
+Secondly, we investigated the effect of the dimensionality reduction of the features on the model. Based on the experiments, we can use as low as 128 features to\todo{we were able to reduce the number of features as low as 128 without losing too much performance of the whole system, while substantially improving processing speeds (ak si to teda merala alebo aspon nejak uviedla)} still obtain a comparably performing system. Based on this, we propose a further use in the competitions as VBS, where the dataset is ten times bigger than the dataset we worked with.
 
-At last, we tested three different networks. MobileNetV2, as it is a fast and small network, ResNet50 and Resnet50V2. For the ResNet50, we used a pre-trained model on eleven thousand of classes compared to one thousand classes in the case of MobileNetV2 and Resnet50V2. The experiments showed that the ResNet50 on eleven thousand classes performed the best.
+At last \todo{Finally, at last znie nervozne}, we tested three different networks. MobileNetV2, as it is a fast and small network, ResNet50 and Resnet50V2. For the ResNet50, we used a pre-trained model on eleven thousand of classes compared to one thousand classes in the case of MobileNetV2 and Resnet50V2. The experiments showed that the ResNet50 on eleven thousand classes performed the best.
 
 For the evaluations, we hand crafted a set of 102 collages. All experiments presented were tested on this set of queries.
 
