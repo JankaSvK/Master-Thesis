@@ -10,7 +10,7 @@ In this chapter, we aim to provide a search mechanism employing finer features o
 
 We first extract the faces from the dataset, and then we obtain a descriptor for each one of them. Based on these descriptors, we organize the faces into a traversal structure supporting navigational commands.
 
-The task of comparing faces of the people and saying which look more similar has its roots in the human perception of faces. Therefore, to evaluate the individual steps, we conduct experiments with human subjects.
+The task of comparing the faces of the people and saying which look more similar has its roots in the human perception of faces. Therefore, to evaluate the individual steps, we conduct experiments with human subjects.
 
 Our experiments suggest that the feature space of the descriptors has a limited power to sort people based on the similarity in a way people do. Based on that, we implement the traversal structure, which can be used with the presented descriptors or any other descriptors of the faces that could be developed in the future.
 
@@ -27,7 +27,7 @@ If we look at the dataset, we notice that only a small portion of the people loo
 
 For our experiment, we use only a part of the original dataset. We extract faces only from the first 316 videos of the V3C1 dataset. Again, we firstly use image extraction from videos (refer to section \ref{s:dataset}), and only then we extract faces from images. 
 
-From these 316 videos, we were able to extract more than seventeen thousand faces. However, after investigation of the dataset, we found out that many of the extracted faces had too low resolution. The majority of the extracted faces did not even cover 5\% of the image. Therefore, we decided to filter out the dataset further and remove all the faces that did not cover at least ten percent of the image. The distribution of the area covered by a face is displayed in figure \ref{fig:faces_size_distribution}. After the filtering,  we obtained 2047 faces from the 316 videos. A random selection of faces is shown in figure \ref{fig:random_selection_faces}. 
+From these 316 videos, we were able to extract more than seventeen thousand faces. However, after investigation of the dataset, we found out that many of the extracted faces had a too low resolution. The majority of the extracted faces did not even cover 5\% of the image. Therefore, we decided to filter out the dataset further and remove all the faces that did not cover at least ten percent of the image. The distribution of the area covered by a face is displayed in figure \ref{fig:faces_size_distribution}. After the filtering,  we obtained 2047 faces from the 316 videos. A random selection of faces is shown in figure \ref{fig:random_selection_faces}. 
 
 We then visually investigated the extracted faces. The dataset contains people of different ethnicity, age, and gender. The faces are displayed from a wide range of angles, including even full side views. Some of the people wear glasses, headphones or other accessories. The dataset also contains some pictures of children. The model also extracted a few drawn faces or faces of sculptures.
 
@@ -53,7 +53,7 @@ Note that often \emph{face features} refer to the specifics of the face landmark
 
 After obtaining the face encodings for our dataset of 2047 faces, we were interested in if this feature space, created by the \acrshort{cnn} is able to sort the faces based on the similarity in a way people do. 
 
-The library, from which we use the model, refers to a threshold 0.6 in the euclidean distance as the threshold with the highest accuracy on the verification task. The example of the closest faces based on this threshold is displayed in figure \ref{fig:closest_faces}. The top left image belongs to the target face. In the provided example, we can see that the face encodings close to our target face truly belong to the same person. Unfortunately, we can see, that with increasing distance other people appear even below the threshold 0.6.
+The library, from which we use the model, refers to a threshold 0.6 in the euclidean distance as the threshold with the highest accuracy on the verification task. The example of the closest faces based on this threshold is displayed in figure \ref{fig:closest_faces}. The top left image belongs to the target face. In the provided example, we can see that the face encodings close to our target face truly belong to the same person. Unfortunately, we can see that with increasing distance, other people appear even below threshold 0.6.
 
 
 \begin{figure}
@@ -77,7 +77,7 @@ Firstly, we investigate how likely it is that the human subject notices that the
 
 As our next step, we empirically evaluate, if the model used for obtaining the face encodings, can sort the faces based on the distances similarly as human subjects do.
 
-We further investigate the seven target faces, which were not present in the grid. Excluding the three cases, where the target face is in the grid, we avoid overestimating the quality of our model, since we know, that the model is performing well on the verification task. For every face $F$ from the grid $G$, we compute the euclidean distance from the target face $T\in D$, where $D$ denotes our dataset of faces (between their encodings). We then reorder the faces from the grid based on this distance (similar to the ranking from the previous chapters). 
+We further investigate the seven target faces, which were not present in the grid. Excluding the three cases where the target face is in the grid, we avoid overestimating the quality of our model since we know that the model is performing well on the verification task. For every face $F$ from the grid $G$, we compute the euclidean distance from the target face $T\in D$, where $D$ denotes our dataset of faces (between their encodings). We then reorder the faces from the grid based on this distance (similar to the ranking from the previous chapters). 
 
 Formally we define distance $\gamma$ between faces $F, F' \in D$ based on the descriptor extraction function $f$ and euclidean distance $d_e$:
 
@@ -109,9 +109,9 @@ $$
 
 Note that as each user selects three faces, it holds: $\sum_{R\in\{0,1,\ldots99\}} p(R) = 3$.
 
-We plot the empirical probability $p$, of a user selecting the face on the $k$-th rank, given the target face. If the user is fully coherent with the model, they would choose the closest three faces based on the euclidean distance, and for the $R \in \{0,1,2\}$ we would see a probability $p(R) = 1$ and zero otherwise. 
+We plot the empirical probability $p$, of a user selecting the face on the $k$-th rank, given the target face. If the user is fully coherent with the model, they would choose the closest three faces based on the euclidean distance, and for the $R \in \{0,1,2\}$, we would see a probability $p(R) = 1$ and zero otherwise. 
 
-This plot of the probabilities is displayed in figure \ref{fig:survey_distribution}. We do not normalize this plot, so we can talk about the probability, given our experimental settings, i.e., selecting exactly three faces.
+This plot of the probabilities is displayed in figure \ref{fig:survey_distribution}. We do not normalize this plot so that we can talk about the probability, given our experimental settings, i.e., selecting exactly three faces.
 
 We are interested in the distribution of ranks given the faces selected by the users. We want to know if there is any correlation between similarity in the feature space and the similarity perceived by the human respondents. 
 
@@ -138,13 +138,13 @@ We leave for future work, a more comprehensive study with more target faces prov
 
 In the previous sections, we extracted and encoded faces. In the case study, we investigated the feature space for the correspondence to the human annotations. Here we propose a solution of organizing faces into a multilevel view. 
 
-As we discussed in \autoref{ch:related_work}, a common solution for the traversal system is a 2D grid.  In the 2D grid, a user can navigate using the following commands: move left, right, up, and down.
+As discussed in \autoref{ch:related_work}, a common solution for the traversal system is a 2D grid.  In the 2D grid, a user can navigate using the following commands: move left, right, up, and down.
 
-Since most of the time, we want to browse more than a hundred images, it becomes inconvenient to preview dataset only in one layer. Therefore, we build a simple multilevel structure to ease the navigation.
+Most of the time, we want to browse more than a hundred images, it becomes inconvenient to preview dataset only in one layer. Therefore, we build a simple multilevel structure to ease the navigation.
 
 \subsection{Tree-based structure}
 
-Our goal is to organize a dataset of images $D$ to allow easy navigation. Let us assume that the dataset can be organized into a grid of size $N\times M$. We leave the choice of specific dimensions to the user. We prefer a square setting, although it is not required. In case that the size of the dataset $|D|$ is not square of any number, we recommend adding a placeholder images.
+Our goal is to organize a dataset of images $D$ to allow easy navigation. Let us assume that the dataset can be organized into a grid of size $N\times M$. We leave the choice of specific dimensions to the user. We prefer a square setting, although it is not required. In case that the size of the dataset $|D|$ is not square of any number, we recommend adding placeholder images.
 
 We organize (so far in a non-specific way) the items from the dataset into a chosen 2D grid. This is the base layer for the tree structure, we denote this grid as $L_0$. The layer has dimensions $L_{0, h}\times L_{0, w}$. Based on this layer, we create the next layer as only a subset of this layer. Firstly, we select $k$, which represents the sampling size factor. It means that every $k^2$-th image is selected as a representant to the next layer. The overview of the structure is shown in figure \ref{fig:tree_structure}. 
 
@@ -166,7 +166,7 @@ $$
 
 We continue reducing the size of the layers until the layer will fit into a single display.
 
-In this structure, we support six types of navigation: left, right, down, up, in and out. In and out represent operations of traversing between the layers and other directional commands allow navigation  within the layer. 
+In this structure, we support six types of navigation: left, right, down, up, in, and out. In and out represent operations of traversing between the layers, and other directional commands allow navigation within the layer. 
 
 \begin{figure}
     \centering
@@ -193,11 +193,11 @@ The training errors are shown in figure \ref{fig:som_training}. We can observe t
 Then we built the bottom layer for our traversal structure based on the trained SOM. This SOM represents our grid. For each neuron in the SOM, we assign a face whose encoding is closest to the given neuron's weight vector. We refer to this face as a representative of the given neuron.
 Note that this way of selecting representatives does not avoid duplicates (i.e., assigning the same face to multiple neurons). 
 
-We explored the assignments, and these are the observations we made: 345 faces out of original 2047 is not assigned to any of the neurons. However, only 22 out of these 345 faces have the distance to the closest face which is assigned to a neuron, higher than 0.45. In the original study, the authors of the model suggest considering encodings closer than 0.6 to be of the same person. As our investigation of the dataset in the figure \ref{fig:closest_faces} shows, threshold 0.45 is strict for assigning the same person. Therefore, we expect that those 323 faces missing represent a person, which is already among the representants. The maximum distance for the excluded 22 faces is 0.56, which is still below the initially proposed threshold for assigning the same person. Nevertheless, we verified that all of these faces, which are not selected as representants to any of the neurons of the \acrshort{som}, are still accessible from the structure by an additional utility that shows the most similar faces to a given face. We discuss this utility in the next section.
+We explored the assignments, and these are the observations we made: 345 faces out of original 2047 is not assigned to any of the neurons. However, only 22 out of these 345 faces have the distance to the closest face, which is assigned to a neuron, higher than 0.45. In the original study, the authors of the model suggest considering encodings closer than 0.6 to be of the same person. As our investigation of the dataset in the figure \ref{fig:closest_faces} shows, threshold 0.45 is strict for assigning the same person. Therefore, we expect that those 323 faces missing represent a person, which is already among the representants. The maximum distance for the excluded 22 faces is 0.56, which is still below the initially proposed threshold for assigning the same person. Nevertheless, we verified that all of these faces, which are not selected as representants to any of the neurons of the \acrshort{som}, are still accessible from the structure by an additional utility that shows the most similar faces to a given face. We discuss this utility in the next section.
 
 \subsection{Accessing the most similar faces}
 
-We enhance the tree-structure to support displaying the most similar faces to a given face. A user can click on any of the displayed faces. Images, which contain a face considering to be the same person (threshold 0.6), are then displayed. This is helpful to find the exact target image when the user finds the same person on the map. This also provides a way to learn for the user. The user can display close faces, and investigate the characteristics by which faces are grouped by. Based on this, the user can utilize information about the structure to perform the face search faster in the next searches.
+We enhance the tree-structure to support, displaying the most similar faces to a given face. A user can click on any of the displayed faces. Images, which contain a face considering to be the same person (threshold 0.6), are then displayed. This is helpful in finding the exact target image when the user finds the same person on the map. This also provides a way to learn for the user. The user can display close faces, and investigate the characteristics by which faces are grouped by. Based on this, the user can utilize information about the structure to perform the face search faster in the next searches.
 
 \section{Summary}
 
@@ -205,13 +205,13 @@ Our experiments suggest that the space of encodings contains some information on
 
 We created the bottom layer with the help of a self-organizing map. We assigned each neuron its closest representative from the dataset. To provide users with additional insight into the data, we also support a search for closest faces to any given face in the traversal structure.
 
-In the last section, we present a preliminary evaluation. More thorough evaluations, with more participants, would be needed to limit the user's memory and other factors. This would require different participants searching the datasets using different approaches and evaluating the time needed to find a face. Even though we do not provide such a complex study, we include the results of two respondents searching for ten faces using two different approaches.
+In the last section, we present a preliminary evaluation. More thorough evaluations, with more participants, would be needed to limit the user's memory and other factors. This would require different participants searching the datasets using different approaches and evaluating the time needed to find a face. Although we do not provide such a complex study, we include the results of two respondents searching for ten faces using two different approaches.
 
 \section{Preliminary evaluation}
 
 In this section, we present a preliminary evaluation of the proposed navigational system. The goal of this chapter was to propose an exploration method over the dataset of faces. Therefore, we evaluate it by conducting an experiment with a user.
 
-The task for the user is to find a target image in the dataset. As our baseline, we construct a grid of the faces, sorted by their original videos. Therefore, multiple images of one person are grouped together since they come from the same video. For searching in this grid, a user can only scroll up and down. We then test this approach against our traversal structure. The hypothesis we aim to prove is that our solution decreases the average time needed to find the target face compared to the search in random dataset.
+The task for the user is to find a target image in the dataset. As our baseline, we construct a grid of the faces, sorted by their original videos. Therefore, multiple images of one person are grouped since they come from the same video. For searching in this grid, a user can only scroll up and down. We then test this approach against our traversal structure. The hypothesis we aim to prove is that our solution decreases the average time needed to find the target face compared to the search in a random dataset.
 
 For our experiment, we use ten randomly selected target images, which include faces. For each of them, we let the user search for the face in the dataset. Respondent A firstly searches for the faces in the baseline approach, then using the traversal structure. Respondent B searches in the opposite order, firstly they work with the traversal structure, and then with the baseline.
 
