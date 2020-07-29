@@ -17,15 +17,15 @@ Secondly, we investigated the effect of the dimensionality reduction of the feat
 
 Finally, we tested three different networks. MobileNetV2, as it is a fast and small network, ResNet50 and Resnet50V2. For the ResNet50, we used a pre-trained model on eleven thousand of classes compared to one thousand classes in the case of MobileNetV2 and Resnet50V2. The experiments showed that the ResNet50 on eleven thousand classes performed the best.
 
-For the evaluations, we hand crafted a set of 102 collages. All experiments presented were tested on this set of queries.
+For the evaluations, we handcrafted a set of 102 collages. All experiments presented were tested on this set of queries.
 
 \subsection*{Search by face similarity}
 
-In the second part of the thesis, we discussed a possibility to search through the dataset using only faces. Firstly, we extracted faces from the dataset. We investigated and explored obtained faces. We selected only those, which were big enough. For these faces, we computed their descriptors. These descriptors were produced by a neural network trained to identify people. We conducted a case study, where we aimed to verify if the space of the face descriptors has an ability to sort people based on the similarity as people do.
+In the second part of the thesis, we discussed a possibility to search through the dataset using only faces. Firstly, we extracted faces from the dataset. We investigated and explored obtained faces. We selected only those which were big enough. For these faces, we computed their descriptors. These descriptors were produced by a neural network trained to identify people. We conducted a case study, where we aimed to verify if the space of the face descriptors has an ability to sort people based on the similarity as people do.
 
 We conducted a study, asking 25 respondents to find three most similar faces in the grid of 100 faces to a given face. Each user completed the task for ten different target faces. The experiments showed a correlation between the people's answers, and the ordering based on distances in the high-dimensional features.
 
-Based on these findings we have organized the faces from the dataset into 2D grid with the help of self-organizing map. We further present traversal structure to allow quick searching withing the grid. The user is also provided with the option to display all similar faces to a given face.
+Based on these findings, we have organized the faces from the dataset into a 2D grid with the help of the self-organizing map. We further present a traversal structure to allow quick searching withing the grid. The user is also provided with the option to display all similar faces to a given face.
 
 \vspace{1em}
 
