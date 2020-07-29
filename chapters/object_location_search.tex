@@ -11,7 +11,7 @@
 
 We can imagine that at that particular moment we were shooting a video of the scenery. However, years later, with a vast set of videos in our collections, it may be impossible to re-watch every one of them to find that particular memory. Not all of us can visualize the memory, but about those who can, we say that they have an excellent visual memory \footnote{\url{https://en.wikipedia.org/wiki/Visual_memory}}. We present a technique that can be used to search in a dataset based on such memories of the scenery.
 
-In this chapter, we elaborate approaches for \acrlong{kis} based on a visual description of the memorized image. We characterise the image by the set of interesting objects in it, the way how they looked (by providing example images) and by their relative location in the image (i.e., top left corner). With that information, we look for a match in the database to the described image. We refer to our input as \emph{collage query}, or simply just as a collage. Collage is created by taking images and placing them onto an empty canvas. The placement of the images also carries a piece of information. We show an example of such a collage (query) in figure \ref{fig:query_collage_comparison}. On the left, we can see a cat in the center behind a window. On the right, we can see a possible visualization of such memory. On the grey canvas, we placed a window, which reminded us of the original one. At the center, we added a similarly colored cat.
+In this chapter, we elaborate approaches for \acrlong{kis} based on a visual description of the memorized image. We characterize the image by the set of interesting objects in it, the way how they looked (by providing example images) and by their relative location in the image (i.e., top left corner). With that information, we look for a match in the database to the described image. We refer to our input as \emph{collage query}, or simply just as a collage. Collage is created by taking images and placing them onto an empty canvas. The placement of the images also carries a piece of information. We show an example of such a collage (query) in figure \ref{fig:query_collage_comparison}. On the left, we can see a cat in the center behind a window. On the right, we can see a possible visualization of such memory. On the grey canvas, we placed a window, which reminded us of the original one. At the center, we added a similarly colored cat.
 
 \begin{figure}
 \centering
@@ -31,7 +31,7 @@ In this chapter, we elaborate approaches for \acrlong{kis} based on a visual des
 \label{fig:query_collage_comparison}
 \end{figure}
 
-While we were describing the image, we used words for it. However, in this chapter, we do not focus on the search based on the verbal description of the objects. Compared to such a textual approach, we can capture more diversity in the objects by visual information. For example, a single word for a human may represent a visually wide range of possibilities based on clothes, age and other attributes. These attributes are easier to capture by providing an example image. We can still struggle to find a similar image, that is why allowing collages is important. It is easier to put together several images together, each capturing some of the attributes, than finding an exact match.
+While we were describing the image, we used words for it. However, in this chapter, we do not focus on the search based on the verbal description of the objects. Compared to such a textual approach, we can capture more diversity in the objects by visual information. For example, a single word for a human may represent a visually wide range of possibilities based on clothes, age, and other attributes. These attributes are easier to capture by providing an example image. We can still struggle to find a similar image; that is why allowing collages is important. It is easier to put together several images together, each capturing some of the attributes than finding an exact match.
 
 This chapter presents three approaches incorporating pre-trained neural networks. We start with the formalization of the task. Next, we provide a short description of user-program interaction. Following the user interaction, we provide an overview of the framework and describe individual stages. Each of the stages is then separately discussed. 
 
@@ -55,7 +55,7 @@ $$
 $$
 where $X$ is a set of target images and corresponding queries constructed by the user.
 
-However, due to imperfect user queries, or by the fact that user can search two different target images using the same collage, this task may be even impossible. Therefore, we focus on reordering the dataset in the way that linear search by the user in this order would provide the target image as quickly as possible. We define \emph{ranking} $r_{D}$ as function with respect to a given dataset $D$:
+However, due to imperfect user queries, or by the fact that user can search two different target images using the same collage, this task may be even impossible. Therefore, we focus on reordering the dataset in the way that a linear search by the user in this order would provide the target image as quickly as possible. We define \emph{ranking} $r_{D}$ as function with respect to a given dataset $D$:
 $$
     r_D: (D \times \mathcal{P(Q)}) \rightarrow \{0, 1, \ldots, |D|-1  \}
 $$
@@ -63,7 +63,6 @@ $$
     \text{ s.t. } \{r_D(d, Q) \mid d \in D \} = \{0, 1, \ldots, |D|-1  \} \,\, \forall Q \subset \mathcal{Q}
 $$
 
-% TODO, je to function a for fixed Q je to ranking
 
 For example, $r_D(t, Q) = n$ means that target image $t$ is at position $n$ after ordering the dataset $D$ with respect to collage $Q$. This value correlates with the time spent on the linear search of the provided ordered results. This gives us the motivation to evaluate our algorithm based on this \emph{rank} across the whole set $X$.
 
@@ -81,7 +80,7 @@ However, such construction may break the requirements on the ordering. Therefore
 $$
     r_D(d, Q) = \abs{\left\{d' \in D : \delta'(d', Q) < \delta'(d, Q) \lor \left(\delta'(d', Q) = \delta'(d, Q) \land d' <_a d\right)\right\}}
 $$
-where $<_a$ is any arbitrary total ordering of the dataset $D$. For theoretical purposes we could use the lexicographical ordering. In the implementation, we make use of a priori ordering of the dataset $D$ for this as ordering $<_a$.
+where $<_a$ is any arbitrary total ordering of the dataset $D$. For theoretical purposes, we could use the lexicographical ordering. In the implementation, we make use of a priori ordering of the dataset $D$ for this as ordering $<_a$.
 
 \section{User-program interaction}
 
@@ -98,13 +97,13 @@ Based on the provided collage, the program searches for similar images in the da
     \label{fig:processing_pipeline}
 \end{figure}
 
-Our approach consists of several individual steps. Figure \ref{fig:processing_pipeline} shows a visual overview of the steps we describe here. Our first step is to compute feature vector for each image, given the descriptor extraction function. We call this step \emph{feature extraction}. This way, we obtain records, i.e., a pair of image from the dataset and its corresponding feature vector. We denote this feature extraction function as $f_d:\mathcal{U} \rightarrow \mathbb{R}^k$.
+Our approach consists of several individual steps. Figure \ref{fig:processing_pipeline} shows a visual overview of the steps we describe here. Our first step is to compute the feature vector for each image, given the descriptor extraction function. We call this step \emph{feature extraction}. This way, we obtain records, i.e., a pair of image from the dataset and its corresponding feature vector. We denote this feature extraction function as $f_d:\mathcal{U} \rightarrow \mathbb{R}^k$.
 
-We often split feature vector into several parts (each describing only a part of the image). Appropriate part is then selected based on the position of the query image in the canvas and compared with the descriptor of the collage image. We denote \emph{selection function} $z: (\mathbb{R}^k, [0,1]^4) \rightarrow \mathbb{R}^n$, where $[0,1]^4$ refers to the position of the image in the canvas.
+We often split feature vector into several parts (each describing only a part of the image). The appropriate part is then selected based on the position of the query image in the canvas and compared with the descriptor of the collage image. We denote \emph{selection function} $z: (\mathbb{R}^k, [0,1]^4) \rightarrow \mathbb{R}^n$, where $[0,1]^4$ refers to the position of the image in the canvas.
 
-In the collage processing path, we use feature extraction function $f_q: \mathcal{U} \rightarrow \mathbb{R}^n$ to obtain feature vectors of the images from the query collage (one vector for each image). This part is done online; therefore, we need to obtain the descriptors on the fly to perform the search. Since we only extract descriptors for a couple of images, it is possible to use the predictions from the neural networks even without the access to GPU.
+In the collage processing path, we use feature extraction function $f_q: \mathcal{U} \rightarrow \mathbb{R}^n$ to obtain feature vectors of the images from the query collage (one vector for each image). This part is done online; therefore, we need to obtain the descriptors on the fly to perform the search. Since we only extract descriptors for a couple of images, it is possible to use the predictions from the neural networks even without access to GPU.
 
-As the next step, our goal is to obtain the distance for descriptor of each query image and descriptor of each image in the dataset, i.e., between the results of $f_q$ and $z$. Finally, we obtain for each image in the dataset a multiset of distances. We \emph{aggregate} these distances in order to compute the final dissimilarity score. Based on the dissimilarity scores, we compute the final \emph{ranking}, as described in section \ref{s:task_formulation}.
+As the next step, our goal is to obtain the distance from descriptor of each query image to descriptor of each image in the dataset, i.e., between the results of $f_q$ and $z$. Finally, we obtain for each image in the dataset a multiset of distances. We \emph{aggregate} these distances in order to compute the final dissimilarity score. Based on the dissimilarity scores, we compute the final \emph{ranking}, as described in section \ref{s:task_formulation}.
 
 To summarize, we compute the dissimilarity score $\delta'(d, Q)$ between $d \in D$ and collage $Q \subset \mathcal{Q}$, we do following:
 $$
@@ -112,17 +111,17 @@ $$
 $$
 where $A$ denotes the aggregation function over a multiset. We use notation $q = (q_u, q_m)$, where $q_u$ represents the collage image and $q_m$ the metadata, i.e., position in the canvas. Also, in this particular equation, we use the $\{(\cdot)\}$ for a multiset.
 
-While the described pipeline offers a reasonably straightforward approach to the task at hand, the individual stages' internal factors require a fair amount of tuning. We evaluate the hyperparameters with respect to the performance of the whole framework. Throughout the following sections, we progressively build the pipeline while describing the particular approaches we use. We start with the discussion on feature extraction, and then progress towards the next stages of the system.  
+While the described pipeline offers a reasonably straightforward approach to the task at hand, the individual stages' internal factors require a fair amount of tuning. We evaluate the hyperparameters with respect to the performance of the whole framework. Throughout the following sections, we progressively build the pipeline while describing the particular approaches we use. We start with the discussion on feature extraction and then progress towards the next stages of the system.  
 
 \section{Features extraction strategies}
 
-In the following section, we present three feature extraction techniques. We begin this section with the description of the baseline model. The baseline model does not use the spatial information about the images in the collage. This baseline approach is currently used, for example, by the VIRET tool \citep{kovalvcik2020viret}. 
+In the following section, we present three feature extraction techniques. We begin this section with the description of the baseline model. The baseline model does not use spatial information about the images in the collage. This baseline approach is currently used, for example, by the VIRET tool \citep{kovalvcik2020viret}. 
 
-Following the baseline model, we present two approaches which utilize the spatial information from the collage. The first one splits the images in the dataset to fixed regions. The second one utilizes information from the neural network before the last pooling layer.
+Following the baseline model, we present two approaches that utilize the spatial information from the collage. The first one splits the images in the dataset to fixed regions. The second one utilizes information from the neural network before the last pooling layer.
 
 \subsection{Baseline -- Image representation}
 
-The baseline ignores the spatial information of the images in the collage. We set this approach as our baseline since it is relatively simple and can solve our task. In this baseline approach, we compute the feature vector for an image in the dataset using a deep neural network as a descriptor extraction function, and directly compare them with the descriptors of the collage's images.
+The baseline ignores the spatial information of the images in the collage. We set this approach as our baseline since it is relatively simple and can solve our task. In this baseline approach, we compute the feature vector for an image in the dataset using a deep neural network as a descriptor extraction function and directly compare them with the descriptors of the collage's images.
 
 In this approach we use a given \acrshort{cnn} to obtain the descriptors of the collage's images and also dataset images. Therefore, $f_q = f_d$. Since, we directly compare the descriptors, the selection function $z(x, q_m) = x$.
 
@@ -142,11 +141,11 @@ Query:
 
 \subsection{Splitting the image into regions}
 
-In the next presented approach, we will focus on using the spatial information of the images in the collage. This position of the objects can serve as highly distinguishing criteria while looking for the target image. In the previous subsection, we described the image in the dataset by only one prediction of the neural network. We obtain higher granularity for the data, by splitting the image into multiple regions and then computing the feature vector on each of the region separately.
+In the next presented approach, we will focus on using the spatial information of the images in the collage. This position of the objects can serve as highly distinguishing criteria while looking for the target image. In the previous subsection, we described the image in the dataset by only one prediction of the neural network. We obtain higher granularity for the data by splitting the image into multiple regions and then computing the feature vector on each of the regions separately.
 
-Let us assume that, we split the image into $m$ cuts. For each image of the dataset, we now need to store $m$ times more information. Resulting feature vector is of space $\mathbb{R}^{nm}$, where $n$ is the size of the \acrshort{dnn} output. To avoid increasing the time complexity by the multiplicative factor of $m$, we investigate a principle, how to compare the query image only with the one or few out of these $m$ cuts and not to all. That way, we preserve the same time complexity except for some additive factor, compared to the Baseline.
+Let us assume that we split the image into $m$ cuts. For each image of the dataset, we now need to store $m$ times more information. Resulting feature vector is of space $\mathbb{R}^{nm}$, where $n$ is the size of the \acrshort{dnn} output. To avoid increasing the time complexity by the multiplicative factor of $m$, we investigate a principle, how to compare the query image only with the one or few out of these $m$ cuts and not to all. That way, we preserve the same time complexity except for some additive factor, compared to the Baseline.
 
-First we describe the selection of the cuts, and then we discuss the principle of selection for the cuts. The overview of the information preserved for this approach is in figure \ref{fig:overview_regions}.
+First, we describe the selection of the cuts, and then we discuss the principle of selection for the cuts. The overview of the information preserved for this approach is in figure \ref{fig:overview_regions}.
 
 \begin{figure}
 \centering
@@ -166,7 +165,7 @@ Query:
 
 \subsubsection{Cutting the image}
 
-Each image in the dataset is divided into $N \times M$ regions. Descriptor is then computed and stored for each region separately. The defined cutting is identical for all images in the dataset.
+Each image in the dataset is divided into $N \times M$ regions. The descriptor is then computed and stored for each region separately. The defined cutting is identical for all images in the dataset.
 
 First, we discuss the choice of the shape of the regions into which we want to split the images. Since we plan on feeding the region's image into a CNN, we set a limitation on using only square regions. This limitation comes from the fact that common CNN architecture expects a square image on the input. We could, in theory, rescale rectangular regions into squares, but this would induce a non-necessary distortion of the image. We avoid this distortion by posing this simple condition on the regions' shape.
 
@@ -176,9 +175,9 @@ We impose a second limitation on the choice of regions. We require that their un
 
 Our limitations summarized are square regions, not extending over the image and full coverage of the input image. Except for a particular case, when the width and height would be divisible by the input shape dimension, the regions must overlap. The special case does not arise in our dataset, as we work with images $320 \times 180$.
 
-We propose a cutting, which for the desired number of regions $N \times M$ with the desired width $s$ of the region, produces evenly distributed regions. In case the regions cover greater area than the image itself (that is, $sN > h$, where $h$ is the height of the image), the regions are evenly distributed over the axis.
+We propose a cutting, which for the desired number of regions $N \times M$ with the desired width $s$ of the region, produces evenly distributed regions. In case the regions cover a greater area than the image itself (that is, $sN > h$, where $h$ is the height of the image), the regions are evenly distributed over the axis.
 
-The side effect of the overlaps also plays an important role in this technique. With the rigid frame without overlapping, we could face a situation where a single object would be split into two separate parts. Both parts separately could lack enough visual information on the object to provide consistent results. With the excess distributed to all regions, we share the information alongside the cut to both regions.
+The side effect of overlaps also plays an important role in this technique. With the rigid frame without overlapping, we could face a situation where a single object would be split into two separate parts. Both parts separately could lack enough visual information on the object to provide consistent results. With the excess distributed to all regions, we share the information alongside the cut to both regions.
 
 Our fixed parameters are regions' width $s$ and the number of regions we want to use $N \times M$ and image size $h, w$. We solve the task of choosing regions splits for one axis; the second is done analogously. We know that the last region has to end with the edge of the image. Therefore, the starting coordinate of the last region is $h - s$. We then split the remaining ``space'' (space not covered by the last region) over $N-1$ regions equally. We call this distance $step$ since it says the distance between the starting points of the regions. The starting coordinate $r_i$ of the $i$-th region in a given axis is:
 
@@ -200,7 +199,7 @@ We discuss the options of selecting only relevant regions to the query image bas
   \item or approaches in between, by setting a maximum to a number of relevant regions.
 \end{itemize}
 
-We visualize the problem in figure \ref{fig:fish_with_grid}. The query would be an image of the fish placed as the red boundary shows. All regions with a nonempty intersection with the query image are highlighted in green. The region with the highest ``coverage'' is the blue one.
+We visualize the problem in figure \ref{fig:fish_with_grid}. The query would be an image of the fish placed as the red boundary shows. All regions with a non-empty intersection with the query image are highlighted in green. The region with the highest ``coverage'' is the blue one.
 
 To make this idea over coverage measurable, we use the Jaccard index. We compute the Intersection over Union between the region and the crop, where the query image is located. 
 
@@ -215,7 +214,7 @@ $$
     \end{cases}
 $$
 
-In our case, the $|A \cap B|$ represents the area that belongs to both, region and query image. The  $|A \cup B|$ represents the area covered by the union of both. A visual representation of the formula is displayed in the figure \ref{fig:intersection_over_union}. Using this index, we can order the regions based on their coverage with the query image. The more relevant regions are the ones with the higher Intersection Over Union with the query image and vice versa. Please note, that in our particular case, measuring the \acrshort{iou} leads to the same results, as considering only the size of the overlap. However this notation allows for future work to use regions of various sizes.
+In our case, the $|A \cap B|$ represents the area that belongs to both region and query image. The  $|A \cup B|$ represents the area covered by the union of both. A visual representation of the formula is displayed in the figure \ref{fig:intersection_over_union}. Using this index, we can order the regions based on their coverage with the query image. The more relevant regions are the ones with the higher Intersection Over Union with the query image and vice versa. Please note, that in our particular case, measuring the \acrshort{iou} leads to the same results, as considering only the size of the overlap. However, this notation allows for future work to use regions of various sizes.
 
 \begin{figure}
     \centering
@@ -235,13 +234,13 @@ From the regions ordered by their \acrshort{iou} to the query image, we select t
 
 \subsection{Using the representation before pooling}
 
-The disadvantage of the previously presented technique is fixed cutting. The cutting into regions does not adapt to the size of collage image. 
+The disadvantage of the previously presented technique is fixed cutting. The cutting into regions does not adapt to the size of the collage image. 
 
 Let us retake a look at the fish in figure \ref{fig:fish_with_grid}. We can see that fish covers approximately two-thirds of the image, but the individual regions cover only one-twelfth. In this case, only this one-twelfth of the image is compared to the query image. The method is missing any adaptation on the size of the query image.
 
 After investigating the structure of the CNNs, we propose an approach based on the information obtained in the last convolution block. In standard architectures, after the last convolution block follows a pooling layer. So far, we only worked with the representation based on this pooling layer.
 
-In this approach we work with the results before applying pooling. As we have stripped two layers from the classification \acrshort{cnn} -- the fully connected layer used for classification, and the pooling layer --, we also refer to this method as ``antepenultimate'' (meaning ``last, but two'').
+In this approach, we work with the results before applying pooling. As we have stripped two layers from the classification \acrshort{cnn} -- the fully connected layer used for classification, and the pooling layer --, we also refer to this method as ``antepenultimate'' (meaning ``last, but two'').
 
 Since the results we now work with are obtained before global pooling, i.e., from the last convolution block, they are from higher-dimensional space. The space of the feature vectors is now $\mathbb{R}^{k\times l \times c}$. Typically, this space is reduced to $\mathbb{R}^c$ by the global pooling layer.
 
@@ -305,11 +304,11 @@ where $a_{k,l,i}$ represents an element of the $A$ in $k$-th row, $l$-th column 
 
 Finally, by performing the global average pooling over $L_i'$, we obtain our feature vector, which is later used.
 
-Compared to the previous approaches, we aimed to avoid the strict cutting and to provide more flexibility. The caveat of this approach is increased memory consumption, since we store 49 feature vectors per vector ($7\times7$). It also requires to compute the average pool for each of the query images separately. Therefore, the time complexity is also increased. The factor is multiplicative, by the number of images in the collage and the size of the used layer.
+Compared to the previous approaches, we aimed to avoid strict cutting and to provide more flexibility. The caveat of this approach is increased memory consumption since we store 49 feature vectors per vector ($7\times7$). It also requires to compute the average pool for each of the query images separately. Therefore, the time complexity is also increased. The factor is multiplicative, by the number of images in the collage and the size of the used layer.
 
 \section{Ranking}
 
-Let us remind an overview from figure \ref{fig:processing_pipeline}. In the previous section, we have seen three approaches presented for feature extraction and the extraction of the relevant features. The first presented approach is the baseline; the second cuts the image into regions and the third uses information from the antepenultimate layer of CNN. Now we shall focus on the remaining steps in the pipeline.
+Let us remind an overview from figure \ref{fig:processing_pipeline}. In the previous section, we have seen three approaches presented for feature extraction and the extraction of the relevant features. The first presented approach is the baseline; the second cuts the image into regions, and the third uses information from the antepenultimate layer of CNN. Now we shall focus on the remaining steps in the pipeline.
 
 The first of these steps is computing distance between the descriptors of collage images and descriptors of dataset images. We  evaluate all distance function mentioned in the section \ref{s:distance_measures}.
 
@@ -325,7 +324,7 @@ In addition to different techniques of obtaining the feature vectors, we also in
 
 We talked about the importance of the square input in the regions section. Although, so far, we did not discuss how we handle the case when the user provides a non-square image to the collage.
 
-The option to create non-square queries comes handy when the user wants to include, for example, a picture of a standing person, or a kayak. A question arises, what is the best way to edit the image before feeding it to CNN. We test three techniques: rescale, black padding, and white padding. Example of applying these techniques on an image is shown in figure \ref{fig:penguin}. We have previously discussed the caveats of the rescale -- it distorts the images. If the person in the query image is in a tall and narrow box, the distortion will cause it to appear more full and shorter. The distortion becomes stronger with an increasing imbalance between the box dimensions. The alternative approaches, black and white padding, differ only in the filling color. The padding works by adding stripes of the given color to make the originally shorter side the same length as the other. The stripes are of the same size, so the original image is centered along the axis that was shorter. 
+The option to create non-square queries comes handy when the user wants to include, for example, a picture of a standing person, or a kayak. A question arises, what is the best way to edit the image before feeding it to CNN. We test three techniques: rescale, black padding, and white padding. An example of applying these techniques on an image is shown in figure \ref{fig:penguin}. We have previously discussed the caveats of the rescale -- it distorts the images. If the person in the query image is in a tall and narrow box, the distortion will cause it to appear more full and shorter. The distortion becomes stronger with an increasing imbalance between the box dimensions. The alternative approaches, black and white padding, differ only in the filling color. The padding works by adding stripes of the given color to make the originally shorter side the same length as the other. The stripes are of the same size, so the original image is centered along the axis that was shorter. 
 
 \begin{figure}
      \centering
@@ -373,7 +372,7 @@ In this section, we provide evaluations for each aforementioned parameter of the
 
 \section{Collected collages}
 
-We manually created a set of queries to evaluate the proposed system's configurations. The figure \ref{fig:query_collage_comparison} shows one of such query -- target image and collage. The annotated data consists of 102 collages, each contains a visual description of a given target image. The average size of the images used in the collages covers 15\% of the canvas. Five percent of the collected collages contain an image bigger than 80\% of the canvas. We provide visualizations of the distribution of the annotated queries in figure \ref{fig:annotated_dataset}. We use total of 199 images to create these 102 collages.
+We manually created a set of queries to evaluate the proposed system's configurations. The figure \ref{fig:query_collage_comparison} shows one of such query -- target image and collage. The annotated data consists of 102 collages. Each contains a visual description of a given target image. The average size of the images used in the collages covers 15\% of the canvas. Five percent of the collected collages contain an image bigger than 80\% of the canvas. We provide visualizations of the distribution of the annotated queries in figure \ref{fig:annotated_dataset}. We use a total of 199 images to create these 102 collages.
 
 \begin{figure}
      \centering
@@ -395,13 +394,13 @@ We manually created a set of queries to evaluate the proposed system's configura
 
 For the annotation, we used our application. It is possible to save the collage by clicking ``Submit Collage.'' The average time spent on creating a single collage was 91 seconds. This time includes searching for images online, pasting them onto the canvas, and also waiting for the responses of the system.
 
-We want to highlight that we created more than a hundred collages corresponding to the target images from the dataset. The annotations were done only by a one person. We leave annotation from more people, to study the differences in behavior, for future work. 
+We want to highlight that we created more than a hundred collages corresponding to the target images from the dataset. The annotations were done only by one person. We leave annotation from more people, to study the differences in behavior, for future work. 
 
 \section{Plots overview}
 
 Using the collected queries and based on the definition of the \emph{rank} we can visualize the performance of the system.
 
-For this purpose we formulate a few additional terms. When measuring the performance system, we work on the set of collected queries $X$. For each of the query collage $Q_i$, we say that the rank of the target image $T_i$ is $r_D(T_i, Q_i)$ given the set of hyperparameters of the system $\theta$.
+For this purpose, we formulate a few additional terms. When measuring the performance system, we work on the set of collected queries $X$. For each of the query collage $Q_i$, we say that the rank of the target image $T_i$ is $r_D(T_i, Q_i)$ given the set of hyperparameters of the system $\theta$.
 
 We define a function $s_{D, \theta, X}$, which represents the performance of the system.
 $$
@@ -413,12 +412,12 @@ $$
 
 In the plots we scale the both axis as the percentage of the dataset/collected queries. I.e., we display $r_D(T_i, Q_i) / |D|$ on $x$-axis and $s_{D, \theta, X}(h) / |X|$ on $y$-axis. That way we obtain comparable results even in case of different datasets. 
 
-Similarly to our reasoning in section \ref{s:task_formulation} we claim that this function correlates with the time spent on retrieving all target images.
+Similarly to our reasoning in section \ref{s:task_formulation}, we claim that this function correlates with the time spent on retrieving all target images.
 
 
 \section{Summary}
 
-In this chapter, we focus on fine-tuning several hyperparameters of the task at hand. We achieved the best results using the approach of cutting the image into regions, with settings of 2x4 and 3x5 regions. Additionally, we showed that the best performing input shapes were $96\times 96$ and $128 \times 128$.  We did not found out that the number of selected crops would play a significant role in the performance of tested variants. For the distance function, we chose \emph{cosine distance} since it performed significantly better than the other evaluated distance functions. To aggregate the distances, we selected the averaging function as it led to the best results. For the padding selection, it emerged from the experiment that \emph{rescale} worked the best. From the tested networks, \emph{Resnet50} trained on eleven thousands of classes performed the best. Finally, we concluded that dimensionality reduction into \emph{128} dimensions have a little, almost no negative effect on the performance of the system. Therefore we recommend using it. 
+In this chapter, we focus on fine-tuning several hyperparameters of the task at hand. We achieved the best results using the approach of cutting the image into regions, with settings of 2x4 and 3x5 regions. Additionally, we showed that the best performing input shapes were $96\times 96$ and $128 \times 128$.  We did not found out that the number of selected crops would play a significant role in the performance of tested variants. For the distance function, we chose \emph{cosine distance} since it performed significantly better than the other evaluated distance functions. To aggregate the distances, we selected the averaging function as it led to the best results. For the padding selection, it emerged from the experiment that \emph{rescale} worked the best. From the tested networks, \emph{Resnet50} trained on eleven thousands of classes performed the best. Finally, we concluded that dimensionality reduction into \emph{128} dimensions have a little, almost no negative effect on the system's performance. Therefore we recommend using it. 
 
 
 
@@ -453,7 +452,7 @@ In this chapter, we focus on fine-tuning several hyperparameters of the task at 
 \begin{figure}
     \centering
     \includegraphics[width=0.8\linewidth]{graphs/adaf8d435bb40406f9ce40654ec396e04453ab76cf0776d2a87d385055d5424f.pdf}
-    \caption[Comparison of baseline, regions and approach using the output of the layer before the global pooling]{Comparison of baseline, regions and approach using the output of the layer before the global pooling. Due to higher memory requirements, we had to sample the dataset. We randomly sampled one-tenth of the dataset. We also provide a baseline on this smaller dataset, the performance may slightly change, based on the dataset. We can see that using the information from the layer, before the global pooling layer improved the performance of the system, compared to the baseline. These are interesting results, because, that the underlying network is for both approaches identical. This shows, that we can elevate the spatial information about the objects from the last convolution block.}
+    \caption[Comparison of baseline, regions, and approach using the output of the layer before the global pooling]{Comparison of baseline, regions, and approach using the output of the layer before the global pooling. Due to higher memory requirements, we had to sample the dataset. We randomly sampled one-tenth of the dataset. We also provide a baseline on this smaller dataset, the performance may slightly change, based on the dataset. We can see that using the information from the layer before the global pooling layer improved the performance of the system, compared to the baseline. These are interesting results, because, that the underlying network is for both approaches identical. This shows that we can elevate the spatial information about the objects from the last convolution block.}
     \label{fig:antepenultimate}
 \end{figure}
 
@@ -481,7 +480,7 @@ In this chapter, we focus on fine-tuning several hyperparameters of the task at 
 \begin{figure}
     \centering
     \includegraphics[width=0.8\linewidth]{graphs/6fbd4f70810e1f63f400ef601c1cdba0fd1635749810aa2347a4ff26e6fccf47.pdf}
-    \caption[Effect of \acrshort{pca} on the performance of the system]{Effect of \acrshort{pca} on the performance of the system. The results offer several interesting observations. With the increasing number of components, the system performs better. With 512 components, it even performed slightly better than on the original data. For our purposes, we conclude that selecting 128 components offer the best performance-cost ratio. With the need for smaller feature vectors, we would select at minimum 64 components.}
+    \caption[Effect of \acrshort{pca} on the performance of the system]{Effect of \acrshort{pca} on the performance of the system. The results offer several interesting observations. With the increasing number of components, the system performs better. With 512 components, it even performed slightly better than on the original data. For our purposes, we conclude that selecting 128 components offer the best performance-cost ratio. With the need for smaller feature vectors, we would select a minimum of 64 components.}
     \label{fig:pca}
 \end{figure}
 
