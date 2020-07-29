@@ -2,13 +2,13 @@
 \label{ch:developers_guide}
 \label{ch:programmers_guide}
 
-When creating our application, we kept in mind to make it as easy as possible for users to use. We, therefore, selected a web-based front-end, with which users come in contact daily. From the user point of view, it does not require the installation of any application, and it can be used from almost any platform.
+When we were creating our application, we kept in mind to make it as easy as possible for users to use. Therefore, we opt for a web-based interface, with which users come in contact daily. From the user point of view, it does not require the installation of any additional application, and it can be used across many operating systems.
 
-Creating a simple, shareable environment from the user perspective allows us to collect more annotated data from the users. Compared to the classical applications, which need to be installed and run, a web-based application is enough to run it on the server by the researcher and share the links with the respondents. This way, it may be easier to reach a bigger audience.
+Creating a simple, shareable environment for the users allows us to collect more annotated data. Compared to the classical applications, which need to be installed on each user's computer, a web-based application needs to be setup just on the server by the researcher then users can simply access it by web adress. This way, it may be easier to reach a bigger audience.
 
-We decided to use Python for our back-end as it has a big machine learning community with ever-growing possibilities of open-source projects. As a result of this, we decided to use Django easily scalable Python web-framework.
+We decided to use Python for our back-end as it has a big machine learning community with ever-growing possibilities of open-source projects. As a result of this, we decided to use Django -- easily scalable Python web-framework.
 
-Since our implementation covers a wide range of tasks -- from a web-based front-end to library able to work with deep learning models, we do not include an exhaustive enumeration of the specific classes/functions in this chapter. Instead, we provide an overview of the individual parts of the application. We start with the separation of the application into three layers, as displayed in figure \ref{fig:implementation_overview}.
+Since our implementation covers a wide range of tasks -- from a web-based front-end to a library able to work with deep learning models, we do not include an exhaustive enumeration of the specific classes and functions in this chapter. Instead, we provide an overview of the individual parts of the application. We start with the separation of the application into three layers, as displayed in figure \ref{fig:implementation_overview}.
 
 This figure represents the individual layers of our solution and provides a summary of the technologies used in the layers. Our application consists of two main Python modules: \verb+diplomova_praca+ and \verb+diplomova_praca_lib+. In the figure, the front-end and back-end belong to the first one, and the library represents module \verb+diplomova_praca_lib+.
 
@@ -25,7 +25,7 @@ We use the Material Design components with our own elements using the Cascading 
 
 \subsubsection*{Interaction}
 
-To provide smooth user experience, without any unnecessary during the search, we use JavaScript. For some actions, like dragging, resizing we utilize functionalities from jQuery\footnote{\url{https://jquery.com/}}. 
+To provide smooth user experience, without any unnecessary loading during the search, we use JavaScript. For some actions, like dragging, resizing we utilize functionalities from jQuery\footnote{\url{https://jquery.com/}}. 
 
 To avoid reloadings we update the content using JavaScript and obtain the data via asynchronous communication with our Django backend. One of the advantages of this approach is that the user can continue to experiment with the collage while the system is retrieving the results.
 
@@ -44,12 +44,12 @@ Since the content of the library is broad, we could separate it further into fou
     \item Annotation and Preprocessing -- scripts used for extraction of the features from custom dataset
     \item \verb+face_features/+ -- face module, which is responsible for creating the multilevel structure (\verb+TreeView+). It also contains models for extraction of faces and the feature extraction.
     \item \verb+position_similarity/+ -- spatial module, which also includes used models and the feature extraction techniques (as regions or antepenultime approach). The entry point for any request is \verb+positional_request()+ in \verb+position_similarity_request.py+. We use this entry point for our experiments.
-    \item Additional scripts (\verb+helpers/+) -- this includes all scripts to run and evaluate the experiments.. These are not necessary for the application itself, but useful while investigating the approaches.
+    \item Additional scripts (\verb+helpers/+) -- this includes all the scripts to run and evaluate the experiments.. These are not necessary for the application itself, but useful while investigating the approaches.
 \end{itemize}
 
 \subsubsection*{Attribution}
 
-At last, we would like to express our grattitude to the authors of all used technologies provided by an open-source community. Additionally to the projects mentioned in the text we would like to thank also the authors of crucial libraries such as Scikit-learn \citep{pedregosa2011scikit} and NumPy \citep{van2011numpy}.
+At last, we would like to express our grattitude to the authors of all used technologies provided by an open-source community. Additionally to the projects mentioned in the text, we would like to thank the authors of crucial libraries such as Scikit-learn \citep{pedregosa2011scikit} and NumPy \citep{van2011numpy}.
 
 \begin{figure}
     \centering
