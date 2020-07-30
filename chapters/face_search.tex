@@ -6,7 +6,7 @@ We investigate the option of finding the target image based on the person's face
 
 This approach arises from practical reasons. Once we investigated the V3C1 dataset, we realized that there are people in many of the images. We can use the previously investigated approaches based on the location and visual similarity to find the target image. However, with the increasing number of images showing people, it becomes difficult to retrieve the correct target image. Simply searching for a person in the top left corner would retrieve all images with a person in the said corner (not just the one we are looking for). Also, finding a good representative face with similar background becomes a challenging task.
 
-In this chapter, we aim to provide a search mechanism employing finer features of one's face. We provide a simple search structure to investigate the faces in the dataset.
+In this chapter, we aim to provide a search mechanism based on the faces. We provide a simple search structure to investigate the faces in the dataset.
 
 We first extract the faces from the dataset, and then we obtain a descriptor for each one of them. Based on these descriptors, we organize the faces into a traversal structure supporting navigational commands.
 
